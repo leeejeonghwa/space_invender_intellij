@@ -11,6 +11,9 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 
+import javax.sound.sampled.*;
+import java.io.File;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -243,6 +246,22 @@ public class Game extends Canvas
 		lastFire = System.currentTimeMillis();
 		ShotEntity shot = new ShotEntity(this,"sprites/shot.gif",ship.getX()+10,ship.getY()-30);
 		entities.add(shot);
+
+		try {
+			// load the sound file
+			File soundFile = new File("C:\\Users\\aiselab\\Desktop\\space_invaders_intellij\\space_invaders\\src\\sound\\shotsound.wav");
+			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile);
+
+			// get a clip to play the sound
+			Clip clip = AudioSystem.getClip();
+			clip.open(audioInputStream);
+
+			// play the sound
+			clip.start();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 	
 	/**
