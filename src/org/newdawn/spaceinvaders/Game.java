@@ -133,6 +133,21 @@ public class Game extends Canvas
 		// initialise the entities in our game so there's something
 		// to see at startup
 		initEntities();
+
+		try {
+			// load the sound file
+			File bgmFile = new File("C:\\Users\\aiselab\\Desktop\\space_invaders_intellij\\space_invaders\\src\\sound\\backgroundmusic.wav");
+			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(bgmFile);
+
+			// get a clip to play the sound
+			Clip clip = AudioSystem.getClip();
+			clip.open(audioInputStream);
+
+			// play the sound
+			clip.start();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -276,6 +291,7 @@ public class Game extends Canvas
 	 * <p>
 	 */ // 게임 메인 루프 -> 플레이 중 활동
 	public void gameLoop() {
+
 		long lastLoopTime = SystemTimer.getTime();
 		
 		// keep looping round til the game ends
