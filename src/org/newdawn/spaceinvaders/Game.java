@@ -11,8 +11,12 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 
-import javax.sound.sampled.*;
-import java.io.File;
+import java.applet.*;
+import java.net.*;
+import java.net.URL;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -21,6 +25,7 @@ import org.newdawn.spaceinvaders.entity.AlienEntity;
 import org.newdawn.spaceinvaders.entity.Entity;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
 import org.newdawn.spaceinvaders.entity.ShotEntity;
+
 
 /**
  * The main hook of our game. This class with both act as a manager
@@ -54,7 +59,7 @@ public class Game extends Canvas
 	/** The time at which last fired a shot */
 	private long lastFire = 0;
 	/** The interval between our players shot (ms) */
-	private long firingInterval = 500; //총알 사이의 간격
+	private long firingInterval = 200; //총알 사이의 간격
 	/** The number of aliens left on the screen */
 	private int alienCount;
 	
@@ -134,20 +139,12 @@ public class Game extends Canvas
 		// to see at startup
 		initEntities();
 
-		try {
-			// load the sound file
-			File bgmFile = new File("C:\\Users\\aiselab\\Desktop\\space_invaders_intellij\\space_invaders\\src\\sound\\backgroundmusic.wav");
-			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(bgmFile);
+		new Thread(() -> {
+			Player bgmPlayer = new Player();
+			bgmPlayer.play("C:\\Users\\aiselab\\Desktop\\space_invaders_intellij\\space_invaders\\src\\sound\\backgroundmusic.wav");
+		}).start();
 
-			// get a clip to play the sound
-			Clip clip = AudioSystem.getClip();
-			clip.open(audioInputStream);
 
-			// play the sound
-			clip.start();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 	
 	/**
@@ -165,6 +162,7 @@ public class Game extends Canvas
 		upPressed = false;
 		downPressed = false;
 		firePressed = false;
+
 	}
 	
 	/**
@@ -210,6 +208,7 @@ public class Game extends Canvas
 	 * Notification that the player has died. 
 	 */
 	public void notifyDeath() {
+
 		message = "Oh no! They got you, try again?";
 		waitingForKeyPress = true;
 	}
@@ -219,8 +218,11 @@ public class Game extends Canvas
 	 * are dead.
 	 */
 	public void notifyWin() {
+
 		message = "Well done! You Win!";
 		waitingForKeyPress = true;
+
+
 	}
 	
 	/**
@@ -233,7 +235,7 @@ public class Game extends Canvas
 		if (alienCount == 0) {
 			notifyWin();
 		}
-		
+
 		// if there are still some aliens left then they all need to get faster, so
 		// speed up all the existing aliens
 		for (int i=0;i<entities.size();i++) {
@@ -262,20 +264,6 @@ public class Game extends Canvas
 		ShotEntity shot = new ShotEntity(this,"sprites/shot.gif",ship.getX()+10,ship.getY()-30);
 		entities.add(shot);
 
-		try {
-			// load the sound file
-			File soundFile = new File("C:\\Users\\aiselab\\Desktop\\space_invaders_intellij\\space_invaders\\src\\sound\\shotsound.wav");
-			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile);
-
-			// get a clip to play the sound
-			Clip clip = AudioSystem.getClip();
-			clip.open(audioInputStream);
-
-			// play the sound
-			clip.start();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 
 	}
 	
