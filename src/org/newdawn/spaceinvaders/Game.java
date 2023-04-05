@@ -11,13 +11,6 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 
-import java.applet.*;
-import java.net.*;
-import java.net.URL;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -26,7 +19,11 @@ import org.newdawn.spaceinvaders.entity.Entity;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
 import org.newdawn.spaceinvaders.entity.ShotEntity;
 
-/*test*/
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+
+
 /**
  * The main hook of our game. This class with both act as a manager
  * for the display and central mediator for the game logic. 
@@ -42,7 +39,6 @@ import org.newdawn.spaceinvaders.entity.ShotEntity;
  * 
  * @author Kevin Glass
  */
-//tjdrhd
 public class Game extends Canvas 
 {
 	/** The stragey that allows us to use accelerate page flipping */
@@ -90,7 +86,9 @@ public class Game extends Canvas
 	private String windowTitle = "Space Invaders 102";
 	/** The game window that we'll update with the frame count */
 	private JFrame container;
-	//hh
+
+	private Player player;
+	
 	/**
 	 * Construct our game and set it running.
 	 */
@@ -140,9 +138,9 @@ public class Game extends Canvas
 		// to see at startup
 		initEntities();
 
-		Player bgmPlayer = new Player();
+		player = new Player();
 		new Thread(() -> {
-			bgmPlayer.play("src/sound/backgroundmusic.wav");
+			player.play("src/sound/backgroundmusic.wav");
 		}).start();
 
 
@@ -164,6 +162,8 @@ public class Game extends Canvas
 		downPressed = false;
 		firePressed = false;
 
+		//player.stopSuccessSound();
+
 	}
 	
 	/**
@@ -177,8 +177,8 @@ public class Game extends Canvas
 		
 		// create a block of aliens (5 rows, by 12 aliens, spaced evenly)
 		alienCount = 0;
-		for (int row=0;row<5;row++) {
-			for (int x=0;x<12;x++) {
+		for (int row=0;row<1;row++) {
+			for (int x=0;x<1;x++) {
 				Entity alien = new AlienEntity(this,100+(x*50),(50)+row*30);
 				entities.add(alien);
 				alienCount++;
@@ -223,7 +223,6 @@ public class Game extends Canvas
 		message = "Well done! You Win!";
 		waitingForKeyPress = true;
 
-
 	}
 	
 	/**
@@ -232,10 +231,18 @@ public class Game extends Canvas
 	public void notifyAlienKilled() {
 		// reduce the alient count, if there are none left, the player has won!
 		alienCount--;
-		
+
+		// 성공 효과음을 재생할 플레이어 생성
 		if (alienCount == 0) {
+
+			new Thread(() -> {
+				Player successPlayer = new Player();
+				successPlayer.playSuccessSound("src/sound/success.wav");
+			}).start();
+
 			notifyWin();
 		}
+
 
 		// if there are still some aliens left then they all need to get faster, so
 		// speed up all the existing aliens
@@ -265,9 +272,9 @@ public class Game extends Canvas
 		ShotEntity shot = new ShotEntity(this,"sprites/shot.gif",ship.getX()+10,ship.getY()-30);
 		entities.add(shot);
 
-		Player shotplayer = new Player();
+		player = new Player();
 		new Thread(() -> {
-			shotplayer.playShotSound("src/sound/shot.wav");
+			player.playShotSound("src/sound/shot.wav");
 		}).start();
 	}
 	
@@ -285,7 +292,7 @@ public class Game extends Canvas
 	public void gameLoop() {
 
 		long lastLoopTime = SystemTimer.getTime();
-		
+
 		// keep looping round til the game ends
 		while (gameRunning) {
 			// work out how long its been since the last update, this
@@ -297,7 +304,7 @@ public class Game extends Canvas
 			// update the frame counter
 			lastFpsTime += delta;
 			fps++;
-			
+
 			// update our FPS counter if a second has passed since
 			// we last recorded
 			if (lastFpsTime >= 1000) {
@@ -305,44 +312,44 @@ public class Game extends Canvas
 				lastFpsTime = 0;
 				fps = 0; //fps = 현재 기록된 프레임 수 -> 화면이 바뀌는 횟수
 			}
-			
-			// Get hold of a graphics context for the accelerated 
+
+			// Get hold of a graphics context for the accelerated
 			// surface and blank it out  //배경색 설정
 			Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
 			g.setColor(Color.black);
 			g.fillRect(0,0,800,600);
-			
+
 			// cycle round asking each entity to move itself
 			if (!waitingForKeyPress) {
 				for (int i=0;i<entities.size();i++) {
 					Entity entity = (Entity) entities.get(i);
-					
+
 					entity.move(delta);
 				}
 			}
-			
+
 			// cycle round drawing all the entities we have in the game
 			for (int i=0;i<entities.size();i++) {
 				Entity entity = (Entity) entities.get(i);
-				
+
 				entity.draw(g);
 			}
-			
+
 			// brute force collisions, compare every entity against
-			// every other entity. If any of them collide notify 
+			// every other entity. If any of them collide notify
 			// both entities that the collision has occured  // 충돌 알림
 			for (int p=0;p<entities.size();p++) {
 				for (int s=p+1;s<entities.size();s++) {
 					Entity me = (Entity) entities.get(p);
 					Entity him = (Entity) entities.get(s);
-					
+
 					if (me.collidesWith(him)) {
 						me.collidedWith(him);
 						him.collidedWith(me);
 					}
 				}
 			}
-			
+
 			// remove any entity that has been marked for clear up
 			entities.removeAll(removeList);
 			removeList.clear();
@@ -355,29 +362,29 @@ public class Game extends Canvas
 					Entity entity = (Entity) entities.get(i);
 					entity.doLogic();
 				}
-				
+
 				logicRequiredThisLoop = false;
 			}
-			
-			// if we're waiting for an "any key" press then draw the 
-			// current message 
+
+			// if we're waiting for an "any key" press then draw the
+			// current message
 			if (waitingForKeyPress) {
 				g.setColor(Color.white);
 				g.drawString(message,(800-g.getFontMetrics().stringWidth(message))/2,250);
 				g.drawString("Press any key",(800-g.getFontMetrics().stringWidth("Press any key"))/2,300);
 			}
-			
+
 			// finally, we've completed drawing so clear up the graphics
 			// and flip the buffer over
 			g.dispose();
 			strategy.show();
-			
-			// resolve the movement of the ship. First assume the ship 
+
+			// resolve the movement of the ship. First assume the ship
 			// isn't moving. If either cursor key is pressed then
 			// update the movement appropraitely
 			ship.setHorizontalMovement(0);
 			ship.setVerticalMovement(0);
-			
+
 			if ((leftPressed) && (!rightPressed)) {
 				ship.setHorizontalMovement(-moveSpeed);
 			} else if ((rightPressed) && (!leftPressed)) {
@@ -389,20 +396,20 @@ public class Game extends Canvas
 			} else if ((downPressed) && (!upPressed)) {
 				ship.setVerticalMovement(moveSpeed);
 			}
-			
+
 			// if we're pressing fire, attempt to fire
 			if (firePressed) {
 				tryToFire();
 			}
-			
+
 			// we want each frame to take 10 milliseconds, to do this
 			// we've recorded when we started the frame. We add 10 milliseconds
-			// to this and then factor in the current time to give 
+			// to this and then factor in the current time to give
 			// us our final value to wait for //?? 화면 바뀌는 거 관련해서 말하는게 맞나요
 			SystemTimer.sleep(lastLoopTime+10-SystemTimer.getTime());
 		}
 	}
-	
+
 	/**
 	 * A class to handle keyboard input from the user. The class
 	 * handles both dynamic input during game play, i.e. left/right 
@@ -492,12 +499,14 @@ public class Game extends Canvas
 			// have had a keyType() event from the user releasing
 			// the shoot or move keys, hence the use of the "pressCount"
 			// counter.
+
 			if (waitingForKeyPress) {
 				if (pressCount == 1) {
 					// since we've now recieved our key typed
 					// event we can mark it as such and start 
 					// our new game
 					waitingForKeyPress = false;
+					player.stopSuccessSound();
 					startGame();
 					pressCount = 0;
 				} else {
