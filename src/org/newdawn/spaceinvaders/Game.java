@@ -264,7 +264,10 @@ public class Game extends Canvas
 		ShotEntity shot = new ShotEntity(this,"sprites/shot.gif",ship.getX()+10,ship.getY()-30);
 		entities.add(shot);
 
-
+		Player shotplayer = new Player();
+		new Thread(() -> {
+			shotplayer.playShotSound("src/sound/shot.wav");
+		}).start();
 	}
 	
 	/**

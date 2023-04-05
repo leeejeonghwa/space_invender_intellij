@@ -9,6 +9,7 @@ import java.io.File;
 
 public class Player implements LineListener {
     private Clip bgmclip;
+    private Clip shotclip;
     private boolean playCompleted;
 
     public void play(String audioFilePath) {
@@ -48,6 +49,39 @@ public class Player implements LineListener {
         if (bgmclip == null) return;
         bgmclip.stop();
         bgmclip.close();
+    }
+
+    public void playShotSound(String audioFilePath) {
+        try {
+            File audioFile = new File(audioFilePath);
+            if (!audioFile.exists()) {
+                System.err.println("Audio file not found: " + audioFilePath);
+                return;
+            }
+
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+
+            shotclip = AudioSystem.getClip();
+
+            shotclip.addLineListener(this);
+
+            shotclip.open(audioStream);
+
+            shotclip.start();
+
+            while (shotclip.getMicrosecondLength() != shotclip.getMicrosecondPosition()) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+            shotclip.stop();
+            shotclip.close();
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+        }
     }
 
     @Override
