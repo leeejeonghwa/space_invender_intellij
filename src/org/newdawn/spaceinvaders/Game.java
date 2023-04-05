@@ -11,12 +11,6 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 
-import java.applet.*;
-import java.net.*;
-import java.net.URL;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -26,8 +20,6 @@ import org.newdawn.spaceinvaders.entity.Entity;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
 import org.newdawn.spaceinvaders.entity.ShotEntity;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 
 /**
@@ -143,9 +135,9 @@ public class Game extends Canvas
 		// to see at startup
 		initEntities();
 
-		Player bgmPlayer = new Player();
+		player = new Player();
 		new Thread(() -> {
-			bgmPlayer.play("src/sound/backgroundmusic.wav");
+			player.play("src/sound/backgroundmusic.wav");
 		}).start();
 
 
