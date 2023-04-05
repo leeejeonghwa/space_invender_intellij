@@ -11,6 +11,13 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 
+import java.applet.*;
+import java.net.*;
+import java.net.URL;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -18,6 +25,7 @@ import org.newdawn.spaceinvaders.entity.AlienEntity;
 import org.newdawn.spaceinvaders.entity.Entity;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
 import org.newdawn.spaceinvaders.entity.ShotEntity;
+
 
 /**
  * The main hook of our game. This class with both act as a manager
@@ -51,7 +59,7 @@ public class Game extends Canvas
 	/** The time at which last fired a shot */
 	private long lastFire = 0;
 	/** The interval between our players shot (ms) */
-	private long firingInterval = 500; //총알 사이의 간격 -> 총알 속도
+	private long firingInterval = 200; //총알 사이의 간격
 	/** The number of aliens left on the screen */
 	private int alienCount;
 	
@@ -88,25 +96,25 @@ public class Game extends Canvas
 	public Game() {
 		// create a frame to contain our game
 		container = new JFrame("Space Invaders 102");
-
+		
 		// get hold the content of the frame and set up the resolution of the game //프레임 내용 가져오고 해상도 설정
 		JPanel panel = (JPanel) container.getContentPane();
 		panel.setPreferredSize(new Dimension(800,600));
 		panel.setLayout(null);
-
+		
 		// setup our canvas size and put it into the content of the frame
 		setBounds(0,0,800,600);
 		panel.add(this);
-
+		
 		// Tell AWT not to bother repainting our canvas since we're
 		// going to do that our self in accelerated mode
 		setIgnoreRepaint(true);
-
-		// finally make the window visible
+		
+		// finally make the window visible 
 		container.pack();
 		container.setResizable(false);
 		container.setVisible(true);
-
+		
 		// add a listener to respond to the user closing the window. If they
 		// do we'd like to exit the game
 		container.addWindowListener(new WindowAdapter() {
@@ -130,6 +138,13 @@ public class Game extends Canvas
 		// initialise the entities in our game so there's something
 		// to see at startup
 		initEntities();
+
+		Player bgmPlayer = new Player();
+		new Thread(() -> {
+			bgmPlayer.play("C:\\Users\\aiselab\\Desktop\\space_invaders_intellij\\space_invaders\\src\\sound\\backgroundmusic.wav");
+		}).start();
+
+
 	}
 	
 	/**
@@ -147,6 +162,7 @@ public class Game extends Canvas
 		upPressed = false;
 		downPressed = false;
 		firePressed = false;
+
 	}
 	
 	/**
@@ -192,6 +208,7 @@ public class Game extends Canvas
 	 * Notification that the player has died. 
 	 */
 	public void notifyDeath() {
+
 		message = "Oh no! They got you, try again?";
 		waitingForKeyPress = true;
 	}
@@ -201,8 +218,11 @@ public class Game extends Canvas
 	 * are dead.
 	 */
 	public void notifyWin() {
+
 		message = "Well done! You Win!";
 		waitingForKeyPress = true;
+
+
 	}
 	
 	/**
@@ -215,7 +235,7 @@ public class Game extends Canvas
 		if (alienCount == 0) {
 			notifyWin();
 		}
-		
+
 		// if there are still some aliens left then they all need to get faster, so
 		// speed up all the existing aliens
 		for (int i=0;i<entities.size();i++) {
@@ -243,6 +263,8 @@ public class Game extends Canvas
 		lastFire = System.currentTimeMillis();
 		ShotEntity shot = new ShotEntity(this,"sprites/shot.gif",ship.getX()+10,ship.getY()-30);
 		entities.add(shot);
+
+
 	}
 	
 	/**
@@ -257,6 +279,7 @@ public class Game extends Canvas
 	 * <p>
 	 */ // 게임 메인 루프 -> 플레이 중 활동
 	public void gameLoop() {
+
 		long lastLoopTime = SystemTimer.getTime();
 		
 		// keep looping round til the game ends
