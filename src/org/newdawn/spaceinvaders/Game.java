@@ -42,6 +42,7 @@ import org.newdawn.spaceinvaders.entity.ShotEntity;
  * 
  * @author Kevin Glass
  */
+//tjdrhd
 public class Game extends Canvas 
 {
 	/** The stragey that allows us to use accelerate page flipping */
