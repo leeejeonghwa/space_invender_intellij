@@ -89,7 +89,7 @@ public class Game extends Canvas
 	private String windowTitle = "Space Invaders 102";
 	/** The game window that we'll update with the frame count */
 	private JFrame container;
-	
+	//hh
 	/**
 	 * Construct our game and set it running.
 	 */
