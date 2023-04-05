@@ -42,6 +42,14 @@ public class ShipEntity extends Entity {
 		if ((dx > 0) && (x > 750)) {
 			return;
 		}
+		// if we're moving up and have reached the top of the screen, don't move
+		if((dy < 0) && (y<10)){
+			return;
+		}
+		// if we're moving down and have reached the bottom of the screen, don't move
+		if((dy > 0) && (y > 570)){
+			return;
+		}
 		
 		super.move(delta);
 	}
