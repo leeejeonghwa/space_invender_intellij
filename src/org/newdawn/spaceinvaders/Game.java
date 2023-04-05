@@ -51,7 +51,7 @@ public class Game extends Canvas
 	/** The time at which last fired a shot */
 	private long lastFire = 0;
 	/** The interval between our players shot (ms) */
-	private long firingInterval = 500; //총알 사이의 간격
+	private long firingInterval = 500; //총알 사이의 간격 -> 총알 속도
 	/** The number of aliens left on the screen */
 	private int alienCount;
 	
@@ -88,25 +88,25 @@ public class Game extends Canvas
 	public Game() {
 		// create a frame to contain our game
 		container = new JFrame("Space Invaders 102");
-		
+
 		// get hold the content of the frame and set up the resolution of the game //프레임 내용 가져오고 해상도 설정
 		JPanel panel = (JPanel) container.getContentPane();
 		panel.setPreferredSize(new Dimension(800,600));
 		panel.setLayout(null);
-		
+
 		// setup our canvas size and put it into the content of the frame
 		setBounds(0,0,800,600);
 		panel.add(this);
-		
+
 		// Tell AWT not to bother repainting our canvas since we're
 		// going to do that our self in accelerated mode
 		setIgnoreRepaint(true);
-		
-		// finally make the window visible 
+
+		// finally make the window visible
 		container.pack();
 		container.setResizable(false);
 		container.setVisible(true);
-		
+
 		// add a listener to respond to the user closing the window. If they
 		// do we'd like to exit the game
 		container.addWindowListener(new WindowAdapter() {
