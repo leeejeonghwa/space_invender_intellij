@@ -141,7 +141,7 @@ public class Game extends Canvas
 
 		Player bgmPlayer = new Player();
 		new Thread(() -> {
-			bgmPlayer.play("C:\\Users\\aiselab\\Desktop\\space_invaders_intellij\\space_invaders\\src\\sound\\backgroundmusic.wav");
+			bgmPlayer.play("src/sound/backgroundmusic.wav");
 		}).start();
 
 
