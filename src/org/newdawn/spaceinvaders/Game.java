@@ -139,8 +139,8 @@ public class Game extends Canvas
 		// to see at startup
 		initEntities();
 
+		Player bgmPlayer = new Player();
 		new Thread(() -> {
-			Player bgmPlayer = new Player();
 			bgmPlayer.play("C:\\Users\\aiselab\\Desktop\\space_invaders_intellij\\space_invaders\\src\\sound\\backgroundmusic.wav");
 		}).start();
 
