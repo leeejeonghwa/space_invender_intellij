@@ -293,6 +293,7 @@ public class Game extends Canvas
 			// move this loop
 			long delta = SystemTimer.getTime() - lastLoopTime;
 			lastLoopTime = SystemTimer.getTime();
+			long timerTime = SystemTimer.getTime()/1000;
 
 			// update the frame counter
 			lastFpsTime += delta;
@@ -312,6 +313,9 @@ public class Game extends Canvas
 			g.setColor(Color.black);
 			g.fillRect(0,0,800,600);
 			
+			g.setColor(Color.WHITE);
+			g.drawString(Long.toString(timerTime), 10, 20);
+
 			// cycle round asking each entity to move itself
 			if (!waitingForKeyPress) {
 				for (int i=0;i<entities.size();i++) {
@@ -366,7 +370,7 @@ public class Game extends Canvas
 				g.drawString(message,(800-g.getFontMetrics().stringWidth(message))/2,250);
 				g.drawString("Press any key",(800-g.getFontMetrics().stringWidth("Press any key"))/2,300);
 			}
-			
+
 			// finally, we've completed drawing so clear up the graphics
 			// and flip the buffer over
 			g.dispose();
