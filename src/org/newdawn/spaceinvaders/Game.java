@@ -293,6 +293,7 @@ public class Game extends Canvas
 			// move this loop
 			long delta = SystemTimer.getTime() - lastLoopTime;
 			lastLoopTime = SystemTimer.getTime();
+			long timerTime = SystmTimer.getTime();
 
 			// update the frame counter
 			lastFpsTime += delta;
