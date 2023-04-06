@@ -293,7 +293,7 @@ public class Game extends Canvas
 			// move this loop
 			long delta = SystemTimer.getTime() - lastLoopTime;
 			lastLoopTime = SystemTimer.getTime();
-			long timerTime = SystmTimer.getTime();
+			long timerTime = SystemTimer.getTime()/1000;
 
 			// update the frame counter
 			lastFpsTime += delta;
@@ -312,7 +312,8 @@ public class Game extends Canvas
 			Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
 			g.setColor(Color.black);
 			g.fillRect(0,0,800,600);
-			
+
+
 			g.setColor(Color.WHITE);
 			g.drawString(Long.toString(timerTime), 10, 20);
 
