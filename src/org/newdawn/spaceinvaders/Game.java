@@ -285,7 +285,8 @@ public class Game extends Canvas
 	public void gameLoop() {
 
 		long lastLoopTime = SystemTimer.getTime();
-		
+		int alienKilled = alienCount;
+
 		// keep looping round til the game ends
 		while (gameRunning) {
 			// work out how long its been since the last update, this
@@ -315,7 +316,10 @@ public class Game extends Canvas
 
 
 			g.setColor(Color.WHITE);
-			g.drawString(Long.toString(timerTime), 10, 20);
+			g.drawString("Time: " + Long.toString(timerTime), 10, 20);
+
+			g.setColor(Color.WHITE);
+			g.drawString("Killed: " + Integer.toString(alienKilled - alienCount), 10, 40);
 
 			// cycle round asking each entity to move itself
 			if (!waitingForKeyPress) {
