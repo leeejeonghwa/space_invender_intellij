@@ -270,6 +270,16 @@ public class Game extends Canvas
 			shotplayer.playShotSound("src/sound/shot.wav");
 		}).start();
 	}
+
+	//implement setter of moveSpeed for Item.increaseMoveSpeed
+	public void increaseMoveSpeed(){
+		this.moveSpeed *= 1.5;
+	}
+
+	//implement setter of firingInterval for Item.increaseFireSpeed
+	public void increaseFireSpeed(){
+		this.firingInterval = 150;
+	}
 	
 	/**
 	 * The main game loop. This loop is running during all game
@@ -282,6 +292,7 @@ public class Game extends Canvas
 	 * - Checking Input
 	 * <p>
 	 */ // 게임 메인 루프 -> 플레이 중 활동
+
 	public void gameLoop() {
 
 		long lastLoopTime = SystemTimer.getTime();
