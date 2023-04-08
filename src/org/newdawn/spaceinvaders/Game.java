@@ -92,6 +92,8 @@ public class Game extends Canvas
 	 * Construct our game and set it running.
 	 */
 	public Game() {
+
+
 		// create a frame to contain our game
 		container = new JFrame("Space Invaders 102");
 		

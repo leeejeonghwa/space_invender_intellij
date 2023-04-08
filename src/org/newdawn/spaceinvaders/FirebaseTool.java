@@ -31,7 +31,8 @@ public class FirebaseTool {
                     .setDatabaseUrl("https://space-invander-member-list-default-rtdb.firebaseio.com/")
                     .build();
 
-            firebaseApp = FirebaseApp.initializeApp(options, "space-invander-member-list");
+             firebaseApp = FirebaseApp.initializeApp(options, "space-invander-member-list");
+//            firebaseApp = FirebaseApp.initializeApp(options);
 
             if (firebaseApp != null) {
                 System.out.println(firebaseApp.getName());
