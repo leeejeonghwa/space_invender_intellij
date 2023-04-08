@@ -16,8 +16,8 @@ public class Login extends JFrame{
     private JButton loginBtn = new JButton("로그인");
     private JButton memberbtn = new JButton("회원가입");
 
-    private DatabaseReference mDatabaseReference;
-    private FirebaseDatabase mFirevaseDatabase;
+//    private DatabaseReference mDatabaseReference;
+//    private FirebaseDatabase mFirevaseDatabase;
 
 
     public Login() {
@@ -60,36 +60,36 @@ public class Login extends JFrame{
 
 
 
-                mFirevaseDatabase = FirebaseDatabase.getInstance(FirebaseTool.getFirebaseApp(), "https://space-invander-member-list-default-rtdb.firebaseio.com/");
-                mDatabaseReference = mFirevaseDatabase.getReference().child("user");
+//                mFirevaseDatabase = FirebaseDatabase.getInstance(FirebaseTool.getFirebaseApp(), "https://space-invander-member-list-default-rtdb.firebaseio.com/");
+//                mDatabaseReference = mFirevaseDatabase.getReference().child("user");
+                FirebaseDatabase userdatabase =  FirebaseDatabase.getInstance(FirebaseTool.getFirebaseApp(), "https://space-invander-member-list-default-rtdb.firebaseio.com/");
+                DatabaseReference ref = userdatabase.getReference();
+                DatabaseReference usersRef = ref.child(id);
 
-                mDatabaseReference.orderByChild("id").equalTo(id).addListenerForSingleValueEvent(new ValueEventListener(){
+                usersRef.child("name, pw").addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+//                mDatabaseReference.orderByChild("id").equalTo(id).addListenerForSingleValueEvent(new ValueEventListener(){
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
 
-                        System.out.println(snapshot);
-                        System.out.println(snapshot.exists());
-                        System.out.println(snapshot.getChildren());
-
                         if (snapshot.exists()) {
-                            for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-                                if(childSnapshot.getValue(String.class).equals("pw")){
-                                String savedPassword = snapshot.child("user").child("pw").getValue(String.class);
-
-                                if (savedPassword.equals(pw)) {
-                                    // 로그인 성공 처리
-                                    JOptionPane.showMessageDialog(null, "로그인 성공");
-                                } else {
-                                    // 비밀번호가 일치하지 않음
-                                    JOptionPane.showMessageDialog(null, "비밀번호가 일치하지 않습니다.");
-                                }
-                                break;
-                                }
+                            String storedPassword = null;
+                            for(DataSnapshot postSnapshot : snapshot.getChildren()){
+                                storedPassword = postSnapshot.getValue(String.class);
                             }
 
+                             if (pw.equals(storedPassword)) {
+                                // 비밀번호가 일치하는 경우, 로그인 성공 처리를 합니다.
+                                JOptionPane.showMessageDialog(null, "로그인 성공 !", "아이디나 비번을 입력!", JOptionPane.DEFAULT_OPTION);
+                            } else {
+                                // 비밀번호가 일치하지 않는 경우, 로그인 실패 처리를 합니다.
+                                JOptionPane.showMessageDialog(null, "비밀번호가 일치하지 않습니다.", "아이디나 비번을 입력!", JOptionPane.DEFAULT_OPTION);
+                            }
                         } else {
-                            // 사용자 ID가 일치하는 데이터가 없음
-                            JOptionPane.showMessageDialog(null, "존재하지 않는 사용자입니다.");
+                            // 입력된 이메일을 키로 하는 데이터가 존재하지 않는 경우, 로그인 실패 처리를 합니다.
+                            JOptionPane.showMessageDialog(null, "등록되지 않은 회원 정보입니다.", "아이디나 비번을 입력!", JOptionPane.DEFAULT_OPTION);
                         }
                     }
 
