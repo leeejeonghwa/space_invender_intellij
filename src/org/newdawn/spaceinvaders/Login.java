@@ -60,33 +60,6 @@ public class Login extends JFrame{
 
 
 
-
-//                mFirevaseDatabase.addValueEventListener(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(DataSnapshot snapshot) {
-//                        for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-//                            String id = childSnapshot.child("id").getValue(String.class);
-//                            String password = childSnapshot.child("password").getValue(String.class);
-//
-//                            // 사용자가 입력한 아이디와 비밀번호와 일치하면 로그인 성공 처리
-//                            if (id.equals(id) && password.equals(pw)) {
-//                                JOptionPane.showMessageDialog(null, "로그인 성공");
-//                                return;
-//                            }
-//                        }
-//
-//                        // 사용자 ID가 일치하는 데이터가 없으면 로그인 실패 처리
-//                        JOptionPane.showMessageDialog(null, "로그인 실패");
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(DatabaseError error) {
-//                        // 데이터베이스 오류 처리
-//                        JOptionPane.showMessageDialog(null, "데이터베이스 오류가 발생하였습니다.");
-//                    }
-//                });
-
-
                 mFirevaseDatabase = FirebaseDatabase.getInstance(FirebaseTool.getFirebaseApp(), "https://space-invander-member-list-default-rtdb.firebaseio.com/");
                 mDatabaseReference = mFirevaseDatabase.getReference().child("user");
 

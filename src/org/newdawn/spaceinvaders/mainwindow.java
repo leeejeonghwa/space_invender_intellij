@@ -8,6 +8,8 @@ public class mainwindow extends JFrame {
     private JPanel panel;
 
     public mainwindow() {
+
+
         // 메인 윈도우 설정
         setTitle("SPACE INVANDERS");
 
@@ -18,10 +20,6 @@ public class mainwindow extends JFrame {
         this.setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-//        setPreferredSize(new Dimension(800, 600));
-//        this.setLocationRelativeTo(null);
-//
-//        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // 패널 생성 및 시작 버튼 추가
         createPanel();
 
@@ -48,28 +46,35 @@ public class mainwindow extends JFrame {
         panel.setPreferredSize(new Dimension(800, 600));
 
         // 시작 버튼 생성
+
+        ImageIcon start = new ImageIcon();
+        ImageIcon rule = new ImageIcon();
+        ImageIcon level1 = new ImageIcon();
+        ImageIcon level2 = new ImageIcon();
+        ImageIcon level3 = new ImageIcon();
+        ImageIcon level4 = new ImageIcon();
+
+
         JButton startButton = new JButton("시작");
         startButton.setBounds(350, 250, 100, 50);
         startButton.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 // 버튼 및 레이아웃 관련 처리
                 startButton.setVisible(false);
-                Game g = new Game();
                 setLayout(null);
 
-
+                // 게임 루프를 실행하는 스레드 생성
+                Thread gameThread = new Thread(new Runnable() {
+                    public void run() {
+                        Game g = new Game();
+                        g.gameLoop();
+                    }
+                });
+                gameThread.start();
             }
+
         });
 
-
-//        // 시작 버튼 리스너 등록
-//        startButton.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent e) {
-//                // 게임 루프 시작
-//                Game g = new Game();
-//                g.gameLoop();
-//            }
-//        });
 
         // 패널에 시작 버튼 추가
         panel.add(startButton);
@@ -82,9 +87,9 @@ public class mainwindow extends JFrame {
     public static void main(String[] args) {
 
         mainwindow mainWindow = new mainwindow(); // 메인 윈도우 객체 생성
-        new Login();
-
-        FirebaseTool firebaseTool = new FirebaseTool();
+//        new Login();
+//
+//        FirebaseTool firebaseTool = new FirebaseTool();
 
     }
 }
