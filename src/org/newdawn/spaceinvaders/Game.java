@@ -1,9 +1,6 @@
 package org.newdawn.spaceinvaders;
 
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -96,6 +93,12 @@ public class Game extends Canvas
 		// get hold the content of the frame and set up the resolution of the game //프레임 내용 가져오고 해상도 설정
 		JPanel panel = (JPanel) container.getContentPane();
 		panel.setPreferredSize(new Dimension(800,600));
+		// 화면의 중앙 위치를 계산하여 게임 창을 중앙에 위치시킴
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int centerX = (int) ((screenSize.getWidth() - container.getWidth()) / 2);
+		int centerY = (int) ((screenSize.getHeight() - container.getHeight()) / 2);
+		container.setLocation(centerX, centerY);
+
 		panel.setLayout(null);
 
 		// setup our canvas size and put it into the content of the frame
