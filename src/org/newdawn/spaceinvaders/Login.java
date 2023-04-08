@@ -6,7 +6,6 @@ import javax.swing.*;
 
 import com.google.firebase.database.*;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.internal.NonNull;
 
 public class Login extends JFrame{
     private JPanel loginPanel = new JPanel(new GridLayout(4,4));
@@ -17,10 +16,13 @@ public class Login extends JFrame{
     private JButton loginBtn = new JButton("로그인");
     private JButton memberbtn = new JButton("회원가입");
 
-    private DatabaseReference databaseReference;
+    private DatabaseReference mDatabaseReference;
+    private FirebaseDatabase mFirevaseDatabase;
+
 
     public Login() {
         super("로그인 창!");
+
 
         this.setContentPane(loginPanel);
         loginPanel.add(idLabel);
@@ -42,6 +44,8 @@ public class Login extends JFrame{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
+
+
         //로그인 버튼을 눌렀을때
         loginBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -54,19 +58,50 @@ public class Login extends JFrame{
                     return;
                 }
 
-                FirebaseDatabase database = FirebaseDatabase.getInstance(FirebaseTool.getFirebaseApp(), "https://space-invander-member-list-default-rtdb.firebaseio.com/");
-                databaseReference = database.getReference("user");
 
-//                database = FirebaseDatabase.getInstance("https://space-invander-member-list-default-rtdb.firebaseio.com/").getReference("user");
-                databaseReference.orderByChild("id").equalTo(id).addListenerForSingleValueEvent(new ValueEventListener() {
+
+
+//                mFirevaseDatabase.addValueEventListener(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(DataSnapshot snapshot) {
+//                        for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+//                            String id = childSnapshot.child("id").getValue(String.class);
+//                            String password = childSnapshot.child("password").getValue(String.class);
+//
+//                            // 사용자가 입력한 아이디와 비밀번호와 일치하면 로그인 성공 처리
+//                            if (id.equals(id) && password.equals(pw)) {
+//                                JOptionPane.showMessageDialog(null, "로그인 성공");
+//                                return;
+//                            }
+//                        }
+//
+//                        // 사용자 ID가 일치하는 데이터가 없으면 로그인 실패 처리
+//                        JOptionPane.showMessageDialog(null, "로그인 실패");
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(DatabaseError error) {
+//                        // 데이터베이스 오류 처리
+//                        JOptionPane.showMessageDialog(null, "데이터베이스 오류가 발생하였습니다.");
+//                    }
+//                });
+
+
+                mFirevaseDatabase = FirebaseDatabase.getInstance(FirebaseTool.getFirebaseApp(), "https://space-invander-member-list-default-rtdb.firebaseio.com/");
+                mDatabaseReference = mFirevaseDatabase.getReference().child("user");
+
+                mDatabaseReference.orderByChild("id").equalTo(id).addListenerForSingleValueEvent(new ValueEventListener(){
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
 
                         System.out.println(snapshot);
+                        System.out.println(snapshot.exists());
+                        System.out.println(snapshot.getChildren());
 
                         if (snapshot.exists()) {
-
-                                String savedPassword = snapshot.child("password").getValue(String.class);
+                            for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                                if(childSnapshot.getValue(String.class).equals("pw")){
+                                String savedPassword = snapshot.child("user").child("pw").getValue(String.class);
 
                                 if (savedPassword.equals(pw)) {
                                     // 로그인 성공 처리
@@ -75,6 +110,9 @@ public class Login extends JFrame{
                                     // 비밀번호가 일치하지 않음
                                     JOptionPane.showMessageDialog(null, "비밀번호가 일치하지 않습니다.");
                                 }
+                                break;
+                                }
+                            }
 
                         } else {
                             // 사용자 ID가 일치하는 데이터가 없음
