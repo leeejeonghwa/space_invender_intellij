@@ -7,8 +7,6 @@ import java.awt.event.MouseEvent;
 public class mainwindow extends JFrame {
     private JPanel panel;
 
-    private JFrame container;
-
     public mainwindow() {
 
 
@@ -48,6 +46,15 @@ public class mainwindow extends JFrame {
         panel.setPreferredSize(new Dimension(800, 600));
 
         // 시작 버튼 생성
+
+        ImageIcon start = new ImageIcon();
+        ImageIcon rule = new ImageIcon();
+        ImageIcon level1 = new ImageIcon();
+        ImageIcon level2 = new ImageIcon();
+        ImageIcon level3 = new ImageIcon();
+        ImageIcon level4 = new ImageIcon();
+
+
         JButton startButton = new JButton("시작");
         startButton.setBounds(350, 250, 100, 50);
         startButton.addMouseListener(new MouseAdapter() {
