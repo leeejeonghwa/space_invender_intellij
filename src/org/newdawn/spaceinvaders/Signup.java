@@ -163,3 +163,4 @@ public class Signup extends JDialog {
         return membershipProgress;
     }
 }
+

@@ -17,7 +17,7 @@ public class FirebaseTool {
     private static FirebaseApp firebaseApp;
 
     //새로 추가 한것
-    private static DatabaseReference dbRef;
+ //   private static DatabaseReference dbRef;
 
     public FirebaseTool() {
         initialize();
@@ -38,7 +38,7 @@ public class FirebaseTool {
             }
 
             //새로 추가 한거
-            dbRef = FirebaseDatabase.getInstance().getReference("https://space-invander-member-list-default-rtdb.firebaseio.com/");
+          //  dbRef = FirebaseDatabase.getInstance().getReference("https://space-invander-member-list-default-rtdb.firebaseio.com/");
 
 
         } catch (IOException e) {
@@ -47,9 +47,9 @@ public class FirebaseTool {
     }
 
     //새로 추가한거
-    public static DatabaseReference getDbRef() {
-        return dbRef;
-    }
+//    public static DatabaseReference getDbRef() {
+//       return dbRef;
+ //   }
 
     public static FirebaseApp getFirebaseApp() {
         return firebaseApp;
