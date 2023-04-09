@@ -34,13 +34,13 @@ public class Item {
         else{ showUnableMessage(); }
     }
 
-    public void equipShiled(){
-        if (this.itemList[3] == true){ this.ship.enableShield(); }
+    public void enableShield(){
+        if (this.itemList[3] == true){ this.game.enableShield(); }
         else{ showUnableMessage(); }
     }
 
     public void increaseFireNum(){
-        if (this.itemList[4] == true){}
+        if (this.itemList[4] == true){ this.game.increaseFireNum(); }
         else{ showUnableMessage(); }
     }
 

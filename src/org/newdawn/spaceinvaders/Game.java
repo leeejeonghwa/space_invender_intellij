@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 
 import org.newdawn.spaceinvaders.entity.AlienEntity;
 import org.newdawn.spaceinvaders.entity.Entity;
+import org.newdawn.spaceinvaders.entity.ShieldEntity;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
 import org.newdawn.spaceinvaders.entity.ShotEntity;
 
@@ -52,6 +53,8 @@ public class Game extends Canvas
 	private ArrayList removeList = new ArrayList();
 	/** The entity representing the player */
 	private Entity ship;
+	/* The entity representing the shield */
+	private Entity shield;
 	/** The speed at which the player's ship should move (pixels/sec) */
 	private double moveSpeed = 300; //우주선 속도
 	/** The time at which last fired a shot */
@@ -60,7 +63,11 @@ public class Game extends Canvas
 	private long firingInterval = 200; //총알 사이의 간격
 	/** The number of aliens left on the screen */
 	private int alienCount;
-	
+	/* Available to activate increasing fire number */
+	private Boolean fireNum = false;
+	/* Available to activate shield */
+	private Boolean enableShield = false;
+
 	/** The message to display which waiting for a key press */
 	private String message = ""; //중앙 메시지
 	/** True if we're holding up game play until a key has been pressed */
@@ -179,6 +186,11 @@ public class Game extends Canvas
 		// create the player ship and place it roughly in the center of the screen
 		ship = new ShipEntity(this,"sprites/ship.gif",370,550);
 		entities.add(ship);
+
+		if (this.enableShield == true){
+			shield = new ShieldEntity(this, "sprites/shield.gif", 362, 538);
+			entities.add(shield);
+		}
 		
 		// create a block of aliens (5 rows, by 12 aliens, spaced evenly)
 		alienCount = 0;
@@ -214,7 +226,6 @@ public class Game extends Canvas
 	 * Notification that the player has died. 
 	 */
 	public void notifyDeath() {
-
 		message = "Oh no! They got you, try again?";
 		waitingForKeyPress = true;
 	}
@@ -224,11 +235,8 @@ public class Game extends Canvas
 	 * are dead.
 	 */
 	public void notifyWin() {
-
 		message = "Well done! You Win!";
 		waitingForKeyPress = true;
-
-
 	}
 	
 	/**
@@ -267,8 +275,18 @@ public class Game extends Canvas
 		
 		// if we waited long enough, create the shot entity, and record the time.
 		lastFire = System.currentTimeMillis();
-		ShotEntity shot = new ShotEntity(this,"sprites/shot.gif",ship.getX()+10,ship.getY()-30);
-		entities.add(shot);
+		if (fireNum == false){
+			ShotEntity shot = new ShotEntity(this,"sprites/shot.gif",ship.getX()+10,ship.getY()-30);
+			entities.add(shot);
+		}
+		else{
+			ShotEntity leftShot = new ShotEntity(this,"sprites/shot.gif",ship.getX()-40,ship.getY()-30);
+			ShotEntity middleShot = new ShotEntity(this,"sprites/shot.gif",ship.getX()+10,ship.getY()-30);
+			ShotEntity rightShot = new ShotEntity(this,"sprites/shot.gif",ship.getX()+60,ship.getY()-30);
+			entities.add(leftShot);
+			entities.add(middleShot);
+			entities.add(rightShot);
+		}
 
 		Player shotplayer = new Player();
 		new Thread(() -> {
@@ -284,6 +302,15 @@ public class Game extends Canvas
 	//implement setter of firingInterval for Item.increaseFireSpeed
 	public void increaseFireSpeed(){
 		this.firingInterval = 150;
+	}
+	
+	//implement setter of fireNum for Item.
+	public void increaseFireNum(){
+		this.fireNum = true;
+	}
+
+	public void enableShield(){
+		this.enableShield = true;
 	}
 	
 	/**
@@ -413,6 +440,24 @@ public class Game extends Canvas
 				ship.setVerticalMovement(-moveSpeed);
 			} else if ((downPressed) && (!upPressed)) {
 				ship.setVerticalMovement(moveSpeed);
+			}
+
+			//shield will move with ship
+			if (enableShield == true){
+				shield.setHorizontalMovement(0);
+				shield.setVerticalMovement(0);
+				
+				if ((leftPressed) && (!rightPressed)) {
+					shield.setHorizontalMovement(-moveSpeed);
+				} else if ((rightPressed) && (!leftPressed)) {
+					shield.setHorizontalMovement(moveSpeed);
+				}
+	
+				if ((upPressed) && (!downPressed)) {
+					shield.setVerticalMovement(-moveSpeed);
+				} else if ((downPressed) && (!upPressed)) {
+					shield.setVerticalMovement(moveSpeed);
+				}
 			}
 			
 			// if we're pressing fire, attempt to fire
