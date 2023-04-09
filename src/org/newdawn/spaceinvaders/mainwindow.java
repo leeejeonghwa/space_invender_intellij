@@ -6,10 +6,15 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 public class mainwindow extends JFrame {
     private JPanel panel;
+    JButton startbtn;
+    JButton rulebtn;
+    JButton level1btn;
+    JButton level2btn;
+    JButton level3btn;
+    JButton level4btn;
+    JButton level5btn;
 
     public mainwindow() {
-
-
         // 메인 윈도우 설정
         setTitle("SPACE INVANDERS");
 
@@ -46,21 +51,96 @@ public class mainwindow extends JFrame {
         panel.setPreferredSize(new Dimension(800, 600));
 
         // 시작 버튼 생성
+        ImageIcon start = new ImageIcon("src/image/start.png");
+        Image startimg = start.getImage();
+        Image startimagchange = startimg.getScaledInstance(100,50, Image.SCALE_SMOOTH);
+        ImageIcon startchange = new ImageIcon(startimagchange);
+        startbtn = new JButton(startchange);
+        startbtn.setFocusPainted(false);
+        startbtn.setBorderPainted(false);
+        startbtn.setContentAreaFilled(false);
+        startbtn.setSize(100, 50);
+        startbtn.setBounds(270, 200, 100,50);
 
-        ImageIcon start = new ImageIcon();
-        ImageIcon rule = new ImageIcon();
-        ImageIcon level1 = new ImageIcon();
-        ImageIcon level2 = new ImageIcon();
-        ImageIcon level3 = new ImageIcon();
-        ImageIcon level4 = new ImageIcon();
+        //설명 버튼 생성
+        ImageIcon rule = new ImageIcon("src/image/rule.png");
+        Image ruleimg = rule.getImage();
+        Image ruleimagchange = ruleimg.getScaledInstance(100,50, Image.SCALE_SMOOTH);
+        ImageIcon rulechange = new ImageIcon(ruleimagchange);
+        rulebtn = new JButton(rulechange);
+        rulebtn.setFocusPainted(false);
+        rulebtn.setBorderPainted(false);
+        rulebtn.setContentAreaFilled(false);
+        rulebtn.setSize(100, 50);
+        rulebtn.setBounds(400, 200, 100,50);
+
+        //level1 버튼 생성
+        ImageIcon level1 = new ImageIcon("src/image/level1.png");
+        Image level1img = level1.getImage();
+        Image level1imagchange = level1img.getScaledInstance(100,50, Image.SCALE_SMOOTH);
+        ImageIcon level1change = new ImageIcon(level1imagchange);
+        level1btn = new JButton(level1change);
+        level1btn.setFocusPainted(false);
+        level1btn.setBorderPainted(false);
+        level1btn.setContentAreaFilled(false);
+        level1btn.setSize(100, 50);
+        level1btn.setBounds(120, 400, 100,50);
+
+        //level2 버튼 생성
+        ImageIcon level2 = new ImageIcon("src/image/level2.png");
+        Image level2img = level2.getImage();
+        Image level2imagchange = level2img.getScaledInstance(100,50, Image.SCALE_SMOOTH);
+        ImageIcon level2change = new ImageIcon(level2imagchange);
+        level2btn = new JButton(level2change);
+        level2btn.setFocusPainted(false);
+        level2btn.setBorderPainted(false);
+        level2btn.setContentAreaFilled(false);
+        level2btn.setSize(100, 50);
+        level2btn.setBounds(230, 400, 100,50);
+
+        //level3 버튼 생성
+        ImageIcon level3 = new ImageIcon("src/image/level3.png");
+        Image level3img = level3.getImage();
+        Image level3imagchange = level3img.getScaledInstance(100,50, Image.SCALE_SMOOTH);
+        ImageIcon level3change = new ImageIcon(level3imagchange);
+        level3btn = new JButton(level3change);
+        level3btn.setFocusPainted(false);
+        level3btn.setBorderPainted(false);
+        level3btn.setContentAreaFilled(false);
+        level3btn.setSize(100, 50);
+        level3btn.setBounds(340, 400, 100,50);
+
+        //level4 버튼 생성
+        ImageIcon level4 = new ImageIcon("src/image/level4.png");
+        Image level4img = level4.getImage();
+        Image level4imagchange = level4img.getScaledInstance(100,50, Image.SCALE_SMOOTH);
+        ImageIcon level4change = new ImageIcon(level4imagchange);
+        level4btn = new JButton(level4change);
+        level4btn.setFocusPainted(false);
+        level4btn.setBorderPainted(false);
+        level4btn.setContentAreaFilled(false);
+        level4btn.setSize(100, 50);
+        level4btn.setBounds(460, 400, 100,50);
+
+        //level5 버튼 생성
+        ImageIcon level5 = new ImageIcon("src/image/level5.png");
+        Image level5img = level5.getImage();
+        Image level5imagchange = level5img.getScaledInstance(100,50, Image.SCALE_SMOOTH);
+        ImageIcon level5change = new ImageIcon(level5imagchange);
+        level5btn = new JButton(level5change);
+        level5btn.setFocusPainted(false);
+        level5btn.setBorderPainted(false);
+        level5btn.setContentAreaFilled(false);
+        level5btn.setSize(100, 50);
+        level5btn.setBounds(570, 400, 100,50);
 
 
-        JButton startButton = new JButton("시작");
-        startButton.setBounds(350, 250, 100, 50);
-        startButton.addMouseListener(new MouseAdapter() {
+
+
+        startbtn.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 // 버튼 및 레이아웃 관련 처리
-                startButton.setVisible(false);
+                startbtn.setVisible(true);
                 setLayout(null);
 
                 // 게임 루프를 실행하는 스레드 생성
@@ -77,8 +157,14 @@ public class mainwindow extends JFrame {
 
 
         // 패널에 시작 버튼 추가
-        panel.add(startButton);
-    }
+        panel.add(startbtn);
+        panel.add(rulebtn);
+        panel.add(level1btn);
+        panel.add(level2btn);
+        panel.add(level3btn);
+        panel.add(level4btn);
+        panel.add(level5btn);
+   }
 
 //    public JPanel getPanel() {
 //        return panel;
