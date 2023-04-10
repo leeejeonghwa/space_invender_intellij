@@ -1,4 +1,5 @@
 package org.newdawn.spaceinvaders;
+
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -52,6 +53,7 @@ public class Player implements LineListener {
             bgmclip.setFramePosition(0);
         }
     }
+
     public void playSuccessSound(String audioFilePath) {
         try {
             File audioFile = new File(audioFilePath);
@@ -74,12 +76,14 @@ public class Player implements LineListener {
             System.err.println(ex.getMessage());
         }
     }
+
     public void stopSuccessSound() {
         if (successclip != null && successclip.isRunning()) {
             successclip.stop();
             successclip.removeLineListener(this);
         }
     }
+
     public void playShotSound(String audioFilePath) {
         try {
             File audioFile = new File(audioFilePath);

@@ -5,22 +5,35 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 
 //새로 추가 한것
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.UserRecord;
 import com.google.firebase.database.*;
 
+import javax.swing.*;
 import java.io.FileInputStream;
 import java.io.IOException;
 
 public class FirebaseTool {
     private static final String DOMAIN_NAME = "space-invander-member-list.firebaseapp.com";
     private static final String KEY_LOCATION = "\\resource\\key.json";
+    private static FirebaseTool firebaseTool = null;
+    private FirebaseApp firebaseApp;
+    private DatabaseReference databaseReference;
 
-    private static FirebaseApp firebaseApp;
+    private GlobalStorage globalStorage;
 
-    //새로 추가 한것
- //   private static DatabaseReference dbRef;
+    public static FirebaseTool getInstance() {
+        if (firebaseTool == null) {
+            firebaseTool = new FirebaseTool();
+        }
 
-    public FirebaseTool() {
+        return firebaseTool;
+    }
+
+    private FirebaseTool() {
         initialize();
+        globalStorage = GlobalStorage.getInstance();
     }
 
     public void initialize() {
@@ -31,28 +44,112 @@ public class FirebaseTool {
                     .setDatabaseUrl("https://space-invander-member-list-default-rtdb.firebaseio.com/")
                     .build();
 
-             firebaseApp = FirebaseApp.initializeApp(options, "space-invander-member-list");
-//            firebaseApp = FirebaseApp.initializeApp(options);
+            firebaseApp = FirebaseApp.initializeApp(options, "space-invander-member-list");
 
             if (firebaseApp != null) {
                 System.out.println(firebaseApp.getName());
+
+                databaseReference = FirebaseDatabase.getInstance(firebaseApp).getReference();
             }
-
-            //새로 추가 한거
-          //  dbRef = FirebaseDatabase.getInstance().getReference("https://space-invander-member-list-default-rtdb.firebaseio.com/");
-
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    //새로 추가한거
-//    public static DatabaseReference getDbRef() {
-//       return dbRef;
- //   }
+    public boolean Login(String id, String password) {
+        try {
+            FirebaseAuth firebaseAuth = FirebaseAuth.getInstance(firebaseApp);
 
-    public static FirebaseApp getFirebaseApp() {
-        return firebaseApp;
+            UserRecord userRecord = firebaseAuth.getUserByEmail(id);
+
+            if (userRecord != null) {
+                if (userRecord.getEmail().equals(id)) {
+                    globalStorage.setUserID(id);
+                    GetUserBestScore(id);
+                    JOptionPane.showMessageDialog(null, "로그인이 정상적으로 처리되었습니다.");
+                    return true;
+                }
+            }
+
+        } catch (NullPointerException e) {
+            //e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "로그인에 문제가 생겼습니다.");
+            return false;
+        } catch (FirebaseAuthException e) {
+            //throw new RuntimeException(e);
+            JOptionPane.showMessageDialog(null, "로그인에 문제가 생겼습니다.");
+            return false;
+        }
+
+        return false;
     }
+
+    public void Signup(String id, String password) {
+        try {
+            FirebaseAuth firebaseAuth = FirebaseAuth.getInstance(firebaseApp);
+            firebaseAuth.createUser(new UserRecord.CreateRequest()
+                    .setEmail(id)
+                    .setEmailVerified(false)
+                    .setPassword(password)
+                    .setDisplayName(id));
+
+            JOptionPane.showMessageDialog(null, "회원가입에 정상적으로 처리되었습니다.");
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "회원가입에 문제가 생겼습니다.");
+        } catch (FirebaseAuthException e) {
+            JOptionPane.showMessageDialog(null, "회원가입에 문제가 생겼습니다.");
+            throw new RuntimeException(e);
+        }
+    }
+
+    public String GetUserBestScore(String id) {
+        String userBestScore = "";
+
+        try {
+            DatabaseReference userScoreDatabase = FirebaseDatabase.getInstance(firebaseApp).getReference();
+
+            userScoreDatabase.child("user").child(id.split("@")[0]).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String score = dataSnapshot.getValue(String.class);
+                    System.out.println("Data Receivced " + score);
+                    globalStorage.setUserBestScore(score);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    System.out.println("Data Error " + databaseError);
+
+                }
+            });
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+        return userBestScore;
+    }
+
+    public void SetUserBestScore(String id, String bestscore) {
+        try {
+            DatabaseReference userScoreDatabase = FirebaseDatabase.getInstance(firebaseApp).getReference();
+
+            userScoreDatabase.child("user").child(id.split("@")[0]).setValue(bestscore, new DatabaseReference.CompletionListener() {
+                @Override
+                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+
+                }
+            });
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

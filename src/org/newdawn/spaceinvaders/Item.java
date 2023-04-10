@@ -6,45 +6,59 @@ import org.newdawn.spaceinvaders.Game;
 import java.awt.Graphics;
 
 public class Item {
-    private Boolean[] itemList = new Boolean[] {false, false, false, false, false};
+    private Boolean[] itemList = new Boolean[]{false, false, false, false, false};
     private Game game;
     private ShipEntity ship;
 
-    public Item(Game g, ShipEntity s){
+    public Item(Game g, ShipEntity s) {
         this.game = g;
         this.ship = s;
     }
 
-    public void clearStage(int stage){
+    public void clearStage(int stage) {
         this.itemList[stage] = true;
     }
 
-    public void increaseFireSpeed(){
-        if(this.itemList[0] == true){ this.game.increaseFireSpeed(); }
-        else{ showUnableMessage(); }
+    public void increaseFireSpeed() {
+        if (this.itemList[0] == true) {
+            this.game.increaseFireSpeed();
+        } else {
+            showUnableMessage();
+        }
     }
 
-    public void increaseMaxHealth(){
-        if(this.itemList[1] == true){}
-        else{ showUnableMessage(); }
+    public void increaseMaxHealth() {
+        if (this.itemList[1] == true) {
+        } else {
+            showUnableMessage();
+        }
     }
 
-    public void increaseMoveSpeed(){
-        if (this.itemList[2] == true){ this.game.increaseMoveSpeed(); }
-        else{ showUnableMessage(); }
+    public void increaseMoveSpeed() {
+        if (this.itemList[2] == true) {
+            this.game.increaseMoveSpeed();
+        } else {
+            showUnableMessage();
+        }
     }
 
-    public void enableShield(){
-        if (this.itemList[3] == true){ this.game.enableShield(); }
-        else{ showUnableMessage(); }
+    public void enableShield() {
+        if (this.itemList[3] == true) {
+            this.game.enableShield();
+        } else {
+            showUnableMessage();
+        }
     }
 
-    public void increaseFireNum(){
-        if (this.itemList[4] == true){ this.game.increaseFireNum(); }
-        else{ showUnableMessage(); }
+    public void increaseFireNum() {
+        if (this.itemList[4] == true) {
+            this.game.increaseFireNum();
+        } else {
+            showUnableMessage();
+        }
     }
 
-    private void showUnableMessage(){
-        /*Need to implement drawString("You didn't clear stage yet.")*/ 
+    private void showUnableMessage() {
+        /*Need to implement drawString("You didn't clear stage yet.")*/
     }
 }
