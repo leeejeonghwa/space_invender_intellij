@@ -4,14 +4,15 @@ import org.newdawn.spaceinvaders.entity.ShipEntity;
 import org.newdawn.spaceinvaders.Game;
 
 import java.awt.Graphics;
-import java.util.ArrayList;
 
 public class Item {
     private Boolean[] itemList = new Boolean[] {false, false, false, false, false};
     private Game game;
+    private ShipEntity ship;
 
-    public Item(Game g){
+    public Item(Game g, ShipEntity s){
         this.game = g;
+        this.ship = s;
     }
 
     public void clearStage(int stage){
@@ -33,13 +34,13 @@ public class Item {
         else{ showUnableMessage(); }
     }
 
-    public void equipShiled(){
-        if (this.itemList[3] == true){}
+    public void enableShield(){
+        if (this.itemList[3] == true){ this.game.enableShield(); }
         else{ showUnableMessage(); }
     }
 
     public void increaseFireNum(){
-        if (this.itemList[4] == true){}
+        if (this.itemList[4] == true){ this.game.increaseFireNum(); }
         else{ showUnableMessage(); }
     }
 

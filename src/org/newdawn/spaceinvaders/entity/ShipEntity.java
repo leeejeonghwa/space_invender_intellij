@@ -10,7 +10,6 @@ import org.newdawn.spaceinvaders.Game;
 public class ShipEntity extends Entity {
 	/** The game in which the ship exists */
 	private Game game;
-	
 	/**
 	 * Create a new entity to represent the players ship
 	 *  
@@ -53,7 +52,6 @@ public class ShipEntity extends Entity {
 		
 		super.move(delta);
 	}
-	
 	/**
 	 * Notification that the player's ship has collided with something
 	 * 
@@ -62,7 +60,7 @@ public class ShipEntity extends Entity {
 	public void collidedWith(Entity other) {
 		// if its an alien, notify the game that the player
 		// is dead
-		if (other instanceof AlienEntity) {
+		if (other instanceof AlienEntity){
 			game.notifyDeath();
 		}
 	}
