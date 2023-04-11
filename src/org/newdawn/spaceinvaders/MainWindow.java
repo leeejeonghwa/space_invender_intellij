@@ -12,7 +12,7 @@ public class MainWindow extends JFrame {
     private GlobalStorage globalStorage;
 
     private JPanel panel;
-    private JButton startbtn;
+    private JButton shopbtn;
     private JButton rulebtn;
     private JButton level1btn;
     private JButton level2btn;
@@ -46,6 +46,51 @@ public class MainWindow extends JFrame {
 
     }
 
+    private JButton drawButton(JButton button, String ref, int width, int height, int x, int y){
+        ImageIcon buttonIcon = new ImageIcon(ref);
+        Image buttonimg = buttonIcon.getImage();
+        Image buttonimgchange = buttonimg.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        ImageIcon buttonchange = new ImageIcon(buttonimgchange);
+        button = new JButton(buttonchange);
+        button.setFocusPainted(false);
+        button.setBorderPainted(false);
+        button.setContentAreaFilled(false);
+        button.setSize(width, height);
+        button.setBounds(x, y, width, height);
+
+        return button;
+    }
+
+    public void btnMouseListener(JButton button){
+        button.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+                if (button.getName() == "shopbtn"){
+                    Thread gameThread = new Thread(new Runnable(){
+                        
+                    };)
+                }
+                else if (button.getName() == "rulebtn"){
+
+                }
+                else{
+                    // 상점이 아닌 버튼 및 레이아웃 관련 처리
+                    button.setVisible(true);
+                    setLayout(null);
+                    firebaseTool.GetUserBestScore(globalStorage.getUserID());
+                    JOptionPane.showMessageDialog(null, globalStorage.getUserID() + " 님 최고점수 : " + globalStorage.getUserBestScore());
+                    // 게임 루프를 실행하는 스레드 생성
+                    Thread gameThread = new Thread(new Runnable() {
+                        public void run() {
+                            Game g = new Game();
+                            g.gameLoop();
+                        }
+                    });
+                    gameThread.start();
+                }
+            }
+        });
+    }
+
     private void createPanel() {
         // 패널 생성
         panel = new JPanel() {
@@ -61,115 +106,29 @@ public class MainWindow extends JFrame {
         panel.setPreferredSize(new Dimension(800, 600));
 
         // 시작 버튼 생성
-        ImageIcon start = new ImageIcon("src/image/start.png");
-        Image startimg = start.getImage();
-        Image startimagchange = startimg.getScaledInstance(100, 50, Image.SCALE_SMOOTH);
-        ImageIcon startchange = new ImageIcon(startimagchange);
-        startbtn = new JButton(startchange);
-        startbtn.setFocusPainted(false);
-        startbtn.setBorderPainted(false);
-        startbtn.setContentAreaFilled(false);
-        startbtn.setSize(100, 50);
-        startbtn.setBounds(270, 200, 100, 50);
-
+        shopbtn = drawButton(shopbtn, "src/image/start.png", 100, 50, 270, 200);
+        this.btnMouseListener(shopbtn);
         //설명 버튼 생성
-        ImageIcon rule = new ImageIcon("src/image/rule.png");
-        Image ruleimg = rule.getImage();
-        Image ruleimagchange = ruleimg.getScaledInstance(100, 50, Image.SCALE_SMOOTH);
-        ImageIcon rulechange = new ImageIcon(ruleimagchange);
-        rulebtn = new JButton(rulechange);
-        rulebtn.setFocusPainted(false);
-        rulebtn.setBorderPainted(false);
-        rulebtn.setContentAreaFilled(false);
-        rulebtn.setSize(100, 50);
-        rulebtn.setBounds(400, 200, 100, 50);
-
+        rulebtn = drawButton(rulebtn, "src/image/rule.png", 100, 50, 400, 200);
+        this.btnMouseListener(rulebtn);
         //level1 버튼 생성
-        ImageIcon level1 = new ImageIcon("src/image/level1.png");
-        Image level1img = level1.getImage();
-        Image level1imagchange = level1img.getScaledInstance(100, 50, Image.SCALE_SMOOTH);
-        ImageIcon level1change = new ImageIcon(level1imagchange);
-        level1btn = new JButton(level1change);
-        level1btn.setFocusPainted(false);
-        level1btn.setBorderPainted(false);
-        level1btn.setContentAreaFilled(false);
-        level1btn.setSize(100, 50);
-        level1btn.setBounds(120, 400, 100, 50);
-
+        level1btn = drawButton(level1btn, "src/image/level1.png", 100, 50, 120, 400);
+        this.btnMouseListener(level1btn);
         //level2 버튼 생성
-        ImageIcon level2 = new ImageIcon("src/image/level2.png");
-        Image level2img = level2.getImage();
-        Image level2imagchange = level2img.getScaledInstance(100, 50, Image.SCALE_SMOOTH);
-        ImageIcon level2change = new ImageIcon(level2imagchange);
-        level2btn = new JButton(level2change);
-        level2btn.setFocusPainted(false);
-        level2btn.setBorderPainted(false);
-        level2btn.setContentAreaFilled(false);
-        level2btn.setSize(100, 50);
-        level2btn.setBounds(230, 400, 100, 50);
-
+        level2btn = drawButton(level2btn, "src/image/level2.png", 100, 50, 230, 400);
+        this.btnMouseListener(level2btn);
         //level3 버튼 생성
-        ImageIcon level3 = new ImageIcon("src/image/level3.png");
-        Image level3img = level3.getImage();
-        Image level3imagchange = level3img.getScaledInstance(100, 50, Image.SCALE_SMOOTH);
-        ImageIcon level3change = new ImageIcon(level3imagchange);
-        level3btn = new JButton(level3change);
-        level3btn.setFocusPainted(false);
-        level3btn.setBorderPainted(false);
-        level3btn.setContentAreaFilled(false);
-        level3btn.setSize(100, 50);
-        level3btn.setBounds(340, 400, 100, 50);
-
+        level3btn = drawButton(level3btn, "src/image/level3.png", 100, 50, 340, 400);
+        this.btnMouseListener(level3btn);
         //level4 버튼 생성
-        ImageIcon level4 = new ImageIcon("src/image/level4.png");
-        Image level4img = level4.getImage();
-        Image level4imagchange = level4img.getScaledInstance(100, 50, Image.SCALE_SMOOTH);
-        ImageIcon level4change = new ImageIcon(level4imagchange);
-        level4btn = new JButton(level4change);
-        level4btn.setFocusPainted(false);
-        level4btn.setBorderPainted(false);
-        level4btn.setContentAreaFilled(false);
-        level4btn.setSize(100, 50);
-        level4btn.setBounds(460, 400, 100, 50);
-
+        level4btn = drawButton(level4btn, "src/image/level4.png", 100, 50, 450, 400);
+        this.btnMouseListener(level4btn);
         //level5 버튼 생성
-        ImageIcon level5 = new ImageIcon("src/image/level5.png");
-        Image level5img = level5.getImage();
-        Image level5imagchange = level5img.getScaledInstance(100, 50, Image.SCALE_SMOOTH);
-        ImageIcon level5change = new ImageIcon(level5imagchange);
-        level5btn = new JButton(level5change);
-        level5btn.setFocusPainted(false);
-        level5btn.setBorderPainted(false);
-        level5btn.setContentAreaFilled(false);
-        level5btn.setSize(100, 50);
-        level5btn.setBounds(570, 400, 100, 50);
-
-
-        startbtn.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent e) {
-                // 버튼 및 레이아웃 관련 처리
-                startbtn.setVisible(true);
-                setLayout(null);
-
-                firebaseTool.GetUserBestScore(globalStorage.getUserID());
-
-                JOptionPane.showMessageDialog(null, globalStorage.getUserID() + " 님 최고점수 : " + globalStorage.getUserBestScore());
-
-                // 게임 루프를 실행하는 스레드 생성
-                Thread gameThread = new Thread(new Runnable() {
-                    public void run() {
-                        Game g = new Game();
-                        g.gameLoop();
-                    }
-                });
-                gameThread.start();
-            }
-
-        });
-
+        level5btn = drawButton(level5btn, "src/image/level5.png", 100, 50, 560, 400);
+        this.btnMouseListener(level5btn);
 
         // 패널에 시작 버튼 추가
-        panel.add(startbtn);
+        panel.add(shopbtn);
         panel.add(rulebtn);
         panel.add(level1btn);
         panel.add(level2btn);

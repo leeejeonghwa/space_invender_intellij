@@ -6,14 +6,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
-import java.applet.*;
-import java.net.*;
-import java.net.URL;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
+import javax.imageio.ImageIO;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -415,6 +413,17 @@ public class Game extends Canvas {
             g.setColor(Color.WHITE);
             g.drawString("Killed: " + Integer.toString(alienKilled - alienCount), 10, 40);
 
+            BufferedImage heart;
+            try {
+				int heartNum = ((ShipEntity) ship).returnNowHealth();
+				for(int i=0;i<heartNum;i++){
+					heart = ImageIO.read(new File("src/sprites/heart.gif"));
+					g.drawImage(heart,758-(32*i),10,this);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
             bestScore = Integer.toString(alienKilled - alienCount);
 
             // cycle round asking each entity to move itself
@@ -637,20 +646,4 @@ public class Game extends Canvas {
             }
         }
     }
-
-    /**
-     * The entry point into the game. We'll simply create an
-     * instance of class which will start the display and game
-     * loop.
-     *
-     * @param argv The arguments that are passed into our game
-     */
-//	public static void main(String argv[]) {
-//		Game g = new Game();
-//
-//		// Start the main game loop, note: this method will not
-//		// return until the game has finished running. Hence we are
-//		// using the actual main thread to run the game.
-//		g.gameLoop();
-//	}
 }
