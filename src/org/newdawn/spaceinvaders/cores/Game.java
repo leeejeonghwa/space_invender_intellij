@@ -1,4 +1,4 @@
-package org.newdawn.spaceinvaders;
+package org.newdawn.spaceinvaders.cores;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
 
 import javax.swing.*;
 
+import org.newdawn.spaceinvaders.SystemTimer;
 import org.newdawn.spaceinvaders.entity.AlienEntity;
 import org.newdawn.spaceinvaders.entity.Entity;
 import org.newdawn.spaceinvaders.entity.ShieldEntity;

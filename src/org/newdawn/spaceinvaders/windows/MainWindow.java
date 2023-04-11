@@ -1,7 +1,13 @@
-package org.newdawn.spaceinvaders;
+package org.newdawn.spaceinvaders.windows;
 
 import java.awt.*;
 import javax.swing.*;
+
+import org.newdawn.spaceinvaders.cores.FirebaseTool;
+import org.newdawn.spaceinvaders.cores.Game;
+import org.newdawn.spaceinvaders.cores.GlobalStorage;
+import org.newdawn.spaceinvaders.cores.Login;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -77,6 +83,15 @@ public class MainWindow extends JFrame {
                     shopThread.start();
                 }
                 else if (button.getName() == "src/image/rule.png"){
+                    button.setVisible(true);
+                    setLayout(null);
+                    Thread shopThread = new Thread(new Runnable() {
+                        public void run() {
+                            RuleWindow r = new RuleWindow();
+                            r.ruleLoop();
+                        }
+                    });
+                    shopThread.start();
                 }
                 else{
                     // 상점이 아닌 버튼 및 레이아웃 관련 처리

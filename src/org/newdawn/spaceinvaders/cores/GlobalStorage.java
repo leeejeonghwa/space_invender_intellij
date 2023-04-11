@@ -1,4 +1,4 @@
-package org.newdawn.spaceinvaders;
+package org.newdawn.spaceinvaders.cores;
 
 public class GlobalStorage {
     private static GlobalStorage globalStorage = null;

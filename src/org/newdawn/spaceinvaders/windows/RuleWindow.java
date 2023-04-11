@@ -1,4 +1,4 @@
-package org.newdawn.spaceinvaders;
+package org.newdawn.spaceinvaders.windows;
 
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -8,12 +8,12 @@ import java.awt.image.BufferStrategy;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class ShopWindow extends Canvas{
+public class RuleWindow extends Canvas{
     private BufferStrategy strategy;
 
     private JFrame container;
 
-    public ShopWindow(){
+    public RuleWindow(){
         container = new JFrame();
 
         JPanel panel = (JPanel) container.getContentPane();
@@ -46,7 +46,7 @@ public class ShopWindow extends Canvas{
         strategy = getBufferStrategy();
     }
 
-    public void shopLoop(){
+    public void ruleLoop(){
         while(true){
             Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
             g.setColor(Color.black);

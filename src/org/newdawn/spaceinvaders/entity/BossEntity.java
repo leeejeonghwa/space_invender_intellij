@@ -1,6 +1,6 @@
 package org.newdawn.spaceinvaders.entity;
 
-import org.newdawn.spaceinvaders.Game;
+import org.newdawn.spaceinvaders.cores.Game;
 
 public class BossEntity extends Entity{
 
