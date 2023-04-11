@@ -1,10 +1,7 @@
 package org.newdawn.spaceinvaders;
 
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -13,8 +10,7 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import org.newdawn.spaceinvaders.entity.AlienEntity;
 import org.newdawn.spaceinvaders.entity.Entity;
@@ -142,6 +138,8 @@ public class Game extends Canvas {
 
     private GlobalStorage globalStorage;
 
+    private JButton exitbtn;
+
 
     /**
      * Construct our game and set it running.
@@ -158,6 +156,17 @@ public class Game extends Canvas {
         int centerX = (int) ((screenSize.getWidth() - container.getWidth()) / 2);
         int centerY = (int) ((screenSize.getHeight() - container.getHeight()) / 2);
         container.setLocation(centerX, centerY);
+
+        JButton exitbtn =new JButton("exit");
+        exitbtn.setBounds(600,10,70,30);
+        exitbtn.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+                // 버튼 및 레이아웃 관련 처리
+                container.dispose();
+            }
+
+        });
+        panel.add(exitbtn);
 
         panel.setLayout(null);
 
