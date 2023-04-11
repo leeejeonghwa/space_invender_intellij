@@ -1,5 +1,6 @@
 package org.newdawn.spaceinvaders.windows;
 
+
 import java.awt.*;
 import javax.swing.*;
 
@@ -25,6 +26,7 @@ public class MainWindow extends JFrame {
     private JButton level3btn;
     private JButton level4btn;
     private JButton level5btn;
+
 
     public MainWindow() {
         // 메인 윈도우 설정
@@ -93,9 +95,9 @@ public class MainWindow extends JFrame {
                     });
                     shopThread.start();
                 }
-                else if(level1btn.getName() == "src/image/level1.png" ) {
-                    // level1btn 누른 경우
-                    level1btn.setVisible(true);
+                else  {
+                    // level 버튼 누른 경우
+                    button.setVisible(true);
                     setLayout(null);
                     firebaseTool.GetUserBestScore(globalStorage.getUserID());
                     JOptionPane.showMessageDialog(null, globalStorage.getUserID() + " 님 최고점수 : " + globalStorage.getUserBestScore());
@@ -108,39 +110,11 @@ public class MainWindow extends JFrame {
                     });
                     gameThread.start();
                 }
-                else if(level2btn.getName() == "src/image/level2.png" ){
-                    // level2btn 누른 경우
-                    level2btn.setVisible(true);
-                    setLayout(null);
-                    firebaseTool.GetUserBestScore(globalStorage.getUserID());
-                    JOptionPane.showMessageDialog(null, globalStorage.getUserID() + " 님 최고점수 : " + globalStorage.getUserBestScore());
-                    // 게임 루프를 실행하는 스레드 생성
-                    Thread gameThread = new Thread(new Runnable() {
-                        public void run() {
-                            Game g = new Game();
-                            g.gameLoop();
-                        }
-                    });
-                    gameThread.start();
-                }
-                else if(level3btn.getName() == "src/image/level3.png" ){
-                    level3btn.setVisible(true);
-                    setLayout(null);
-                    firebaseTool.GetUserBestScore(globalStorage.getUserID());
-                    JOptionPane.showMessageDialog(null, globalStorage.getUserID() + " 님 최고점수 : " + globalStorage.getUserBestScore());
-                    // 게임 루프를 실행하는 스레드 생성
-                    Thread gameThread = new Thread(new Runnable() {
-                        public void run() {
-                            Game g = new Game();
-                            g.gameLoop();
-                        }
-                    });
-                    gameThread.start();
 
-                }
             }
         });
     }
+
 
     private void createPanel() {
         // 패널 생성

@@ -227,7 +227,6 @@ public class Game extends Canvas {
         // clear out any existing entities and intialise a new set
         entities.clear();
         initEntities();
-
         // blank out any keyboard settings we might currently have
         leftPressed = false;
         rightPressed = false;
@@ -254,12 +253,17 @@ public class Game extends Canvas {
         // create a block of aliens (5 rows, by 12 aliens, spaced evenly)
         alienCount = 0;
 
+        Level1();
+        Level2();
+        Level3();
+
+
     }
 
     private void Level1() {
 
         for (int row = 0; row < 3; row++) {
-            for (int x = 0; x < 9; x++) {
+            for (int x = 0; x < 4; x++) {
                 Entity alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
                 entities.add(alien);
                 alienCount++;
@@ -269,8 +273,9 @@ public class Game extends Canvas {
     }
 
     private void Level2(){
+
         for (int row = 0; row < 5; row++) {
-            for (int x = 0; x < 12; x++) {
+            for (int x = 0; x < 7; x++) {
                 Entity alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
                 entities.add(alien);
                 alienCount++;
@@ -280,8 +285,9 @@ public class Game extends Canvas {
     }
 
     private void Level3(){
+
         for (int row = 0; row < 7; row++) {
-            for (int x = 0; x < 14; x++) {
+            for (int x = 0; x < 10; x++) {
                 Entity alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
                 entities.add(alien);
                 alienCount++;
@@ -290,8 +296,26 @@ public class Game extends Canvas {
 
     }
 
-
-
+    public void setLevel(int level) {
+        this.level = level;
+       entities.clear(); // 현재 화면에 표시된 모든 엔티티 삭제
+        System.out.print(level);
+        // 새로운 레벨에 맞게 엔티티 추가
+        switch (level) {
+            case 1:
+                Level1();
+                break;
+            case 2:
+                Level2();
+                break;
+            case 3:
+                Level3();
+                break;
+            // 다른 레벨에 대한 내용 추가 가능
+            default:
+                break;
+        }
+    }
 
 
 
@@ -418,12 +442,12 @@ public class Game extends Canvas {
      * <p>
      */ // 게임 메인 루프 -> 플레이 중 활동
     public void gameLoop() {
-
         long lastLoopTime = SystemTimer.getTime();
         int alienKilled = alienCount;
 
         // keep looping round til the game ends
         while (gameRunning) {
+
             // work out how long its been since the last update, this
             // will be used to calculate how far the entities should
             // move this loop
