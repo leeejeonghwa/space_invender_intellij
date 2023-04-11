@@ -52,6 +52,7 @@ public class MainWindow extends JFrame {
         Image buttonimgchange = buttonimg.getScaledInstance(width, height, Image.SCALE_SMOOTH);
         ImageIcon buttonchange = new ImageIcon(buttonimgchange);
         button = new JButton(buttonchange);
+        button.setName(ref);
         button.setFocusPainted(false);
         button.setBorderPainted(false);
         button.setContentAreaFilled(false);
@@ -64,13 +65,18 @@ public class MainWindow extends JFrame {
     public void btnMouseListener(JButton button){
         button.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
-                if (button.getName() == "shopbtn"){
-                    Thread gameThread = new Thread(new Runnable(){
-                        
-                    };)
+                if (button.getName() == "src/image/start.png"){
+                    button.setVisible(true);
+                    setLayout(null);
+                    Thread shopThread = new Thread(new Runnable() {
+                        public void run() {
+                            ShopWindow s = new ShopWindow();
+                            s.shopLoop();
+                        }
+                    });
+                    shopThread.start();
                 }
-                else if (button.getName() == "rulebtn"){
-
+                else if (button.getName() == "src/image/rule.png"){
                 }
                 else{
                     // 상점이 아닌 버튼 및 레이아웃 관련 처리

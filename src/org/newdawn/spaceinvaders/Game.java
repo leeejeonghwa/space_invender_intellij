@@ -39,7 +39,7 @@ import org.newdawn.spaceinvaders.entity.ShotEntity;
  *
  * @author Kevin Glass
  */
-//tjdrhd
+
 public class Game extends Canvas {
 
     private static String bestScore = "";
@@ -205,8 +205,6 @@ public class Game extends Canvas {
         new Thread(() -> {
             bgmPlayer.play("src/sound/backgroundmusic.wav");
         }).start();
-
-
     }
 
     /**
@@ -405,7 +403,6 @@ public class Game extends Canvas {
             Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
             g.setColor(Color.black);
             g.fillRect(0, 0, 800, 600);
-
 
             g.setColor(Color.WHITE);
             g.drawString("Time: " + Long.toString(timerTime), 10, 20);
