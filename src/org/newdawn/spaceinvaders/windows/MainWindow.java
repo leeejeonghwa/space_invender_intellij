@@ -162,7 +162,6 @@ public class MainWindow extends JFrame {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                MainWindow mainWindow = new MainWindow(); // 메인 윈도우 객체 생성
                 Login login = new Login();
             }
         });
