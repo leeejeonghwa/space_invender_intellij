@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
 import com.google.firebase.database.*;
+import org.newdawn.spaceinvaders.windows.MainWindow;
 
 import javax.swing.*;
 
