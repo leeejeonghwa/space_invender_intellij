@@ -68,17 +68,18 @@ public class FirebaseTool {
                     globalStorage.setUserID(id);
                     GetUserBestScore(id);
                     JOptionPane.showMessageDialog(null, "로그인이 정상적으로 처리되었습니다.");
+                    MainWindow mainWindow = new MainWindow(); // 메인 윈도우 객체 생성
                     return true;
                 }
             }
 
         } catch (NullPointerException e) {
             //e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "로그인에 문제가 생겼습니다.");
+            JOptionPane.showMessageDialog(null, "아이디와 비밀번호를 확입하세요.");
             return false;
         } catch (FirebaseAuthException e) {
             //throw new RuntimeException(e);
-            JOptionPane.showMessageDialog(null, "로그인에 문제가 생겼습니다.");
+            JOptionPane.showMessageDialog(null, "아이디와 비밀번호를 확인하세요.");
             return false;
         }
 
