@@ -65,9 +65,9 @@ public class MainWindow extends JFrame {
         button.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 if (button.getName() == "shopbtn"){
-                    Thread gameThread = new Thread(new Runnable(){
-                        
-                    };)
+//                    Thread gameThread = new Thread(new Runnable(){
+//
+//                    });
                 }
                 else if (button.getName() == "rulebtn"){
 
