@@ -12,6 +12,8 @@ public class ShipEntity extends Entity {
      * The game in which the ship exists
      */
     private Game game;
+    private boolean collided;
+    private int health = 3;
 
     /**
      * Create a new entity to represent the players ship
@@ -62,10 +64,21 @@ public class ShipEntity extends Entity {
      * @param other The entity with which the ship has collided
      */
     public void collidedWith(Entity other) {
-        // if its an alien, notify the game that the player
-        // is dead
-        if (other instanceof AlienEntity) {
+        collided = true;
+        if (health <= 0 && collided == true){
             game.notifyDeath();
         }
+        else if(health > 0 && collided == true){
+            health -= 1;
+            collided = false;
+        }
+    }
+
+    public void increaseMaxHealth() {
+        health = 4;
+    }
+
+    public int returnNowHealth() {
+        return this.health;
     }
 }
