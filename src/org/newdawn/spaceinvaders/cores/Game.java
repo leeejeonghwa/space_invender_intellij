@@ -18,6 +18,7 @@ import org.newdawn.spaceinvaders.entity.Entity;
 import org.newdawn.spaceinvaders.entity.ShieldEntity;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
 import org.newdawn.spaceinvaders.entity.ShotEntity;
+import org.newdawn.spaceinvaders.windows.MainWindow;
 
 /*test*/
 
@@ -141,6 +142,7 @@ public class Game extends Canvas {
 
     private JButton exitbtn;
 
+    private int level = 1; // 현재 레벨
 
     /**
      * Construct our game and set it running.
@@ -251,6 +253,22 @@ public class Game extends Canvas {
 
         // create a block of aliens (5 rows, by 12 aliens, spaced evenly)
         alienCount = 0;
+
+    }
+
+    private void Level1() {
+
+        for (int row = 0; row < 3; row++) {
+            for (int x = 0; x < 9; x++) {
+                Entity alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
+                entities.add(alien);
+                alienCount++;
+            }
+        }
+
+    }
+
+    private void Level2(){
         for (int row = 0; row < 5; row++) {
             for (int x = 0; x < 12; x++) {
                 Entity alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
@@ -258,7 +276,24 @@ public class Game extends Canvas {
                 alienCount++;
             }
         }
+
     }
+
+    private void Level3(){
+        for (int row = 0; row < 7; row++) {
+            for (int x = 0; x < 14; x++) {
+                Entity alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
+                entities.add(alien);
+                alienCount++;
+            }
+        }
+
+    }
+
+
+
+
+
 
     /**
      * Notification from a game entity that the logic of the game

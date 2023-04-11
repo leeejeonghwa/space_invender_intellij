@@ -93,9 +93,9 @@ public class MainWindow extends JFrame {
                     });
                     shopThread.start();
                 }
-                else{
-                    // 상점이 아닌 버튼 및 레이아웃 관련 처리
-                    button.setVisible(true);
+                else if(level1btn.getName() == "src/image/level1.png" ) {
+                    // level1btn 누른 경우
+                    level1btn.setVisible(true);
                     setLayout(null);
                     firebaseTool.GetUserBestScore(globalStorage.getUserID());
                     JOptionPane.showMessageDialog(null, globalStorage.getUserID() + " 님 최고점수 : " + globalStorage.getUserBestScore());
@@ -107,6 +107,36 @@ public class MainWindow extends JFrame {
                         }
                     });
                     gameThread.start();
+                }
+                else if(level2btn.getName() == "src/image/level2.png" ){
+                    // level2btn 누른 경우
+                    level2btn.setVisible(true);
+                    setLayout(null);
+                    firebaseTool.GetUserBestScore(globalStorage.getUserID());
+                    JOptionPane.showMessageDialog(null, globalStorage.getUserID() + " 님 최고점수 : " + globalStorage.getUserBestScore());
+                    // 게임 루프를 실행하는 스레드 생성
+                    Thread gameThread = new Thread(new Runnable() {
+                        public void run() {
+                            Game g = new Game();
+                            g.gameLoop();
+                        }
+                    });
+                    gameThread.start();
+                }
+                else if(level3btn.getName() == "src/image/level3.png" ){
+                    level3btn.setVisible(true);
+                    setLayout(null);
+                    firebaseTool.GetUserBestScore(globalStorage.getUserID());
+                    JOptionPane.showMessageDialog(null, globalStorage.getUserID() + " 님 최고점수 : " + globalStorage.getUserBestScore());
+                    // 게임 루프를 실행하는 스레드 생성
+                    Thread gameThread = new Thread(new Runnable() {
+                        public void run() {
+                            Game g = new Game();
+                            g.gameLoop();
+                        }
+                    });
+                    gameThread.start();
+
                 }
             }
         });
@@ -126,7 +156,7 @@ public class MainWindow extends JFrame {
         panel.setLayout(null); // 레이아웃 매니저를 사용하지 않음
         panel.setPreferredSize(new Dimension(800, 600));
 
-        // 시작 버튼 생성
+        // shop 버튼 생성
         shopbtn = drawButton(shopbtn, "src/image/start.png", 100, 50, 270, 200);
         this.btnMouseListener(shopbtn);
         //설명 버튼 생성
