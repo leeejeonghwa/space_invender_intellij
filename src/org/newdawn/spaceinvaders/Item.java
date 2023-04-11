@@ -1,9 +1,6 @@
 package org.newdawn.spaceinvaders;
 
 import org.newdawn.spaceinvaders.entity.ShipEntity;
-import org.newdawn.spaceinvaders.Game;
-
-import java.awt.Graphics;
 
 public class Item {
     private Boolean[] itemList = new Boolean[]{false, false, false, false, false};
@@ -29,6 +26,7 @@ public class Item {
 
     public void increaseMaxHealth() {
         if (this.itemList[1] == true) {
+            this.ship.increaseMaxHealth();
         } else {
             showUnableMessage();
         }
