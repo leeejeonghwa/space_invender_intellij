@@ -296,26 +296,19 @@ public class Game extends Canvas {
 
     }
 
-    public void setLevel(int level) {
-        this.level = level;
-       entities.clear(); // 현재 화면에 표시된 모든 엔티티 삭제
-        System.out.print(level);
-        // 새로운 레벨에 맞게 엔티티 추가
-        switch (level) {
-            case 1:
-                Level1();
-                break;
-            case 2:
-                Level2();
-                break;
-            case 3:
-                Level3();
-                break;
-            // 다른 레벨에 대한 내용 추가 가능
-            default:
-                break;
+    private void Level4(){
+
+        for (int row = 0; row < 7; row++) {
+            for (int x = 0; x < 10; x++) {
+                Entity alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
+                entities.add(alien);
+                alienCount++;
+            }
         }
+
     }
+
+
 
 
 
