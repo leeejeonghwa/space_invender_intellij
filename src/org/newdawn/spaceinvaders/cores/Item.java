@@ -1,4 +1,4 @@
-package org.newdawn.spaceinvaders;
+package org.newdawn.spaceinvaders.cores;
 
 import org.newdawn.spaceinvaders.entity.ShipEntity;
 
