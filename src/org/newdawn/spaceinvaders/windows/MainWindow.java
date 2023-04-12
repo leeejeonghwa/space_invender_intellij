@@ -7,10 +7,12 @@ import javax.swing.*;
 import org.newdawn.spaceinvaders.cores.FirebaseTool;
 import org.newdawn.spaceinvaders.cores.Game;
 import org.newdawn.spaceinvaders.cores.GlobalStorage;
+import org.newdawn.spaceinvaders.cores.Item;
 import org.newdawn.spaceinvaders.cores.Login;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
 
 public class MainWindow extends JFrame {
 
@@ -51,7 +53,6 @@ public class MainWindow extends JFrame {
 
         firebaseTool = FirebaseTool.getInstance();
         globalStorage = GlobalStorage.getInstance();
-
     }
 
     private JButton drawButton(JButton button, String ref, int width, int height, int x, int y){
@@ -71,6 +72,7 @@ public class MainWindow extends JFrame {
     }
 
     public void btnMouseListener(JButton button){
+        System.out.print(Arrays.toString(item.enableItems())+"\n");
         button.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 if (button.getName() == "src/image/start.png"){
@@ -104,8 +106,11 @@ public class MainWindow extends JFrame {
                     // 게임 루프를 실행하는 스레드 생성
                     Thread gameThread = new Thread(new Runnable() {
                         public void run() {
-                            Game g = new Game(button.getName());
+                            System.out.print(Arrays.toString(item.enableItems())+"\n");
+                            Game g = new Game(button.getName(), item.enableItems());
                             g.gameLoop();
+                            item.clearStage(g.getItemState());
+                            System.out.print(Arrays.toString(item.enableItems())+"\n");
                         }
                     });
                     gameThread.start();
