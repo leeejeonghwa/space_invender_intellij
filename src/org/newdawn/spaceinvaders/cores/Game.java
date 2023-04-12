@@ -276,10 +276,14 @@ public class Game extends Canvas {
             }
             case("src/image/level3.png"):{
                 // create a block of aliens (7 rows, by 12 aliens, spaced evenly)
+                // even row move inversely
                 alienCount = 0;
                 for (int row = 0; row < 7; row++) {
                     for (int x = 0; x < 12; x++) {
                         Entity alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
+                        if (row%2 == 0){
+                            alien.setHorizontalMovement(alien.getHorizontalMovement()*(-1));
+                        }
                         entities.add(alien);
                         alienCount++;
                     }
@@ -428,21 +432,21 @@ public class Game extends Canvas {
     }
 
     //implement setter of moveSpeed for Item.increaseMoveSpeed
-    public void increaseMoveSpeed() {
+    private void increaseMoveSpeed() {
         this.moveSpeed *= 1.5;
     }
 
     //implement setter of firingInterval for Item.increaseFireSpeed
-    public void increaseFireSpeed() {
+    private void increaseFireSpeed() {
         this.firingInterval = 150;
     }
 
     //implement setter of fireNum for Item.
-    public void increaseFireNum() {
+    private void increaseFireNum() {
         this.fireNum = true;
     }
 
-    public void enableShield() {
+    private void enableShield() {
         this.enableShield = true;
     }
 
