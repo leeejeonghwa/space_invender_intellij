@@ -13,11 +13,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import org.newdawn.spaceinvaders.SystemTimer;
-import org.newdawn.spaceinvaders.entity.AlienEntity;
-import org.newdawn.spaceinvaders.entity.Entity;
-import org.newdawn.spaceinvaders.entity.ShieldEntity;
-import org.newdawn.spaceinvaders.entity.ShipEntity;
-import org.newdawn.spaceinvaders.entity.ShotEntity;
+import org.newdawn.spaceinvaders.entity.*;
+import org.newdawn.spaceinvaders.windows.MainWindow;
 
 /*test*/
 
@@ -70,10 +67,12 @@ public class Game extends Canvas {
      * The time at which last fired a shot
      */
     private long lastFire = 0;
+    private long lastAlienShot = 0;
     /**
      * The interval between our players shot (ms)
      */
     private long firingInterval = 200; //총알 사이의 간격
+    private long AlienShotInterval = 200;
     /**
      * The number of aliens left on the screen
      */
@@ -139,6 +138,8 @@ public class Game extends Canvas {
     private FirebaseTool firebaseTool;
 
     private GlobalStorage globalStorage;
+
+    private Entity alien;
     /**
      * Construct our game and set it running.
      */
@@ -251,11 +252,11 @@ public class Game extends Canvas {
 
         switch(this.level){
             case("src/image/level1.png"):{
-                // create a block of aliens (5 rows, by 12 aliens, spaced evenly)
+                // create a block of aliens (4 rows, by 5 aliens, spaced evenly)
                 alienCount = 0;
-                for (int row = 0; row < 5; row++) {
-                    for (int x = 0; x < 12; x++) {
-                        Entity alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
+                for (int row = 0; row < 4; row++) {
+                    for (int x = 0; x < 5; x++) {
+                        alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
                         entities.add(alien);
                         alienCount++;
                     }
@@ -263,11 +264,11 @@ public class Game extends Canvas {
                 break;
             }
             case("src/image/level2.png"):{
-                // create a block of aliens (6 rows, by 12 aliens, spaced evenly)
+                // create a block of aliens (6 rows, by 7 aliens, spaced evenly)
                 alienCount = 0;
                 for (int row = 0; row < 6; row++) {
-                    for (int x = 0; x < 12; x++) {
-                        Entity alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
+                    for (int x = 0; x < 7; x++) {
+                        alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
                         entities.add(alien);
                         alienCount++;
                     }
@@ -278,9 +279,9 @@ public class Game extends Canvas {
                 // create a block of aliens (7 rows, by 12 aliens, spaced evenly)
                 // even row move inversely
                 alienCount = 0;
-                for (int row = 0; row < 7; row++) {
+                for (int row = 0; row < 5; row++) {
                     for (int x = 0; x < 12; x++) {
-                        Entity alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
+                        alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
                         if (row%2 == 0){
                             alien.setHorizontalMovement(alien.getHorizontalMovement()*(-1));
                         }
@@ -291,13 +292,14 @@ public class Game extends Canvas {
                 break;
             }
             case("src/image/level4.png"):{
-                // create a block of aliens (8 rows, by 12 aliens, spaced evenly)
+                // create a block of aliens (5 rows, by 5 aliens, spaced evenly)
                 alienCount = 0;
-                for (int row = 0; row < 8; row++) {
-                    for (int x = 0; x < 12; x++) {
-                        Entity alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
+                for (int row = 0; row < 5; row++) {
+                    for (int x = 0; x < 5; x++) {
+                        alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
                         entities.add(alien);
                         alienCount++;
+
                     }
                 }
                 break;
@@ -307,7 +309,7 @@ public class Game extends Canvas {
                 alienCount = 0;
                 for (int row = 0; row < 9; row++) {
                     for (int x = 0; x < 12; x++) {
-                        Entity alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
+                        alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
                         entities.add(alien);
                         alienCount++;
                     }
@@ -429,6 +431,30 @@ public class Game extends Canvas {
         new Thread(() -> {
             shotplayer.playShotSound("src/sound/shot.wav");
         }).start();
+    }
+
+    public void shotAlien(){
+        // check that we have waiting long enough to fire
+
+        if (System.currentTimeMillis() - lastAlienShot < AlienShotInterval) {
+            return;
+        }
+        // if we waited long enough, create the shot entity, and record the time.
+        lastAlienShot = System.currentTimeMillis();
+        Entity randomAlien = null;
+        int size = entities.size() - 1;
+        int randomIdx = (int) (Math.random() * size) -1;
+        for (int i=0; i<=size; i++) {
+            if (randomIdx == i) {
+                if (entities.get(i) instanceof AlienEntity) {
+                    randomAlien = (Entity) entities.get(i);
+                    ShotAlienEntity shot = new ShotAlienEntity(this,"sprites/shot.gif",randomAlien.getX(),randomAlien.getY());
+                    entities.add(shot);
+                }
+            }
+        }
+
+
     }
 
     //implement setter of moveSpeed for Item.increaseMoveSpeed
@@ -612,12 +638,17 @@ public class Game extends Canvas {
             if (firePressed) {
                 tryToFire();
             }
+            if (this.level.equals("src/image/level4.png")) {
+                shotAlien();
+            }
+
 
             // we want each frame to take 10 milliseconds, to do this
             // we've recorded when we started the frame. We add 10 milliseconds
             // to this and then factor in the current time to give
             // us our final value to wait for //?? 화면 바뀌는 거 관련해서 말하는게 맞나요
             SystemTimer.sleep(lastLoopTime + 10 - SystemTimer.getTime());
+
         }
     }
 
