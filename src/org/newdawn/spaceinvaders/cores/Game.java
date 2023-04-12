@@ -432,21 +432,21 @@ public class Game extends Canvas {
     }
 
     //implement setter of moveSpeed for Item.increaseMoveSpeed
-    private void increaseMoveSpeed() {
+    public void increaseMoveSpeed() {
         this.moveSpeed *= 1.5;
     }
 
     //implement setter of firingInterval for Item.increaseFireSpeed
-    private void increaseFireSpeed() {
+    public void increaseFireSpeed() {
         this.firingInterval = 150;
     }
 
     //implement setter of fireNum for Item.
-    private void increaseFireNum() {
+    public void increaseFireNum() {
         this.fireNum = true;
     }
 
-    private void enableShield() {
+    public void enableShield() {
         this.enableShield = true;
     }
 
