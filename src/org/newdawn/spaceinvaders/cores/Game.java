@@ -143,7 +143,7 @@ public class Game extends Canvas {
     /**
      * Construct our game and set it running.
      */
-    public Game() {
+    public Game(String level) {
         // create a frame to contain our game
         container = new JFrame("Space Invaders 102");
 
@@ -252,10 +252,10 @@ public class Game extends Canvas {
 
         switch(this.level){
             case("src/image/level1.png"):{
-                // create a block of aliens (5 rows, by 12 aliens, spaced evenly)
+                // create a block of aliens (4 rows, by 5 aliens, spaced evenly)
                 alienCount = 0;
-                for (int row = 0; row < 5; row++) {
-                    for (int x = 0; x < 12; x++) {
+                for (int row = 0; row < 4; row++) {
+                    for (int x = 0; x < 5; x++) {
                         Entity alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
                         entities.add(alien);
                         alienCount++;
@@ -264,10 +264,10 @@ public class Game extends Canvas {
                 break;
             }
             case("src/image/level2.png"):{
-                // create a block of aliens (6 rows, by 12 aliens, spaced evenly)
+                // create a block of aliens (6 rows, by 7 aliens, spaced evenly)
                 alienCount = 0;
                 for (int row = 0; row < 6; row++) {
-                    for (int x = 0; x < 12; x++) {
+                    for (int x = 0; x < 7; x++) {
                         Entity alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
                         entities.add(alien);
                         alienCount++;
@@ -276,10 +276,10 @@ public class Game extends Canvas {
                 break;
             }
             case("src/image/level3.png"):{
-                // create a block of aliens (7 rows, by 12 aliens, spaced evenly)
+                // create a block of aliens (8 rows, by 9 aliens, spaced evenly)
                 alienCount = 0;
-                for (int row = 0; row < 7; row++) {
-                    for (int x = 0; x < 12; x++) {
+                for (int row = 0; row < 8; row++) {
+                    for (int x = 0; x < 9; x++) {
                         Entity alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
                         entities.add(alien);
                         alienCount++;
@@ -288,10 +288,10 @@ public class Game extends Canvas {
                 break;
             }
             case("src/image/level4.png"):{
-                // create a block of aliens (8 rows, by 12 aliens, spaced evenly)
+                // create a block of aliens (5 rows, by 5 aliens, spaced evenly)
                 alienCount = 0;
-                for (int row = 0; row < 8; row++) {
-                    for (int x = 0; x < 12; x++) {
+                for (int row = 0; row < 5; row++) {
+                    for (int x = 0; x < 5; x++) {
                         Entity alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
                         entities.add(alien);
                         alienCount++;
@@ -308,6 +308,7 @@ public class Game extends Canvas {
                         entities.add(alien);
                         alienCount++;
                     }
+
                 }
                 break;
             }
