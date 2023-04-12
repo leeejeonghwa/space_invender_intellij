@@ -7,17 +7,16 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
 
 import javax.swing.*;
 
+import org.checkerframework.checker.units.qual.A;
 import org.newdawn.spaceinvaders.SystemTimer;
-import org.newdawn.spaceinvaders.entity.AlienEntity;
-import org.newdawn.spaceinvaders.entity.Entity;
-import org.newdawn.spaceinvaders.entity.ShieldEntity;
-import org.newdawn.spaceinvaders.entity.ShipEntity;
-import org.newdawn.spaceinvaders.entity.ShotEntity;
+import org.newdawn.spaceinvaders.entity.*;
 import org.newdawn.spaceinvaders.windows.MainWindow;
 
 /*test*/
@@ -253,9 +252,10 @@ public class Game extends Canvas {
         // create a block of aliens (5 rows, by 12 aliens, spaced evenly)
         alienCount = 0;
 
-        Level1();
-        Level2();
-        Level3();
+//        Level1();
+//        Level2();
+//        Level3();
+//        Level4();
 
 
     }
@@ -295,7 +295,6 @@ public class Game extends Canvas {
         }
 
     }
-
     private void Level4(){
 
         for (int row = 0; row < 7; row++) {
@@ -403,6 +402,18 @@ public class Game extends Canvas {
             shotplayer.playShotSound("src/sound/shot.wav");
         }).start();
     }
+
+//    public void shotAlien() {
+//        // check that we have waiting long enough to fire
+//        if (System.currentTimeMillis() - lastFire < firingInterval) {
+//            return;
+//        }
+//
+//        // if we waited long enough, create the shot entity, and record the time.
+//        lastFire = System.currentTimeMillis();
+//        ShotEntity shot = new ShotEntity(this, "sprites/enemy_shot.gif", ship.getX(),100);
+//        entities.add(shot);
+//    }
 
     //implement setter of moveSpeed for Item.increaseMoveSpeed
     public void increaseMoveSpeed() {
