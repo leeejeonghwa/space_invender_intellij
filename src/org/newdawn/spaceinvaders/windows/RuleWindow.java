@@ -52,6 +52,9 @@ public class RuleWindow extends Canvas{
             g.setColor(Color.black);
             g.fillRect(0, 0, 800, 600);
 
+            g.setColor(Color.WHITE);
+            g.drawString("Created by leeejeonghwa, Indigo_Coder, zlatjdus in Github", 240, 300);
+
             g.dispose();
             strategy.show();
         }

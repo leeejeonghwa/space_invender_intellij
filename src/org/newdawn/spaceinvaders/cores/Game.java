@@ -7,17 +7,17 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
 
 import javax.swing.*;
 
-import org.checkerframework.checker.units.qual.A;
 import org.newdawn.spaceinvaders.SystemTimer;
-import org.newdawn.spaceinvaders.entity.*;
-import org.newdawn.spaceinvaders.windows.MainWindow;
+import org.newdawn.spaceinvaders.entity.AlienEntity;
+import org.newdawn.spaceinvaders.entity.Entity;
+import org.newdawn.spaceinvaders.entity.ShieldEntity;
+import org.newdawn.spaceinvaders.entity.ShipEntity;
+import org.newdawn.spaceinvaders.entity.ShotEntity;
 
 /*test*/
 
@@ -83,6 +83,8 @@ public class Game extends Canvas {
     private Boolean fireNum = false;
     /* Available to activate shield */
     private Boolean enableShield = false;
+    /* Level is parameter of class instance */
+    private String level;
 
     /**
      * The message to display which waiting for a key press
@@ -138,11 +140,6 @@ public class Game extends Canvas {
     private FirebaseTool firebaseTool;
 
     private GlobalStorage globalStorage;
-
-    private JButton exitbtn;
-
-    private int level = 1; // 현재 레벨
-
     /**
      * Construct our game and set it running.
      */
@@ -208,6 +205,9 @@ public class Game extends Canvas {
         createBufferStrategy(2);
         strategy = getBufferStrategy();
 
+        // recognize what level is
+        this.level = level;
+
         // initialise the entities in our game so there's something
         // to see at startup
         initEntities();
@@ -226,6 +226,7 @@ public class Game extends Canvas {
         // clear out any existing entities and intialise a new set
         entities.clear();
         initEntities();
+
         // blank out any keyboard settings we might currently have
         leftPressed = false;
         rightPressed = false;
@@ -249,67 +250,69 @@ public class Game extends Canvas {
             entities.add(shield);
         }
 
-        // create a block of aliens (5 rows, by 12 aliens, spaced evenly)
-        alienCount = 0;
-
-//        Level1();
-//        Level2();
-//        Level3();
-//        Level4();
-
-
-    }
-
-    private void Level1() {
-
-        for (int row = 0; row < 3; row++) {
-            for (int x = 0; x < 4; x++) {
-                Entity alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
-                entities.add(alien);
-                alienCount++;
+        switch(this.level){
+            case("src/image/level1.png"):{
+                // create a block of aliens (5 rows, by 12 aliens, spaced evenly)
+                alienCount = 0;
+                for (int row = 0; row < 5; row++) {
+                    for (int x = 0; x < 12; x++) {
+                        Entity alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
+                        entities.add(alien);
+                        alienCount++;
+                    }
+                }
+                break;
+            }
+            case("src/image/level2.png"):{
+                // create a block of aliens (6 rows, by 12 aliens, spaced evenly)
+                alienCount = 0;
+                for (int row = 0; row < 6; row++) {
+                    for (int x = 0; x < 12; x++) {
+                        Entity alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
+                        entities.add(alien);
+                        alienCount++;
+                    }
+                }
+                break;
+            }
+            case("src/image/level3.png"):{
+                // create a block of aliens (7 rows, by 12 aliens, spaced evenly)
+                alienCount = 0;
+                for (int row = 0; row < 7; row++) {
+                    for (int x = 0; x < 12; x++) {
+                        Entity alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
+                        entities.add(alien);
+                        alienCount++;
+                    }
+                }
+                break;
+            }
+            case("src/image/level4.png"):{
+                // create a block of aliens (8 rows, by 12 aliens, spaced evenly)
+                alienCount = 0;
+                for (int row = 0; row < 8; row++) {
+                    for (int x = 0; x < 12; x++) {
+                        Entity alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
+                        entities.add(alien);
+                        alienCount++;
+                    }
+                }
+                break;
+            }
+            case("src/image/level5.png"):{
+                // create a block of aliens (9 rows, by 12 aliens, spaced evenly)
+                alienCount = 0;
+                for (int row = 0; row < 9; row++) {
+                    for (int x = 0; x < 12; x++) {
+                        Entity alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
+                        entities.add(alien);
+                        alienCount++;
+                    }
+                }
+                break;
             }
         }
-
     }
-
-    private void Level2(){
-
-        for (int row = 0; row < 5; row++) {
-            for (int x = 0; x < 7; x++) {
-                Entity alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
-                entities.add(alien);
-                alienCount++;
-            }
-        }
-
-    }
-
-    private void Level3(){
-
-        for (int row = 0; row < 7; row++) {
-            for (int x = 0; x < 10; x++) {
-                Entity alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
-                entities.add(alien);
-                alienCount++;
-            }
-        }
-
-    }
-    private void Level4(){
-
-        for (int row = 0; row < 7; row++) {
-            for (int x = 0; x < 10; x++) {
-                Entity alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
-                entities.add(alien);
-                alienCount++;
-            }
-        }
-
-    }
-
-
-
-
 
     /**
      * Notification from a game entity that the logic of the game
@@ -346,6 +349,28 @@ public class Game extends Canvas {
     public void notifyWin() {
         message = "Well done! You Win!";
         firebaseTool.SetUserBestScore(globalStorage.getUserID(), bestScore);
+        switch(this.level){
+            case("src/image/level1.png"):{
+                this.increaseFireSpeed();
+                break;
+            }
+            case("src/image/level2.png"):{
+                ((ShipEntity) this.ship).increaseMaxHealth();
+                break;
+            }
+            case("src/image/level3.png"):{
+                this.increaseMoveSpeed();
+                break;
+            }
+            case("src/image/level4.png"):{
+                this.enableShield();
+                break;
+            }
+            case("src/image/level5.png"):{
+                this.increaseFireNum();
+                break;
+            }
+        }
         waitingForKeyPress = true;
     }
 
@@ -403,18 +428,6 @@ public class Game extends Canvas {
         }).start();
     }
 
-//    public void shotAlien() {
-//        // check that we have waiting long enough to fire
-//        if (System.currentTimeMillis() - lastFire < firingInterval) {
-//            return;
-//        }
-//
-//        // if we waited long enough, create the shot entity, and record the time.
-//        lastFire = System.currentTimeMillis();
-//        ShotEntity shot = new ShotEntity(this, "sprites/enemy_shot.gif", ship.getX(),100);
-//        entities.add(shot);
-//    }
-
     //implement setter of moveSpeed for Item.increaseMoveSpeed
     public void increaseMoveSpeed() {
         this.moveSpeed *= 1.5;
@@ -446,12 +459,12 @@ public class Game extends Canvas {
      * <p>
      */ // 게임 메인 루프 -> 플레이 중 활동
     public void gameLoop() {
+
         long lastLoopTime = SystemTimer.getTime();
         int alienKilled = alienCount;
 
         // keep looping round til the game ends
         while (gameRunning) {
-
             // work out how long its been since the last update, this
             // will be used to calculate how far the entities should
             // move this loop

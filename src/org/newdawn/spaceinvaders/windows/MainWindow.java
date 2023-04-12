@@ -104,7 +104,7 @@ public class MainWindow extends JFrame {
                     // 게임 루프를 실행하는 스레드 생성
                     Thread gameThread = new Thread(new Runnable() {
                         public void run() {
-                            Game g = new Game();
+                            Game g = new Game(button.getName());
                             g.gameLoop();
                         }
                     });
