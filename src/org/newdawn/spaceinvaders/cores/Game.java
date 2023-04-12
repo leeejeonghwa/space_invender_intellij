@@ -40,7 +40,6 @@ import org.newdawn.spaceinvaders.entity.ShotEntity;
 public class Game extends Canvas {
 
     private static String bestScore = "";
-
     /**
      * The stragey that allows us to use accelerate page flipping
      */
@@ -83,6 +82,8 @@ public class Game extends Canvas {
     private Boolean fireNum = false;
     /* Available to activate shield */
     private Boolean enableShield = false;
+    /* Level is parameter of class instance */
+    private String level;
 
     /**
      * The message to display which waiting for a key press
@@ -138,14 +139,10 @@ public class Game extends Canvas {
     private FirebaseTool firebaseTool;
 
     private GlobalStorage globalStorage;
-
-    private JButton exitbtn;
-
-
     /**
      * Construct our game and set it running.
      */
-    public Game() {
+    public Game(String level) {
         // create a frame to contain our game
         container = new JFrame("Space Invaders 102");
 
@@ -158,7 +155,7 @@ public class Game extends Canvas {
         int centerY = (int) ((screenSize.getHeight() - container.getHeight()) / 2);
         container.setLocation(centerX, centerY);
 
-        JButton exitbtn =new JButton("exit");
+        JButton exitbtn = new JButton("exit");
         exitbtn.setBounds(600,10,70,30);
         exitbtn.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
@@ -207,6 +204,9 @@ public class Game extends Canvas {
         createBufferStrategy(2);
         strategy = getBufferStrategy();
 
+        // recognize what level is
+        this.level = level;
+
         // initialise the entities in our game so there's something
         // to see at startup
         initEntities();
@@ -249,13 +249,66 @@ public class Game extends Canvas {
             entities.add(shield);
         }
 
-        // create a block of aliens (5 rows, by 12 aliens, spaced evenly)
-        alienCount = 0;
-        for (int row = 0; row < 5; row++) {
-            for (int x = 0; x < 12; x++) {
-                Entity alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
-                entities.add(alien);
-                alienCount++;
+        switch(this.level){
+            case("src/image/level1.png"):{
+                // create a block of aliens (5 rows, by 12 aliens, spaced evenly)
+                alienCount = 0;
+                for (int row = 0; row < 5; row++) {
+                    for (int x = 0; x < 12; x++) {
+                        Entity alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
+                        entities.add(alien);
+                        alienCount++;
+                    }
+                }
+                break;
+            }
+            case("src/image/level2.png"):{
+                // create a block of aliens (6 rows, by 12 aliens, spaced evenly)
+                alienCount = 0;
+                for (int row = 0; row < 6; row++) {
+                    for (int x = 0; x < 12; x++) {
+                        Entity alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
+                        entities.add(alien);
+                        alienCount++;
+                    }
+                }
+                break;
+            }
+            case("src/image/level3.png"):{
+                // create a block of aliens (7 rows, by 12 aliens, spaced evenly)
+                alienCount = 0;
+                for (int row = 0; row < 7; row++) {
+                    for (int x = 0; x < 12; x++) {
+                        Entity alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
+                        entities.add(alien);
+                        alienCount++;
+                    }
+                }
+                break;
+            }
+            case("src/image/level4.png"):{
+                // create a block of aliens (8 rows, by 12 aliens, spaced evenly)
+                alienCount = 0;
+                for (int row = 0; row < 8; row++) {
+                    for (int x = 0; x < 12; x++) {
+                        Entity alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
+                        entities.add(alien);
+                        alienCount++;
+                    }
+                }
+                break;
+            }
+            case("src/image/level5.png"):{
+                // create a block of aliens (9 rows, by 12 aliens, spaced evenly)
+                alienCount = 0;
+                for (int row = 0; row < 9; row++) {
+                    for (int x = 0; x < 12; x++) {
+                        Entity alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
+                        entities.add(alien);
+                        alienCount++;
+                    }
+                }
+                break;
             }
         }
     }
@@ -295,6 +348,28 @@ public class Game extends Canvas {
     public void notifyWin() {
         message = "Well done! You Win!";
         firebaseTool.SetUserBestScore(globalStorage.getUserID(), bestScore);
+        switch(this.level){
+            case("src/image/level1.png"):{
+                this.increaseFireSpeed();
+                break;
+            }
+            case("src/image/level2.png"):{
+                ((ShipEntity) this.ship).increaseMaxHealth();
+                break;
+            }
+            case("src/image/level3.png"):{
+                this.increaseMoveSpeed();
+                break;
+            }
+            case("src/image/level4.png"):{
+                this.enableShield();
+                break;
+            }
+            case("src/image/level5.png"):{
+                this.increaseFireNum();
+                break;
+            }
+        }
         waitingForKeyPress = true;
     }
 

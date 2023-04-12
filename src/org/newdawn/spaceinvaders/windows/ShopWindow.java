@@ -52,6 +52,18 @@ public class ShopWindow extends Canvas{
             g.setColor(Color.black);
             g.fillRect(0, 0, 800, 600);
 
+            g.setColor(Color.WHITE);
+            g.drawRoundRect(40, 30, 270, 270, 30, 30);
+
+            g.setColor(Color.WHITE);
+            g.drawRoundRect(310, 30, 270, 270, 30, 30);
+
+            g.setColor(Color.WHITE);
+            g.drawRoundRect(40, 300, 270, 270, 30, 30);
+
+            g.setColor(Color.WHITE);
+            g.drawRoundRect(310, 300, 270, 270, 30, 30);
+
             g.dispose();
             strategy.show();
         }
