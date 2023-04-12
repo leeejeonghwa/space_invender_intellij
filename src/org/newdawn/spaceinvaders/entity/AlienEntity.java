@@ -18,6 +18,8 @@ public class AlienEntity extends Entity {
      * The game in which the entity exists
      */
     private Game game;
+
+    private int shotCooldown = 0;
     /**
      * The animation frames
      */
@@ -53,6 +55,7 @@ public class AlienEntity extends Entity {
 
         this.game = game;
         dx = -moveSpeed;
+
     }
 
     /**
@@ -119,5 +122,7 @@ public class AlienEntity extends Entity {
      */
     public void collidedWith(Entity other) {
         // collisions with aliens are handled elsewhere
+
+
     }
 }

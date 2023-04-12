@@ -1,5 +1,6 @@
 package org.newdawn.spaceinvaders.windows;
 
+
 import java.awt.*;
 import javax.swing.*;
 
@@ -25,6 +26,7 @@ public class MainWindow extends JFrame {
     private JButton level3btn;
     private JButton level4btn;
     private JButton level5btn;
+
 
     public MainWindow() {
         // 메인 윈도우 설정
@@ -93,8 +95,8 @@ public class MainWindow extends JFrame {
                     });
                     shopThread.start();
                 }
-                else{
-                    // 상점이 아닌 버튼 및 레이아웃 관련 처리
+                else  {
+                    // level 버튼 누른 경우
                     button.setVisible(true);
                     setLayout(null);
                     firebaseTool.GetUserBestScore(globalStorage.getUserID());
@@ -108,9 +110,11 @@ public class MainWindow extends JFrame {
                     });
                     gameThread.start();
                 }
+
             }
         });
     }
+
 
     private void createPanel() {
         // 패널 생성
@@ -126,7 +130,7 @@ public class MainWindow extends JFrame {
         panel.setLayout(null); // 레이아웃 매니저를 사용하지 않음
         panel.setPreferredSize(new Dimension(800, 600));
 
-        // 시작 버튼 생성
+        // shop 버튼 생성
         shopbtn = drawButton(shopbtn, "src/image/start.png", 100, 50, 270, 200);
         this.btnMouseListener(shopbtn);
         //설명 버튼 생성
