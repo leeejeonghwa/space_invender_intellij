@@ -40,7 +40,6 @@ import org.newdawn.spaceinvaders.entity.ShotEntity;
 public class Game extends Canvas {
 
     private static String bestScore = "";
-
     /**
      * The stragey that allows us to use accelerate page flipping
      */
@@ -156,7 +155,7 @@ public class Game extends Canvas {
         int centerY = (int) ((screenSize.getHeight() - container.getHeight()) / 2);
         container.setLocation(centerX, centerY);
 
-        JButton exitbtn =new JButton("exit");
+        JButton exitbtn = new JButton("exit");
         exitbtn.setBounds(600,10,70,30);
         exitbtn.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
@@ -276,11 +275,15 @@ public class Game extends Canvas {
                 break;
             }
             case("src/image/level3.png"):{
-                // create a block of aliens (8 rows, by 9 aliens, spaced evenly)
+                // create a block of aliens (7 rows, by 12 aliens, spaced evenly)
+                // even row move inversely
                 alienCount = 0;
                 for (int row = 0; row < 8; row++) {
                     for (int x = 0; x < 9; x++) {
                         Entity alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
+                        if (row%2 == 0){
+                            alien.setHorizontalMovement(alien.getHorizontalMovement()*(-1));
+                        }
                         entities.add(alien);
                         alienCount++;
                     }
@@ -308,7 +311,6 @@ public class Game extends Canvas {
                         entities.add(alien);
                         alienCount++;
                     }
-
                 }
                 break;
             }
@@ -430,21 +432,21 @@ public class Game extends Canvas {
     }
 
     //implement setter of moveSpeed for Item.increaseMoveSpeed
-    public void increaseMoveSpeed() {
+    private void increaseMoveSpeed() {
         this.moveSpeed *= 1.5;
     }
 
     //implement setter of firingInterval for Item.increaseFireSpeed
-    public void increaseFireSpeed() {
+    private void increaseFireSpeed() {
         this.firingInterval = 150;
     }
 
     //implement setter of fireNum for Item.
-    public void increaseFireNum() {
+    private void increaseFireNum() {
         this.fireNum = true;
     }
 
-    public void enableShield() {
+    private void enableShield() {
         this.enableShield = true;
     }
 
