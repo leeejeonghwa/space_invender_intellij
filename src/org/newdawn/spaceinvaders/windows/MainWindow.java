@@ -73,7 +73,6 @@ public class MainWindow extends JFrame {
     }
 
     public void btnMouseListener(JButton button){
-        System.out.print(Arrays.toString(item.enableItems())+"\n");
         button.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 if (button.getName() == "src/image/start.png"){
@@ -107,13 +106,12 @@ public class MainWindow extends JFrame {
                     // 게임 루프를 실행하는 스레드 생성
                     Thread gameThread = new Thread(new Runnable() {
                         public void run() {
-                            System.out.print(Arrays.toString(item.enableItems())+"\n");
-                            Game g = new Game(button.getName(), item.enableItems());
+                            System.out.print("game Thread: " + Arrays.toString(item.enableItems())+ item.getMoney() + "\n");
+                            Game g = new Game(button.getName(), item.enableItems(), item.getMoney());
                             g.gameLoop();
                             synchronized(item){
-                                item.clearStage(g.getItemState());
+                                item.clearStage(g.getItemState(), g.recieveMoney());
                             }
-                            System.out.print(Arrays.toString(item.enableItems())+"\n");
                         }
                     });
                     gameThread.start();
