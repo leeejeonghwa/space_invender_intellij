@@ -19,7 +19,7 @@ public class ShieldEntity extends Entity {
         }
         // if we're moving right and have reached the right hand side
         // of the screen, don't move
-        if ((dx > 0) && (x > 750)) {
+        if ((dx > 0) && (x > 740)) {
             return;
         }
         // if we're moving up and have reached the top of the screen, don't move
@@ -27,7 +27,7 @@ public class ShieldEntity extends Entity {
             return;
         }
         // if we're moving down and have reached the bottom of the screen, don't move
-        if ((dy > 0) && (y > 570)) {
+        if ((dy > 0) && (y > 530)) {
             return;
         }
 
