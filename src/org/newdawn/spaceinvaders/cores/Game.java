@@ -15,11 +15,9 @@ import javax.imageio.ImageIO;
 
 import javax.swing.*;
 
-import org.checkerframework.checker.units.qual.N;
 import org.newdawn.spaceinvaders.SystemTimer;
 import org.newdawn.spaceinvaders.entity.*;
 import org.newdawn.spaceinvaders.entity.BossEntity;
-import org.newdawn.spaceinvaders.windows.MainWindow;
 
 
 
@@ -84,6 +82,7 @@ public class Game extends Canvas {
      * The number of aliens left on the screen
      */
     private int alienCount;
+
     /* Available to activate increasing fire number */
     private Boolean fireNum = false;
     /* Available to activate shield */
@@ -149,7 +148,7 @@ public class Game extends Canvas {
 
     private Entity alien;
 
-    private BossEntity BossAlien;
+    private BossEntity bossAlien;
 
     private int health = 50;
 
@@ -351,8 +350,9 @@ public class Game extends Canvas {
                 // create a block of aliens (9 rows, by 12 aliens, spaced evenly)
                 alienCount = 0;
 
-                BossAlien = new BossEntity(this, 370,50);
-                entities.add(BossAlien);
+                bossAlien = new BossEntity(this, 370,50);
+                entities.add(bossAlien);
+                alienCount++;
 
                 for (int row = 0; row < 5; row++) {
                     for (int x = 0; x < 5; x++) {
@@ -438,11 +438,7 @@ public class Game extends Canvas {
         // reduce the alient count, if there are none left, the player has won!
         alienCount--;
 
-        if (this.level.equals("src/image/level5.png")){
-            if(alienCount == 0 && BossAlien != null && BossAlien.gethealth() <= 0){
-                notifyWin();
-            }
-        }else if(alienCount == 0){
+        if (alienCount == 0) {
             notifyWin();
         }
 

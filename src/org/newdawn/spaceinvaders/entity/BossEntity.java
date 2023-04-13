@@ -131,7 +131,7 @@ public class BossEntity extends Entity {
         }
         if (health <= 0){
             game.removeEntity(this);
-        }
+            game.notifyAlienKilled();}
     }
 
 
