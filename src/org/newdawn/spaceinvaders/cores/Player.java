@@ -13,7 +13,7 @@ public class Player implements LineListener {
     private Clip shotclip;
     private Clip successclip;
     private boolean playCompleted;
-
+    private long pausedPosition;
     public void play(String audioFilePath) {
         try {
             File audioFile = new File(audioFilePath);
@@ -47,12 +47,20 @@ public class Player implements LineListener {
         }
     }
 
-    public void stop() {
+    public void pause() {
         if (bgmclip != null && bgmclip.isRunning()) {
             bgmclip.stop();
-            bgmclip.setFramePosition(0);
+            pausedPosition = bgmclip.getMicrosecondPosition();
         }
     }
+
+    public void resume() {
+        if (bgmclip != null && !bgmclip.isRunning()) {
+            bgmclip.setMicrosecondPosition(pausedPosition);
+            bgmclip.start();
+        }
+    }
+
 
     public void playSuccessSound(String audioFilePath) {
         try {
