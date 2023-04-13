@@ -351,8 +351,7 @@ public class Game extends Canvas {
                 // create a block of aliens (9 rows, by 12 aliens, spaced evenly)
                 alienCount = 0;
 
-                BossAlien = new BossEntity(this, 370,50);
-                entities.add(BossAlien);
+
                 alienCount++;
 
                 for (int row = 0; row < 5; row++) {
