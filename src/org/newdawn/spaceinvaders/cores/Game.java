@@ -400,13 +400,12 @@ public class Game extends Canvas {
         // reduce the alient count, if there are none left, the player has won!
         alienCount--;
 
-        if (alienCount == 0) {
-            notifyWin();
-        }
-        if (alienCount == 0 && this.level.equals("src/image/level5.png")){
-            if(BossAlien != null && BossAlien.gethealth() <= 0){
+        if (this.level.equals("src/image/level5.png")){
+            if(alienCount == 0 && BossAlien != null && BossAlien.gethealth() <= 0){
                 notifyWin();
             }
+        }else if(alienCount == 0){
+            notifyWin();
         }
 
         // if there are still some aliens left then they all need to get faster, so
