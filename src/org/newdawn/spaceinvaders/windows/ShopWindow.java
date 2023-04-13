@@ -1,10 +1,13 @@
 package org.newdawn.spaceinvaders.windows;
 
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -13,7 +16,9 @@ public class ShopWindow extends Canvas{
 
     private JFrame container;
 
-    public ShopWindow(){
+    private AtomicInteger money;
+
+    public ShopWindow(AtomicInteger money){
         container = new JFrame();
 
         JPanel panel = (JPanel) container.getContentPane();
@@ -34,16 +39,12 @@ public class ShopWindow extends Canvas{
         container.setResizable(false);
         container.setVisible(true);
 
-//        container.addWindowListener(new WindowAdapter(){
-//            public void windowClosing(WindowEvent e){
-//                System.exit(0);
-//            }
-//        });
-
         requestFocus();
 
         createBufferStrategy(2);
         strategy = getBufferStrategy();
+
+        this.money = money;
     }
 
     public void shopLoop(){
@@ -53,19 +54,54 @@ public class ShopWindow extends Canvas{
             g.fillRect(0, 0, 800, 600);
 
             g.setColor(Color.WHITE);
-            g.drawRoundRect(40, 30, 270, 270, 30, 30);
+            g.drawString("Money: " + this.money.toString(), 10, 20);
 
-            g.setColor(Color.WHITE);
-            g.drawRoundRect(310, 30, 270, 270, 30, 30);
+            BufferedImage shopShip1;
+            try{
+                shopShip1 = ImageIO.read(new File("src/sprites/Shopship1.png"));
+                g.drawImage(shopShip1,25,255,this);
+            }catch (IOException e){
+                e.printStackTrace();
+            }
 
-            g.setColor(Color.WHITE);
-            g.drawRoundRect(40, 300, 270, 270, 30, 30);
+            BufferedImage shopShip2;
+            try{
+                shopShip2 = ImageIO.read(new File("src/sprites/Shopship2.png"));
+                g.drawImage(shopShip2,115,255,this);
+            }catch (IOException e){
+                e.printStackTrace();
+            }
 
-            g.setColor(Color.WHITE);
-            g.drawRoundRect(310, 300, 270, 270, 30, 30);
+            BufferedImage shopShip3;
+            try{
+                shopShip3 = ImageIO.read(new File("src/sprites/Shopship3.png"));
+                g.drawImage(shopShip3,215,255,this);
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+
+            BufferedImage shopShip4;
+            try{
+                shopShip4 = ImageIO.read(new File("src/sprites/Shopship4.png"));
+                g.drawImage(shopShip4,405,255,this);
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+
+            BufferedImage shopShip5;
+            try{
+                shopShip5 = ImageIO.read(new File("src/sprites/Shopship5.png"));
+                g.drawImage(shopShip5,595,255,this);
+            }catch (IOException e){
+                e.printStackTrace();
+            }
 
             g.dispose();
             strategy.show();
         }
     }
+
+	public AtomicInteger recieveMoney() {
+		return this.money;
+	}
 }

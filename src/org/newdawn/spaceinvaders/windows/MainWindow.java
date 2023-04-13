@@ -80,8 +80,11 @@ public class MainWindow extends JFrame {
                     setLayout(null);
                     Thread shopThread = new Thread(new Runnable() {
                         public void run() {
-                            ShopWindow s = new ShopWindow();
+                            ShopWindow s = new ShopWindow(item.getMoney());
                             s.shopLoop();
+                            synchronized(item){
+                                item.getBalance(s.recieveMoney());
+                            }
                         }
                     });
                     shopThread.start();
