@@ -16,7 +16,6 @@ import javax.imageio.ImageIO;
 
 import javax.swing.*;
 
-import org.checkerframework.checker.units.qual.N;
 import org.newdawn.spaceinvaders.SystemTimer;
 import org.newdawn.spaceinvaders.entity.*;
 import org.newdawn.spaceinvaders.entity.BossEntity;
@@ -156,8 +155,6 @@ public class Game extends Canvas {
 
     private BossEntity bossAlien;
 
-    private int health = 50;
-
     private Player bgmPlayer;
     /**
      * Construct our game and set it running.
@@ -257,22 +254,18 @@ public class Game extends Canvas {
         entities.add(ship);
 
         if(this.enableItems[0]){
-            this.increaseFireSpeed();
-            System.out.print("initEntities" + Arrays.toString(this.enableItems)+"\n");
-        }
-        if(this.enableItems[1]){
             ((ShipEntity) this.ship).increaseMaxHealth();
             System.out.print("initEntities" + Arrays.toString(this.enableItems)+"\n");
         }
-        if(this.enableItems[2]){
+        if(this.enableItems[1]){
             this.increaseMoveSpeed();
             System.out.print("initEntities" + Arrays.toString(this.enableItems)+"\n");
         }
-        if(this.enableItems[3]){
+        if(this.enableItems[2]){
             this.enableShield();
             System.out.print("initEntities" + Arrays.toString(this.enableItems)+"\n");
         }
-        if(this.enableItems[4]){
+        if(this.enableItems[3]){
             this.increaseFireNum();
             System.out.print("initEntities" + Arrays.toString(this.enableItems)+"\n");
         }
@@ -417,7 +410,6 @@ public class Game extends Canvas {
                 break;
             }
             case("src/image/level5.png"):{
-                this.enableItems[4] = true;
                 this.money.set(this.alienKilled * 10 * 5);
                 System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
                 break;
@@ -507,11 +499,6 @@ public class Game extends Canvas {
     //implement setter of moveSpeed for Item.increaseMoveSpeed
     public void increaseMoveSpeed() {
         this.moveSpeed *= 1.5;
-    }
-
-    //implement setter of firingInterval for Item.increaseFireSpeed
-    public void increaseFireSpeed() {
-        this.firingInterval = 150;
     }
 
     //implement setter of fireNum for Item.
