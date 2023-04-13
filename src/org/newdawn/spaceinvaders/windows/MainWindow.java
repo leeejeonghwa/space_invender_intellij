@@ -29,6 +29,7 @@ public class MainWindow extends JFrame {
     private JButton level4btn;
     private JButton level5btn;
 
+    private static Item item = new Item();
 
     public MainWindow() {
         // 메인 윈도우 설정
@@ -89,13 +90,13 @@ public class MainWindow extends JFrame {
                 else if (button.getName() == "src/image/rule.png"){
                     button.setVisible(true);
                     setLayout(null);
-                    Thread shopThread = new Thread(new Runnable() {
+                    Thread ruleThread = new Thread(new Runnable() {
                         public void run() {
                             RuleWindow r = new RuleWindow();
                             r.ruleLoop();
                         }
                     });
-                    shopThread.start();
+                    ruleThread.start();
                 }
                 else  {
                     // level 버튼 누른 경우
@@ -109,7 +110,9 @@ public class MainWindow extends JFrame {
                             System.out.print(Arrays.toString(item.enableItems())+"\n");
                             Game g = new Game(button.getName(), item.enableItems());
                             g.gameLoop();
-                            item.clearStage(g.getItemState());
+                            synchronized(item){
+                                item.clearStage(g.getItemState());
+                            }
                             System.out.print(Arrays.toString(item.enableItems())+"\n");
                         }
                     });
