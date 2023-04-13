@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 
@@ -83,7 +84,8 @@ public class Game extends Canvas {
     private Boolean enableShield = false;
     /* Level is parameter of class instance */
     private String level;
-
+    /* Backup Item information */
+    private Boolean[] enableItems;
     /**
      * The message to display which waiting for a key press
      */
@@ -143,7 +145,7 @@ public class Game extends Canvas {
     /**
      * Construct our game and set it running.
      */
-    public Game(String level) {
+    public Game(String level, Boolean[] enableItems) {
         // create a frame to contain our game
         container = new JFrame("Space Invaders 102");
 
@@ -205,8 +207,9 @@ public class Game extends Canvas {
         createBufferStrategy(2);
         strategy = getBufferStrategy();
 
-        // recognize what level is
+        // recognize what level is, what state of item is
         this.level = level;
+        this.enableItems = enableItems;
 
         // initialise the entities in our game so there's something
         // to see at startup
@@ -244,6 +247,27 @@ public class Game extends Canvas {
         // create the player ship and place it roughly in the center of the screen
         ship = new ShipEntity(this, "sprites/ship.gif", 370, 550);
         entities.add(ship);
+
+        if(this.enableItems[0]){
+            this.increaseFireSpeed();
+            System.out.print(Arrays.toString(this.enableItems)+"\n");
+        }
+        if(this.enableItems[1]){
+            ((ShipEntity) this.ship).increaseMaxHealth();
+            System.out.print(Arrays.toString(this.enableItems)+"\n");
+        }
+        if(this.enableItems[2]){
+            this.increaseMoveSpeed();
+            System.out.print(Arrays.toString(this.enableItems)+"\n");
+        }
+        if(this.enableItems[3]){
+            this.enableShield();
+            System.out.print(Arrays.toString(this.enableItems)+"\n");
+        }
+        if(this.enableItems[4]){
+            this.increaseFireNum();
+            System.out.print(Arrays.toString(this.enableItems)+"\n");
+        }
 
         if (this.enableShield == true) {
             shield = new ShieldEntity(this, "sprites/shield.gif", 362, 538);
@@ -356,23 +380,28 @@ public class Game extends Canvas {
         firebaseTool.SetUserBestScore(globalStorage.getUserID(), bestScore);
         switch(this.level){
             case("src/image/level1.png"):{
-                this.increaseFireSpeed();
+                this.enableItems[0] = true;
+                System.out.print(Arrays.toString(this.enableItems)+"\n");
                 break;
             }
             case("src/image/level2.png"):{
-                ((ShipEntity) this.ship).increaseMaxHealth();
+                this.enableItems[1] = true;
+                System.out.print(Arrays.toString(this.enableItems)+"\n");
                 break;
             }
             case("src/image/level3.png"):{
-                this.increaseMoveSpeed();
+                this.enableItems[2] = true;
+                System.out.print(Arrays.toString(this.enableItems)+"\n");
                 break;
             }
             case("src/image/level4.png"):{
-                this.enableShield();
+                this.enableItems[3] = true;
+                System.out.print(Arrays.toString(this.enableItems)+"\n");
                 break;
             }
             case("src/image/level5.png"):{
-                this.increaseFireNum();
+                this.enableItems[4] = true;
+                System.out.print(Arrays.toString(this.enableItems)+"\n");
                 break;
             }
         }
@@ -458,22 +487,29 @@ public class Game extends Canvas {
     }
 
     //implement setter of moveSpeed for Item.increaseMoveSpeed
-    private void increaseMoveSpeed() {
+    public void increaseMoveSpeed() {
         this.moveSpeed *= 1.5;
     }
 
     //implement setter of firingInterval for Item.increaseFireSpeed
-    private void increaseFireSpeed() {
+    public void increaseFireSpeed() {
         this.firingInterval = 150;
     }
 
     //implement setter of fireNum for Item.
-    private void increaseFireNum() {
+    public void increaseFireNum() {
         this.fireNum = true;
     }
 
-    private void enableShield() {
+    //implement activate shield.
+    public void enableShield() {
         this.enableShield = true;
+    }
+
+    //return now item state
+    public Boolean[] getItemState() {
+        System.out.print(Arrays.toString(this.enableItems)+"\n");
+        return this.enableItems;
     }
 
     /**
@@ -617,7 +653,7 @@ public class Game extends Canvas {
             }
 
             //shield will move with ship
-            if (enableShield == true) {
+            if (this.enableShield == true) {
                 shield.setHorizontalMovement(0);
                 shield.setVerticalMovement(0);
 
