@@ -1,5 +1,7 @@
 package org.newdawn.spaceinvaders.cores;
 
+
+
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
@@ -13,9 +15,13 @@ import javax.imageio.ImageIO;
 
 import javax.swing.*;
 
+import org.checkerframework.checker.units.qual.N;
 import org.newdawn.spaceinvaders.SystemTimer;
 import org.newdawn.spaceinvaders.entity.*;
+import org.newdawn.spaceinvaders.entity.BossEntity;
 import org.newdawn.spaceinvaders.windows.MainWindow;
+
+
 
 /*test*/
 
@@ -142,6 +148,10 @@ public class Game extends Canvas {
     private GlobalStorage globalStorage;
 
     private Entity alien;
+
+    private BossEntity BossAlien;
+
+    private int health = 50;
     /**
      * Construct our game and set it running.
      */
@@ -331,9 +341,13 @@ public class Game extends Canvas {
             case("src/image/level5.png"):{
                 // create a block of aliens (9 rows, by 12 aliens, spaced evenly)
                 alienCount = 0;
-                for (int row = 0; row < 9; row++) {
-                    for (int x = 0; x < 12; x++) {
-                        alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
+
+                BossAlien = new BossEntity(this, 370,50);
+                entities.add(BossAlien);
+
+                for (int row = 0; row < 2; row++) {
+                    for (int x = 0; x < 3; x++) {
+                        alien = new AlienEntity(this, 200 + (x * 50), (130) + row * 30);
                         entities.add(alien);
                         alienCount++;
                     }
@@ -415,7 +429,11 @@ public class Game extends Canvas {
         // reduce the alient count, if there are none left, the player has won!
         alienCount--;
 
-        if (alienCount == 0) {
+        if (this.level.equals("src/image/level5.png")){
+            if(alienCount == 0 && BossAlien != null && BossAlien.gethealth() <= 0){
+                notifyWin();
+            }
+        }else if(alienCount == 0){
             notifyWin();
         }
 
@@ -674,7 +692,7 @@ public class Game extends Canvas {
             if (firePressed) {
                 tryToFire();
             }
-            if (this.level.equals("src/image/level4.png")) {
+            if (this.level.equals("src/image/level4.png") || this.level.equals("src/image/level5.png")) {
                 shotAlien();
             }
 
