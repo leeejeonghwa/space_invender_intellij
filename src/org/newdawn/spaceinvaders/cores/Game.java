@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.imageio.ImageIO;
 
@@ -92,6 +93,10 @@ public class Game extends Canvas {
     private String level;
     /* Backup Item information */
     private Boolean[] enableItems;
+    /* Money for clearing stage */
+    private AtomicInteger money;
+    /* Number of killed Aliean */
+    private int alienKilled = 0;
     /**
      * The message to display which waiting for a key press
      */
@@ -157,7 +162,7 @@ public class Game extends Canvas {
     /**
      * Construct our game and set it running.
      */
-    public Game(String level, Boolean[] enableItems) {
+    public Game(String level, Boolean[] enableItems, AtomicInteger money) {
         // create a frame to contain our game
         container = new JFrame("Space Invaders 102");
 
@@ -212,6 +217,7 @@ public class Game extends Canvas {
         // recognize what level is, what state of item is
         this.level = level;
         this.enableItems = enableItems;
+        this.money = money;
 
         // initialise the entities in our game so there's something
         // to see at startup
@@ -252,23 +258,23 @@ public class Game extends Canvas {
 
         if(this.enableItems[0]){
             this.increaseFireSpeed();
-            System.out.print(Arrays.toString(this.enableItems)+"\n");
+            System.out.print("initEntities" + Arrays.toString(this.enableItems)+"\n");
         }
         if(this.enableItems[1]){
             ((ShipEntity) this.ship).increaseMaxHealth();
-            System.out.print(Arrays.toString(this.enableItems)+"\n");
+            System.out.print("initEntities" + Arrays.toString(this.enableItems)+"\n");
         }
         if(this.enableItems[2]){
             this.increaseMoveSpeed();
-            System.out.print(Arrays.toString(this.enableItems)+"\n");
+            System.out.print("initEntities" + Arrays.toString(this.enableItems)+"\n");
         }
         if(this.enableItems[3]){
             this.enableShield();
-            System.out.print(Arrays.toString(this.enableItems)+"\n");
+            System.out.print("initEntities" + Arrays.toString(this.enableItems)+"\n");
         }
         if(this.enableItems[4]){
             this.increaseFireNum();
-            System.out.print(Arrays.toString(this.enableItems)+"\n");
+            System.out.print("initEntities" + Arrays.toString(this.enableItems)+"\n");
         }
 
         if (this.enableShield == true) {
@@ -388,27 +394,32 @@ public class Game extends Canvas {
         switch(this.level){
             case("src/image/level1.png"):{
                 this.enableItems[0] = true;
-                System.out.print(Arrays.toString(this.enableItems)+"\n");
+                this.money.set(this.alienKilled * 10 * 1);
+                System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
                 break;
             }
             case("src/image/level2.png"):{
                 this.enableItems[1] = true;
-                System.out.print(Arrays.toString(this.enableItems)+"\n");
+                this.money.set(this.alienKilled * 10 * 2);
+                System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
                 break;
             }
             case("src/image/level3.png"):{
                 this.enableItems[2] = true;
-                System.out.print(Arrays.toString(this.enableItems)+"\n");
+                this.money.set(this.alienKilled * 10 * 3);
+                System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
                 break;
             }
             case("src/image/level4.png"):{
                 this.enableItems[3] = true;
-                System.out.print(Arrays.toString(this.enableItems)+"\n");
+                this.money.set(this.alienKilled * 10 * 4);
+                System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
                 break;
             }
             case("src/image/level5.png"):{
                 this.enableItems[4] = true;
-                System.out.print(Arrays.toString(this.enableItems)+"\n");
+                this.money.set(this.alienKilled * 10 * 5);
+                System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
                 break;
             }
         }
@@ -515,8 +526,14 @@ public class Game extends Canvas {
 
     //return now item state
     public Boolean[] getItemState() {
-        System.out.print(Arrays.toString(this.enableItems)+"\n");
+        System.out.print("getItemState: " + Arrays.toString(this.enableItems) + "\n");
         return this.enableItems;
+    }
+
+    //return now money
+    public AtomicInteger recieveMoney(){
+        System.out.print("recieveMoney: " + this.money + "\n");
+        return this.money;
     }
 
     /**
@@ -533,7 +550,7 @@ public class Game extends Canvas {
     public void gameLoop() {
 
         long lastLoopTime = SystemTimer.getTime();
-        int alienKilled = alienCount;
+        this.alienKilled = alienCount;
 
         // keep looping round til the game ends
         while (gameRunning) {
@@ -566,26 +583,29 @@ public class Game extends Canvas {
             g.drawString("Time: " + Long.toString(timerTime), 10, 20);
 
             g.setColor(Color.WHITE);
-            g.drawString("Killed: " + Integer.toString(alienKilled - alienCount), 10, 40);
+            g.drawString("Killed: " + Integer.toString(this.alienKilled - alienCount), 10, 40);
+
+            g.setColor(Color.WHITE);
+            g.drawString("Money: " + Integer.toString(this.money.get()), 10, 60);
 
             BufferedImage heart;
             try {
 				int heartNum = ((ShipEntity) ship).returnNowHealth();
 				for(int i=0;i<heartNum;i++){
 					heart = ImageIO.read(new File("src/sprites/heart.gif"));
-					g.drawImage(heart,758-(32*i),10,this);
+					g.drawImage(heart,32*i+10,558,this);
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 
-            bestScore = Integer.toString(alienKilled - alienCount);
+            bestScore = Integer.toString(this.alienKilled - alienCount);
 
             // cycle round asking each entity to move itself
             if (!waitingForKeyPress) {
                 for (int i = 0; i < entities.size(); i++) {
                     Entity entity = (Entity) entities.get(i);
-
+                    
                     entity.move(delta);
                 }
             }
