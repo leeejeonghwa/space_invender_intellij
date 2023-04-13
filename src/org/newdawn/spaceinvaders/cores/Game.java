@@ -152,6 +152,8 @@ public class Game extends Canvas {
     private BossEntity BossAlien;
 
     private int health = 50;
+
+    private Player bgmPlayer;
     /**
      * Construct our game and set it running.
      */
@@ -167,13 +169,20 @@ public class Game extends Canvas {
         int centerX = (int) ((screenSize.getWidth() - container.getWidth()) / 2);
         int centerY = (int) ((screenSize.getHeight() - container.getHeight()) / 2);
         container.setLocation(centerX, centerY);
-
+//        container.addWindowListener(new WindowAdapter() {
+//            public void windowClosing(WindowEvent e) {
+//                bgmPlayer.pause();
+//                container.setVisible(false);
+//            }
+//        });
+//
         JButton exitbtn = new JButton("exit");
         exitbtn.setBounds(600,10,70,30);
         exitbtn.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 // 버튼 및 레이아웃 관련 처리
                 container.dispose();
+                bgmPlayer.pause();
             }
 
         });
@@ -225,7 +234,7 @@ public class Game extends Canvas {
         // to see at startup
         initEntities();
 
-        Player bgmPlayer = new Player();
+        bgmPlayer = new Player();
         new Thread(() -> {
             bgmPlayer.play("src/sound/backgroundmusic.wav");
         }).start();
