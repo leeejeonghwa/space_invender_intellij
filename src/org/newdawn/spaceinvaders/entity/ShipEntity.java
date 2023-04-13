@@ -64,13 +64,15 @@ public class ShipEntity extends Entity {
      * @param other The entity with which the ship has collided
      */
     public void collidedWith(Entity other) {
-        collided = true;
-        if (health <= 0 && collided == true){
-            game.notifyDeath();
-        }
-        else if(health > 0 && collided == true){
-            health -= 1;
-            collided = false;
+        if(other instanceof AlienEntity || other instanceof ShotAlienEntity){
+            collided = true;
+            if (health <= 0 && collided == true){
+                game.notifyDeath();
+            }
+            else if(health > 0 && collided == true){
+                health -= 1;
+                collided = false;
+            }
         }
     }
 

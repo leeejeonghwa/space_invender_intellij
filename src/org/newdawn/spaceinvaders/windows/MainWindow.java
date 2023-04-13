@@ -7,10 +7,12 @@ import javax.swing.*;
 import org.newdawn.spaceinvaders.cores.FirebaseTool;
 import org.newdawn.spaceinvaders.cores.Game;
 import org.newdawn.spaceinvaders.cores.GlobalStorage;
+import org.newdawn.spaceinvaders.cores.Item;
 import org.newdawn.spaceinvaders.cores.Login;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
 
 public class MainWindow extends JFrame {
 
@@ -27,6 +29,7 @@ public class MainWindow extends JFrame {
     private JButton level4btn;
     private JButton level5btn;
 
+    private static Item item = new Item();
 
     public MainWindow() {
         // 메인 윈도우 설정
@@ -51,7 +54,6 @@ public class MainWindow extends JFrame {
 
         firebaseTool = FirebaseTool.getInstance();
         globalStorage = GlobalStorage.getInstance();
-
     }
 
     private JButton drawButton(JButton button, String ref, int width, int height, int x, int y){
@@ -71,6 +73,7 @@ public class MainWindow extends JFrame {
     }
 
     public void btnMouseListener(JButton button){
+        System.out.print(Arrays.toString(item.enableItems())+"\n");
         button.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 if (button.getName() == "src/image/start.png"){
@@ -87,13 +90,13 @@ public class MainWindow extends JFrame {
                 else if (button.getName() == "src/image/rule.png"){
                     button.setVisible(true);
                     setLayout(null);
-                    Thread shopThread = new Thread(new Runnable() {
+                    Thread ruleThread = new Thread(new Runnable() {
                         public void run() {
                             RuleWindow r = new RuleWindow();
                             r.ruleLoop();
                         }
                     });
-                    shopThread.start();
+                    ruleThread.start();
                 }
                 else  {
                     // level 버튼 누른 경우
@@ -104,8 +107,13 @@ public class MainWindow extends JFrame {
                     // 게임 루프를 실행하는 스레드 생성
                     Thread gameThread = new Thread(new Runnable() {
                         public void run() {
-                            Game g = new Game(button.getName());
+                            System.out.print(Arrays.toString(item.enableItems())+"\n");
+                            Game g = new Game(button.getName(), item.enableItems());
                             g.gameLoop();
+                            synchronized(item){
+                                item.clearStage(g.getItemState());
+                            }
+                            System.out.print(Arrays.toString(item.enableItems())+"\n");
                         }
                     });
                     gameThread.start();
