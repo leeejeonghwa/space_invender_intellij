@@ -70,10 +70,8 @@ import org.newdawn.spaceinvaders.cores.Game;
             if (other instanceof ShipEntity) {
                 // remove the affected entities
                 game.removeEntity(this);
-                game.removeEntity(other);
 
                 // notify the game that the ship has been killed
-                game.notifyDeath();
                 used = true;
             }
 
