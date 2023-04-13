@@ -321,8 +321,8 @@ public class Game extends Canvas {
                 BossAlien = new BossEntity(this, 370,50);
                 entities.add(BossAlien);
 
-                for (int row = 0; row < 2; row++) {
-                    for (int x = 0; x < 3; x++) {
+                for (int row = 0; row < 5; row++) {
+                    for (int x = 0; x < 5; x++) {
                         alien = new AlienEntity(this, 200 + (x * 50), (130) + row * 30);
                         entities.add(alien);
                         alienCount++;
