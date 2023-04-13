@@ -34,11 +34,11 @@ public class RuleWindow extends Canvas{
         container.setResizable(false);
         container.setVisible(true);
 
-        container.addWindowListener(new WindowAdapter(){
-            public void windowClosing(WindowEvent e){
-                System.exit(0);
-            }
-        });
+//        container.addWindowListener(new WindowAdapter(){
+//            public void windowClosing(WindowEvent e){
+//                System.exit(0);
+//            }
+//        });
 
         requestFocus();
 

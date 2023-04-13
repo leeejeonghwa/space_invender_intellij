@@ -169,24 +169,6 @@ public class Game extends Canvas {
         int centerX = (int) ((screenSize.getWidth() - container.getWidth()) / 2);
         int centerY = (int) ((screenSize.getHeight() - container.getHeight()) / 2);
         container.setLocation(centerX, centerY);
-//        container.addWindowListener(new WindowAdapter() {
-//            public void windowClosing(WindowEvent e) {
-//                bgmPlayer.pause();
-//                container.setVisible(false);
-//            }
-//        });
-//
-        JButton exitbtn = new JButton("exit");
-        exitbtn.setBounds(600,10,70,30);
-        exitbtn.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent e) {
-                // 버튼 및 레이아웃 관련 처리
-                container.dispose();
-                bgmPlayer.pause();
-            }
-
-        });
-        panel.add(exitbtn);
 
         panel.setLayout(null);
 
@@ -208,11 +190,11 @@ public class Game extends Canvas {
 
         // add a listener to respond to the user closing the window. If they
         // do we'd like to exit the game
-        container.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                System.exit(0);
-            }
-        });
+//        container.addWindowListener(new WindowAdapter() {
+//            public void windowClosing(WindowEvent e) {
+//                System.exit(0);
+//            }
+//        });
 
         // add a key input system (defined below) to our canvas
         // so we can respond to key pressed
