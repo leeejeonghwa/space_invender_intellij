@@ -19,7 +19,7 @@ public class ShopWindow extends Canvas{
 
     private JFrame container;
 
-    private int money;
+    private AtomicInteger money;
 
     private BufferedImage shopShip1;
     private BufferedImage shopShip2;
@@ -53,7 +53,7 @@ public class ShopWindow extends Canvas{
         createBufferStrategy(2);
         strategy = getBufferStrategy();
 
-        this.money = money.intValue();
+        this.money = money;
 
         try{
             shopShip1 = ImageIO.read(new File("src/sprites/Shopship1.png"));
@@ -81,8 +81,8 @@ public class ShopWindow extends Canvas{
                     JOptionPane.YES_NO_OPTION);
             if (response == JOptionPane.YES_OPTION) {
                 // Deduct the cost of the ship from the player's money
-                if (money >= 200) {
-                    money -= 200;
+                if (this.money.get() >= 200) {
+                    this.money.set(money.get() - 200);
                     return;
                     // TODO: Add code to actually purchase the ship
                 } else {
@@ -102,8 +102,8 @@ public class ShopWindow extends Canvas{
             JOptionPane.YES_NO_OPTION);
         if (response == JOptionPane.YES_OPTION) {
             // Deduct the cost of the ship from the player's money
-            if (money >= 300) {
-                money -= 300;
+            if (this.money.get() >= 300) {
+                this.money.set(money.get() - 300);
                 return;
                 // TODO: Add code to actually purchase the ship
             } else {
@@ -123,8 +123,8 @@ public class ShopWindow extends Canvas{
             JOptionPane.YES_NO_OPTION);
         if (response == JOptionPane.YES_OPTION) {
             // Deduct the cost of the ship from the player's money
-            if (money >= 500) {
-                money -= 500;
+            if (this.money.get() >= 500) {
+                this.money.set(money.get() - 500);
                 return;
                 // TODO: Add code to actually purchase the ship
             } else {
@@ -144,8 +144,8 @@ public class ShopWindow extends Canvas{
             JOptionPane.YES_NO_OPTION);
         if (response == JOptionPane.YES_OPTION) {
             // Deduct the cost of the ship from the player's money
-            if (money >= 700) {
-                money -= 700;
+            if (this.money.get() >= 700) {
+                this.money.set(money.get() - 700);
                 return;
                 // TODO: Add code to actually purchase the ship
             } else {
@@ -165,8 +165,8 @@ public class ShopWindow extends Canvas{
             JOptionPane.YES_NO_OPTION);
         if (response == JOptionPane.YES_OPTION) {
             // Deduct the cost of the ship from the player's money
-            if (money >= 1100) {
-                money -= 1100;
+            if (this.money.get() >= 1100) {
+                this.money.set(money.get() - 1100);
                 return;
                 // TODO: Add code to actually purchase the ship
             } else {
@@ -186,7 +186,7 @@ public class ShopWindow extends Canvas{
             g.fillRect(0, 0, 800, 600);
 
             g.setColor(Color.WHITE);
-            g.drawString("Money: " + Integer.toString(this.money), 10, 20);
+            g.drawString("Money: " + Integer.toString(this.money.intValue()), 10, 20);
             
             g.drawImage(this.shopShip1,25,255,this);
             g.drawImage(this.shopShip2,190,255,this);
@@ -207,7 +207,6 @@ public class ShopWindow extends Canvas{
     }
 
 	public AtomicInteger recieveMoney() {
-        AtomicInteger returnValue = new AtomicInteger(this.money);
-		return returnValue;
+        return this.money;
 	}
 }

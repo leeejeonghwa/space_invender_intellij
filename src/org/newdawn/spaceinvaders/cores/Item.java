@@ -9,11 +9,11 @@ public class Item {
 
     public void clearStage(Boolean[] itemState, AtomicInteger money){
         this.itemList = itemState;
-        this.money.addAndGet(money.intValue());
+        this.money.set(money.get());
     }
 
-    public void getBalance(AtomicInteger money){
-        this.money.addAndGet(money.intValue());
+    public void setMoney(AtomicInteger money){
+        this.money.set(money.get());
     }
 
     public Boolean[] enableItems(){

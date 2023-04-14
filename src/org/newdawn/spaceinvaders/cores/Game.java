@@ -19,7 +19,6 @@ import javax.swing.*;
 import org.newdawn.spaceinvaders.SystemTimer;
 import org.newdawn.spaceinvaders.entity.*;
 import org.newdawn.spaceinvaders.entity.BossEntity;
-import org.newdawn.spaceinvaders.windows.MainWindow;
 
 
 
@@ -387,30 +386,30 @@ public class Game extends Canvas {
         switch(this.level){
             case("src/image/level1.png"):{
                 this.enableItems[0] = true;
-                this.money = new AtomicInteger(this.money.intValue() + this.alienKilled * 10 * 1);
+                this.money.set(this.money.get() + this.alienKilled * 10 * 1);
                 System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
                 break;
             }
             case("src/image/level2.png"):{
                 this.enableItems[1] = true;
-                this.money = new AtomicInteger(this.money.intValue() + this.alienKilled * 10 * 2);
+                this.money.set(this.money.get() + this.alienKilled * 10 * 2);
                 System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
                 break;
             }
             case("src/image/level3.png"):{
                 this.enableItems[2] = true;
-                this.money = new AtomicInteger(this.money.intValue() + this.alienKilled * 10 * 3);
+                this.money.set(this.money.get() + this.alienKilled * 10 * 3);
                 System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
                 break;
             }
             case("src/image/level4.png"):{
                 this.enableItems[3] = true;
-                this.money = new AtomicInteger(this.money.intValue() + this.alienKilled * 10 * 4);
+                this.money.set(this.money.get() + this.alienKilled * 10 * 4);
                 System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
                 break;
             }
             case("src/image/level5.png"):{
-                this.money = new AtomicInteger(this.money.intValue() + this.alienKilled * 10 * 5);
+                this.money.set(this.money.get() + this.alienKilled * 10 * 5);
                 System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
                 break;
             }
@@ -519,7 +518,6 @@ public class Game extends Canvas {
 
     //return now money
     public AtomicInteger recieveMoney(){
-        System.out.print("recieveMoney: " + this.money + "\n");
         return this.money;
     }
 
