@@ -81,8 +81,8 @@ public class ShopWindow extends Canvas {
 
     private void onShopClick(int x, int y){
         //shopShip1 click listener
-        if (x >= 25 && x <= 25 + shopShip1.getWidth() &&
-                y >= 255 && y <= 255 + shopShip1.getHeight()) {
+        if (x >= 100 && x <= 100 + shopShip1.getWidth() &&
+                y >= 200 && y <= 200 + shopShip1.getHeight()) {
                     if (this.enableSkins[0] == true){
                         int response = JOptionPane.showConfirmDialog(ShopWindow.this,
                         "해당 스킨을 보유중이에요. 이 스킨으로 바꿀까요?", "스킨 변경 확인",
@@ -111,8 +111,8 @@ public class ShopWindow extends Canvas {
                 }
 
         //shopShip2 click listener
-        if (x >= 190 && x <= 190 + shopShip1.getWidth() &&
-                y >= 255 && y <= 255 + shopShip1.getHeight()) {
+        if (x >= 360 && x <= 360 + shopShip1.getWidth() &&
+                y >= 200 && y <= 200 + shopShip1.getHeight()) {
                     if (this.enableSkins[1] == true){
                         int response = JOptionPane.showConfirmDialog(ShopWindow.this,
                         "해당 스킨을 보유중이에요. 이 스킨으로 바꿀까요?", "스킨 변경 확인",
@@ -141,8 +141,8 @@ public class ShopWindow extends Canvas {
                 }
         
         //shopShip3 click listener
-        if (x >= 355 && x <= 355 + shopShip1.getWidth() &&
-                y >= 255 && y <= 255 + shopShip1.getHeight()) {
+        if (x >= 620 && x <= 620 + shopShip1.getWidth() &&
+                y >= 200 && y <= 200 + shopShip1.getHeight()) {
                     if (this.enableSkins[2] == true){
                         int response = JOptionPane.showConfirmDialog(ShopWindow.this,
                         "해당 스킨을 보유중이에요. 이 스킨으로 바꿀까요?", "스킨 변경 확인",
@@ -171,8 +171,8 @@ public class ShopWindow extends Canvas {
                 }
 
         //shopShip4 click listener
-        if (x >= 520 && x <= 520 + shopShip1.getWidth() &&
-                y >= 255 && y <= 255 + shopShip1.getHeight()) {
+        if (x >= 230 && x <= 230 + shopShip1.getWidth() &&
+                y >= 400 && y <= 400 + shopShip1.getHeight()) {
                     if (this.enableSkins[3] == true){
                         int response = JOptionPane.showConfirmDialog(ShopWindow.this,
                         "해당 스킨을 보유중이에요. 이 스킨으로 바꿀까요?", "스킨 변경 확인",
@@ -201,8 +201,8 @@ public class ShopWindow extends Canvas {
                 }
 
         //shopShip5 click listener
-        if (x >= 685 && x <= 685 + shopShip1.getWidth() &&
-                y >= 255 && y <= 255 + shopShip1.getHeight()) {
+        if (x >= 490 && x <= 490 + shopShip1.getWidth() &&
+                y >= 400 && y <= 400 + shopShip1.getHeight()) {
                     if (this.enableSkins[4] == true){
                         int response = JOptionPane.showConfirmDialog(ShopWindow.this,
                         "해당 스킨을 보유중이에요. 이 스킨으로 바꿀까요?", "스킨 변경 확인",
@@ -234,24 +234,31 @@ public class ShopWindow extends Canvas {
     public void shopLoop(){
         while(true){
             Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
-            g.setColor(Color.black);
-            g.fillRect(0, 0, 800, 600);
+
+            BufferedImage shopBackground;
+            try {
+                shopBackground = ImageIO.read(new File("src/sprites/shopbackground.png"));
+                g.drawImage(shopBackground, 0, 0, this);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             g.setColor(Color.WHITE);
-            g.drawString("Money: " + Integer.toString(this.money.intValue()), 10, 20);
+            g.drawString("Coin: " + Integer.toString(this.money.intValue()), 10, 20);
             
-            g.drawImage(this.shopShip1,25,255,this);
-            g.drawImage(this.shopShip2,190,255,this);
-            g.drawImage(this.shopShip3,355,255,this);
-            g.drawImage(this.shopShip4,520,255,this);
-            g.drawImage(this.shopShip5,685,255,this);
+            g.drawImage(this.shopShip1,100,200,this);
+            g.drawImage(this.shopShip2,360,200,this);
+            g.drawImage(this.shopShip3,620,200,this);
+            g.drawImage(this.shopShip4,230,400,this);
+            g.drawImage(this.shopShip5,490,400,this);
 
             g.setColor(Color.WHITE);
-            g.drawString("Price: 200",43,375);
-            g.drawString("Price: 300",208,375);
-            g.drawString("Price: 500",373,375);
-            g.drawString("Price: 700",538,375);
-            g.drawString("Price: 1100",700,375);
+            g.drawString("Price: 200",118,320);
+            g.drawString("Price: 300",378,320);
+            g.drawString("Price: 500",638,320);
+            g.drawString("Price: 700",248,520);
+            g.drawString("Price: 1100",508,520);
 
             g.dispose();
             strategy.show();
