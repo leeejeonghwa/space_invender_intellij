@@ -159,7 +159,7 @@ public class Game extends Canvas {
     private Player bgmPlayer;
     /**
      * Construct our game and set it running.
-     * @param atomicInteger
+     * @param
      */
     public Game(String level, Boolean[] enableItems, AtomicInteger money, AtomicInteger activeSkin) {
         // create a frame to contain our game
@@ -483,12 +483,12 @@ public class Game extends Canvas {
         // if we waited long enough, create the shot entity, and record the time.
         lastFire = System.currentTimeMillis();
         if (fireNum == false) {
-            ShotEntity shot = new ShotEntity(this, "sprites/shot.gif", ship.getX() + 10, ship.getY() - 30);
+            ShotEntity shot = new ShotEntity(this, "sprites/shipshot.png", ship.getX() + 10, ship.getY() - 30);
             entities.add(shot);
         } else {
-            ShotEntity leftShot = new ShotEntity(this, "sprites/shot.gif", ship.getX() - 40, ship.getY() - 30);
-            ShotEntity middleShot = new ShotEntity(this, "sprites/shot.gif", ship.getX() + 10, ship.getY() - 30);
-            ShotEntity rightShot = new ShotEntity(this, "sprites/shot.gif", ship.getX() + 60, ship.getY() - 30);
+            ShotEntity leftShot = new ShotEntity(this, "sprites/shipshot.png", ship.getX() - 40, ship.getY() - 30);
+            ShotEntity middleShot = new ShotEntity(this, "sprites/shipshot.png", ship.getX() + 10, ship.getY() - 30);
+            ShotEntity rightShot = new ShotEntity(this, "sprites/shipshot.png", ship.getX() + 60, ship.getY() - 30);
             entities.add(leftShot);
             entities.add(middleShot);
             entities.add(rightShot);
@@ -600,7 +600,7 @@ public class Game extends Canvas {
             g.drawString("Killed: " + Integer.toString(this.alienKilled - alienCount), 10, 40);
 
             g.setColor(Color.WHITE);
-            g.drawString("Money: " + Integer.toString(this.money.get()), 10, 60);
+            g.drawString("Coin: " + Integer.toString(this.money.get()), 10, 60);
 
             BufferedImage heart;
             BufferedImage maxHealth;
@@ -611,7 +611,7 @@ public class Game extends Canvas {
                 //draw health
 				int heartNum = ((ShipEntity) ship).returnNowHealth();
 				for(int i=0;i<heartNum;i++){
-					heart = ImageIO.read(new File("src/sprites/heart.gif"));
+					heart = ImageIO.read(new File("src/sprites/heart.png"));
 					g.drawImage(heart,32*i+10,558,this);
 				}
                 //draw enable items
