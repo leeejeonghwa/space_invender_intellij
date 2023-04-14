@@ -12,6 +12,10 @@ public class Item {
         this.money.addAndGet(money.intValue());
     }
 
+    public void getBalance(AtomicInteger money){
+        this.money.addAndGet(money.intValue());
+    }
+
     public Boolean[] enableItems(){
         return this.itemList;
     }
