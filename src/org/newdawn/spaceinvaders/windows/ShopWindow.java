@@ -27,7 +27,10 @@ public class ShopWindow extends Canvas {
     private BufferedImage shopShip4;
     private BufferedImage shopShip5;
 
-    public ShopWindow(AtomicInteger money, Boolean[] enableSkins, AtomicInteger activeSkin){
+    private int easterEggClicked;
+    private Boolean[] enableItem;
+
+    public ShopWindow(AtomicInteger money, Boolean[] enableItem, Boolean[] enableSkins, AtomicInteger activeSkin){
         container = new JFrame();
 
         JPanel panel = (JPanel) container.getContentPane();
@@ -62,6 +65,7 @@ public class ShopWindow extends Canvas {
         this.money = money;
         this.enableSkins = enableSkins;
         this.activeSkin = activeSkin;
+        this.enableItem = enableItem;
         
         try{
             shopShip1 = ImageIO.read(new File("src/sprites/Shopship1.png"));
@@ -203,7 +207,26 @@ public class ShopWindow extends Canvas {
         //shopShip5 click listener
         if (x >= 490 && x <= 490 + shopShip1.getWidth() &&
                 y >= 400 && y <= 400 + shopShip1.getHeight()) {
-                    if (this.enableSkins[4] == true){
+                    easterEggClicked++;
+                    if (easterEggClicked == 5){
+                        String response = JOptionPane.showInputDialog(ShopWindow.this,
+                        "Write the name of professor who teachs this class");
+                        if (response.equals("김순태")|| response.equals("김순태 교수님")){
+                            JOptionPane.showMessageDialog(ShopWindow.this,
+                            "넌 강해졌다. 돌격해! (!وريهم قوتك)", "뽕 활성화",
+                            JOptionPane.INFORMATION_MESSAGE);
+                            easterEggClicked = 0;
+                            this.enableItem[4] = true;
+                            return;
+                            //TO DO: implement easterEgg
+                        } else {
+                            JOptionPane.showMessageDialog(ShopWindow.this,
+                            "재수강...해야겠지...?", "세구세구야 그게 무슨 소리니...",
+                            JOptionPane.INFORMATION_MESSAGE);
+                            System.exit(0);
+                        }
+                    } else {
+                        if (this.enableSkins[4] == true){
                         int response = JOptionPane.showConfirmDialog(ShopWindow.this,
                         "해당 스킨을 보유중이에요. 이 스킨으로 바꿀까요?", "스킨 변경 확인",
                         JOptionPane.YES_NO_OPTION);
@@ -230,6 +253,7 @@ public class ShopWindow extends Canvas {
                     }
                 }
             }
+        }
 
     public void shopLoop(){
         while(true){
@@ -276,4 +300,8 @@ public class ShopWindow extends Canvas {
 	public AtomicInteger getSelectedSkin() {
 		return this.activeSkin;
 	}
+
+    public Boolean[] getItemState(){
+        return this.enableItem;
+    }
 }
