@@ -603,12 +603,37 @@ public class Game extends Canvas {
             g.drawString("Money: " + Integer.toString(this.money.get()), 10, 60);
 
             BufferedImage heart;
+            BufferedImage maxHealth;
+            BufferedImage getFaster;
+            BufferedImage enableShield;
+            BufferedImage moreBullet;
             try {
+                //draw health
 				int heartNum = ((ShipEntity) ship).returnNowHealth();
 				for(int i=0;i<heartNum;i++){
 					heart = ImageIO.read(new File("src/sprites/heart.gif"));
 					g.drawImage(heart,32*i+10,558,this);
 				}
+                //draw enable items
+                maxHealth = ImageIO.read(new File("src/sprites/maxHealth.gif"));
+                getFaster = ImageIO.read(new File("src/sprites/getFaster.gif"));
+                enableShield = ImageIO.read(new File("src/sprites/enableShield.gif"));
+                moreBullet = ImageIO.read(new File("src/sprites/moreBullet.gif"));
+
+                if (enableItems[0] == true){
+                    g.drawImage(maxHealth,730 - moreBullet.getWidth() - enableShield.getWidth() - getFaster.getWidth() - maxHealth.getWidth()
+                    ,558,this);
+                }
+                if (enableItems[1] == true){
+                    g.drawImage(getFaster, 745 - moreBullet.getWidth() - enableShield.getWidth() - getFaster.getWidth()
+                    ,558,this);
+                }
+                if (enableItems[2] == true){
+                    g.drawImage(enableShield,760 - moreBullet.getWidth() - enableShield.getWidth(),558,this);
+                }
+                if (enableItems[3] == true){
+                    g.drawImage(moreBullet,775 - moreBullet.getWidth(),558,this);
+                }
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
