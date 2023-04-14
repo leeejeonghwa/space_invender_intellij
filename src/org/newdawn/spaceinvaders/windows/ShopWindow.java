@@ -10,11 +10,9 @@ import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.imageio.ImageIO;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import javax.swing.*;
 
-public class ShopWindow extends Canvas{
+public class ShopWindow extends Canvas {
     private BufferStrategy strategy;
 
     private JFrame container;
@@ -39,6 +37,12 @@ public class ShopWindow extends Canvas{
         int centerY = (int) ((screenSize.getHeight() - container.getHeight()) / 2);
         container.setLocation(centerX, centerY);
 
+        JLabel shopimg = new JLabel();
+        ImageIcon shop = new ImageIcon("src/sprites/shop.png");
+        shopimg.setIcon(shop);
+        shopimg.setBounds(300, 40, 226, 73);
+        container.getContentPane().add(shopimg);
+
         panel.setLayout(null);
 
         setBounds(0, 0, 800, 600);
@@ -58,7 +62,7 @@ public class ShopWindow extends Canvas{
         this.money = money;
         this.enableSkins = enableSkins;
         this.activeSkin = activeSkin;
-
+        
         try{
             shopShip1 = ImageIO.read(new File("src/sprites/Shopship1.png"));
             shopShip2 = ImageIO.read(new File("src/sprites/Shopship2.png"));
