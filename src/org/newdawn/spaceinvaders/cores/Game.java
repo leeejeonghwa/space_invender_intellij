@@ -250,7 +250,7 @@ public class Game extends Canvas {
      */
     private void initEntities() {
         // create the player ship and place it roughly in the center of the screen
-        ship = new ShipEntity(this, "sprites/ship.gif", 370, 550);
+        ship = new ShipEntity(this, "sprites/ship.png", 370, 550);
         entities.add(ship);
 
         if(this.enableItems[0]){
@@ -387,30 +387,30 @@ public class Game extends Canvas {
         switch(this.level){
             case("src/image/level1.png"):{
                 this.enableItems[0] = true;
-                this.money.set(this.alienKilled * 10 * 1);
+                this.money = new AtomicInteger(this.money.intValue() + this.alienKilled * 10 * 1);
                 System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
                 break;
             }
             case("src/image/level2.png"):{
                 this.enableItems[1] = true;
-                this.money.set(this.alienKilled * 10 * 2);
+                this.money = new AtomicInteger(this.money.intValue() + this.alienKilled * 10 * 2);
                 System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
                 break;
             }
             case("src/image/level3.png"):{
                 this.enableItems[2] = true;
-                this.money.set(this.alienKilled * 10 * 3);
+                this.money = new AtomicInteger(this.money.intValue() + this.alienKilled * 10 * 3);
                 System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
                 break;
             }
             case("src/image/level4.png"):{
                 this.enableItems[3] = true;
-                this.money.set(this.alienKilled * 10 * 4);
+                this.money = new AtomicInteger(this.money.intValue() + this.alienKilled * 10 * 4);
                 System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
                 break;
             }
             case("src/image/level5.png"):{
-                this.money.set(this.alienKilled * 10 * 5);
+                this.money = new AtomicInteger(this.money.intValue() + this.alienKilled * 10 * 5);
                 System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
                 break;
             }
