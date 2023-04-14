@@ -250,7 +250,7 @@ public class Game extends Canvas {
      */
     private void initEntities() {
         // create the player ship and place it roughly in the center of the screen
-        ship = new ShipEntity(this, "sprites/ship.gif", 370, 550);
+        ship = new ShipEntity(this, "sprites/ship.png", 370, 550);
         entities.add(ship);
 
         if(this.enableItems[0]){
@@ -281,7 +281,7 @@ public class Game extends Canvas {
                 alienCount = 0;
                 for (int row = 0; row < 4; row++) {
                     for (int x = 0; x < 5; x++) {
-                        alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
+                        alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 40);
                         entities.add(alien);
                         alienCount++;
                     }
