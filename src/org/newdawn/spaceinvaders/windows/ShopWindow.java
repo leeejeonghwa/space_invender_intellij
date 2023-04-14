@@ -24,9 +24,6 @@ public class ShopWindow extends Canvas {
 
         container = new JFrame();
 
-        ShopWindowPanel Panel = new ShopWindowPanel(); // 새로운 클래스의 인스턴스를 만든다.
-        container.add(Panel); // JFrame에 추가한다.
-
         JPanel panel = (JPanel) container.getContentPane();
         panel.setPreferredSize(new Dimension(800, 600));
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -39,13 +36,6 @@ public class ShopWindow extends Canvas {
         shopimg.setIcon(shop);
         shopimg.setBounds(300, 40, 226, 73);
         container.getContentPane().add(shopimg);
-
-//        JLabel background = new JLabel();
-//        ImageIcon backgroundImage = new ImageIcon("src/sprites/shopbackground.png");
-//        background.setIcon(backgroundImage);
-//        background.setBounds(0, 0, 800, 600);
-//        container.getContentPane().add(background);
-
 
         panel.setLayout(null);
 
