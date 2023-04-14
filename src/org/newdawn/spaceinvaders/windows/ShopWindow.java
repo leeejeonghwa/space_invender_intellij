@@ -20,6 +20,8 @@ public class ShopWindow extends Canvas{
     private JFrame container;
 
     private AtomicInteger money;
+    private AtomicInteger activeSkin;
+    private Boolean[] enableSkins;
 
     private BufferedImage shopShip1;
     private BufferedImage shopShip2;
@@ -27,7 +29,7 @@ public class ShopWindow extends Canvas{
     private BufferedImage shopShip4;
     private BufferedImage shopShip5;
 
-    public ShopWindow(AtomicInteger money){
+    public ShopWindow(AtomicInteger money, Boolean[] enableSkins, AtomicInteger activeSkin){
         container = new JFrame();
 
         JPanel panel = (JPanel) container.getContentPane();
@@ -54,6 +56,8 @@ public class ShopWindow extends Canvas{
         strategy = getBufferStrategy();
 
         this.money = money;
+        this.enableSkins = enableSkins;
+        this.activeSkin = activeSkin;
 
         try{
             shopShip1 = ImageIO.read(new File("src/sprites/Shopship1.png"));
@@ -72,112 +76,156 @@ public class ShopWindow extends Canvas{
     }
 
     private void onShopClick(int x, int y){
-
         //shopShip1 click listener
         if (x >= 25 && x <= 25 + shopShip1.getWidth() &&
                 y >= 255 && y <= 255 + shopShip1.getHeight()) {
-            int response = JOptionPane.showConfirmDialog(ShopWindow.this,
-                    "200 money를 주고 이 스킨을 구매할까요?", "구매 확인",
-                    JOptionPane.YES_NO_OPTION);
-            if (response == JOptionPane.YES_OPTION) {
-                // Deduct the cost of the ship from the player's money
-                if (this.money.get() >= 200) {
-                    this.money.set(money.get() - 200);
-                    return;
-                    // TODO: Add code to actually purchase the ship
-                } else {
-                    JOptionPane.showMessageDialog(ShopWindow.this,
-                            "이 스킨을 구매하기 충분한 money가 없습니다!", "잔액 부족",
-                            JOptionPane.ERROR_MESSAGE);
-                    return;
+                    if (this.enableSkins[0] == true){
+                        int response = JOptionPane.showConfirmDialog(ShopWindow.this,
+                        "해당 스킨을 보유중이에요. 이 스킨으로 바꿀까요?", "스킨 변경 확인",
+                        JOptionPane.YES_NO_OPTION);
+                        if(response == JOptionPane.YES_OPTION){
+                            this.activeSkin.set(0);
+                        } else{ return; }
+                    } else {
+                        int response = JOptionPane.showConfirmDialog(ShopWindow.this,
+                        "200 money를 주고 이 스킨을 구매할까요?", "구매 확인",
+                        JOptionPane.YES_NO_OPTION);
+                        if (response == JOptionPane.YES_OPTION) {
+                            // Deduct the cost of the ship from the player's money
+                            if (this.money.get() >= 200) {
+                                this.money.set(money.get() - 200);
+                                this.enableSkins[0] = true;
+                                return;
+                            } else {
+                                JOptionPane.showMessageDialog(ShopWindow.this,
+                                "이 스킨을 구매하기 충분한 money가 없습니다!", "잔액 부족",
+                                JOptionPane.ERROR_MESSAGE);
+                                return;
+                            }
+                        }
+                    }
                 }
-            }
-        }
 
         //shopShip2 click listener
-        if (x >= 190 && x <= 190 + shopShip2.getWidth() &&
-                y >= 255 && y <= 255 + shopShip2.getHeight()) {
-        int response = JOptionPane.showConfirmDialog(ShopWindow.this,
-            "300 money를 주고 이 스킨을 구매할까요?", "구매 확인",
-            JOptionPane.YES_NO_OPTION);
-        if (response == JOptionPane.YES_OPTION) {
-            // Deduct the cost of the ship from the player's money
-            if (this.money.get() >= 300) {
-                this.money.set(money.get() - 300);
-                return;
-                // TODO: Add code to actually purchase the ship
-            } else {
-                JOptionPane.showMessageDialog(ShopWindow.this,
-                        "이 스킨을 구매하기 충분한 money가 없습니다!", "잔액 부족",
-                        JOptionPane.ERROR_MESSAGE);
-                return;
+        if (x >= 190 && x <= 190 + shopShip1.getWidth() &&
+                y >= 255 && y <= 255 + shopShip1.getHeight()) {
+                    if (this.enableSkins[1] == true){
+                        int response = JOptionPane.showConfirmDialog(ShopWindow.this,
+                        "해당 스킨을 보유중이에요. 이 스킨으로 바꿀까요?", "스킨 변경 확인",
+                        JOptionPane.YES_NO_OPTION);
+                        if(response == JOptionPane.YES_OPTION){
+                            this.activeSkin.set(1);
+                        } else{ return; }
+                    } else {
+                        int response = JOptionPane.showConfirmDialog(ShopWindow.this,
+                        "300 money를 주고 이 스킨을 구매할까요?", "구매 확인",
+                        JOptionPane.YES_NO_OPTION);
+                        if (response == JOptionPane.YES_OPTION) {
+                            // Deduct the cost of the ship from the player's money
+                            if (this.money.get() >= 300) {
+                                this.money.set(money.get() - 300);
+                                this.enableSkins[1] = true;
+                                return;
+                            } else {
+                                JOptionPane.showMessageDialog(ShopWindow.this,
+                                "이 스킨을 구매하기 충분한 money가 없습니다!", "잔액 부족",
+                                JOptionPane.ERROR_MESSAGE);
+                                return;
+                            }
+                        }
+                    }
                 }
-            }
-        }
         
         //shopShip3 click listener
-        if (x >= 355 && x <= 355 + shopShip2.getWidth() &&
-                y >= 255 && y <= 255 + shopShip2.getHeight()) {
-        int response = JOptionPane.showConfirmDialog(ShopWindow.this,
-            "500 money를 주고 이 스킨을 구매할까요?", "구매 확인",
-            JOptionPane.YES_NO_OPTION);
-        if (response == JOptionPane.YES_OPTION) {
-            // Deduct the cost of the ship from the player's money
-            if (this.money.get() >= 500) {
-                this.money.set(money.get() - 500);
-                return;
-                // TODO: Add code to actually purchase the ship
-            } else {
-                JOptionPane.showMessageDialog(ShopWindow.this,
-                        "이 스킨을 구매하기 충분한 money가 없습니다!", "잔액 부족",
-                        JOptionPane.ERROR_MESSAGE);
-                return;
+        if (x >= 355 && x <= 355 + shopShip1.getWidth() &&
+                y >= 255 && y <= 255 + shopShip1.getHeight()) {
+                    if (this.enableSkins[2] == true){
+                        int response = JOptionPane.showConfirmDialog(ShopWindow.this,
+                        "해당 스킨을 보유중이에요. 이 스킨으로 바꿀까요?", "스킨 변경 확인",
+                        JOptionPane.YES_NO_OPTION);
+                        if(response == JOptionPane.YES_OPTION){
+                            this.activeSkin.set(2);
+                        } else{ return; }
+                    } else {
+                        int response = JOptionPane.showConfirmDialog(ShopWindow.this,
+                        "500 money를 주고 이 스킨을 구매할까요?", "구매 확인",
+                        JOptionPane.YES_NO_OPTION);
+                        if (response == JOptionPane.YES_OPTION) {
+                            // Deduct the cost of the ship from the player's money
+                            if (this.money.get() >= 500) {
+                                this.money.set(money.get() - 500);
+                                this.enableSkins[2] = true;
+                                return;
+                            } else {
+                                JOptionPane.showMessageDialog(ShopWindow.this,
+                                "이 스킨을 구매하기 충분한 money가 없습니다!", "잔액 부족",
+                                JOptionPane.ERROR_MESSAGE);
+                                return;
+                            }
+                        }
+                    }
                 }
-            }
-        }
 
         //shopShip4 click listener
-        if (x >= 520 && x <= 520 + shopShip2.getWidth() &&
-                y >= 255 && y <= 255 + shopShip2.getHeight()) {
-        int response = JOptionPane.showConfirmDialog(ShopWindow.this,
-            "700 money를 주고 이 스킨을 구매할까요?", "구매 확인",
-            JOptionPane.YES_NO_OPTION);
-        if (response == JOptionPane.YES_OPTION) {
-            // Deduct the cost of the ship from the player's money
-            if (this.money.get() >= 700) {
-                this.money.set(money.get() - 700);
-                return;
-                // TODO: Add code to actually purchase the ship
-            } else {
-                JOptionPane.showMessageDialog(ShopWindow.this,
-                        "이 스킨을 구매하기 충분한 money가 없습니다!", "잔액 부족",
-                        JOptionPane.ERROR_MESSAGE);
-                return;
+        if (x >= 520 && x <= 520 + shopShip1.getWidth() &&
+                y >= 255 && y <= 255 + shopShip1.getHeight()) {
+                    if (this.enableSkins[3] == true){
+                        int response = JOptionPane.showConfirmDialog(ShopWindow.this,
+                        "해당 스킨을 보유중이에요. 이 스킨으로 바꿀까요?", "스킨 변경 확인",
+                        JOptionPane.YES_NO_OPTION);
+                        if(response == JOptionPane.YES_OPTION){
+                            this.activeSkin.set(3);
+                        } else{ return; }
+                    } else {
+                        int response = JOptionPane.showConfirmDialog(ShopWindow.this,
+                        "700 money를 주고 이 스킨을 구매할까요?", "구매 확인",
+                        JOptionPane.YES_NO_OPTION);
+                        if (response == JOptionPane.YES_OPTION) {
+                            // Deduct the cost of the ship from the player's money
+                            if (this.money.get() >= 700) {
+                                this.money.set(money.get() - 700);
+                                this.enableSkins[3] = true;
+                                return;
+                            } else {
+                                JOptionPane.showMessageDialog(ShopWindow.this,
+                                "이 스킨을 구매하기 충분한 money가 없습니다!", "잔액 부족",
+                                JOptionPane.ERROR_MESSAGE);
+                                return;
+                            }
+                        }
+                    }
                 }
-            }
-        }
 
         //shopShip5 click listener
-        if (x >= 685 && x <= 685 + shopShip2.getWidth() &&
-                y >= 255 && y <= 255 + shopShip2.getHeight()) {
-        int response = JOptionPane.showConfirmDialog(ShopWindow.this,
-            "1100 money를 주고 이 스킨을 구매할까요?", "구매 확인",
-            JOptionPane.YES_NO_OPTION);
-        if (response == JOptionPane.YES_OPTION) {
-            // Deduct the cost of the ship from the player's money
-            if (this.money.get() >= 1100) {
-                this.money.set(money.get() - 1100);
-                return;
-                // TODO: Add code to actually purchase the ship
-            } else {
-                JOptionPane.showMessageDialog(ShopWindow.this,
-                        "이 스킨을 구매하기 충분한 money가 없습니다!", "잔액 부족",
-                        JOptionPane.ERROR_MESSAGE);
-                return;
+        if (x >= 685 && x <= 685 + shopShip1.getWidth() &&
+                y >= 255 && y <= 255 + shopShip1.getHeight()) {
+                    if (this.enableSkins[4] == true){
+                        int response = JOptionPane.showConfirmDialog(ShopWindow.this,
+                        "해당 스킨을 보유중이에요. 이 스킨으로 바꿀까요?", "스킨 변경 확인",
+                        JOptionPane.YES_NO_OPTION);
+                        if(response == JOptionPane.YES_OPTION){
+                            this.activeSkin.set(4);
+                        } else{ return; }
+                    } else {
+                        int response = JOptionPane.showConfirmDialog(ShopWindow.this,
+                        "1100 money를 주고 이 스킨을 구매할까요?", "구매 확인",
+                        JOptionPane.YES_NO_OPTION);
+                        if (response == JOptionPane.YES_OPTION) {
+                            // Deduct the cost of the ship from the player's money
+                            if (this.money.get() >= 1100) {
+                                this.money.set(money.get() - 1100);
+                                this.enableSkins[4] = true;
+                                return;
+                            } else {
+                                JOptionPane.showMessageDialog(ShopWindow.this,
+                                "이 스킨을 구매하기 충분한 money가 없습니다!", "잔액 부족",
+                                JOptionPane.ERROR_MESSAGE);
+                                return;
+                            }
+                        }
+                    }
                 }
             }
-        }
-    }
 
     public void shopLoop(){
         while(true){
@@ -208,5 +256,13 @@ public class ShopWindow extends Canvas{
 
 	public AtomicInteger recieveMoney() {
         return this.money;
+	}
+
+	public Boolean[] getEnableSkin() {
+		return this.enableSkins;
+	}
+
+	public AtomicInteger getSelectedSkin() {
+		return this.activeSkin;
 	}
 }

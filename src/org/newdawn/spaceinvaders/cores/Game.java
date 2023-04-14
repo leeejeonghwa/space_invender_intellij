@@ -93,6 +93,8 @@ public class Game extends Canvas {
     private Boolean[] enableItems;
     /* Money for clearing stage */
     private AtomicInteger money;
+    /* Number of active skin */
+    private int activeSkin;
     /* Number of killed Aliean */
     private int alienKilled = 0;
     /**
@@ -157,8 +159,9 @@ public class Game extends Canvas {
     private Player bgmPlayer;
     /**
      * Construct our game and set it running.
+     * @param atomicInteger
      */
-    public Game(String level, Boolean[] enableItems, AtomicInteger money) {
+    public Game(String level, Boolean[] enableItems, AtomicInteger money, AtomicInteger activeSkin) {
         // create a frame to contain our game
         container = new JFrame("Space Invaders 102");
 
@@ -210,10 +213,11 @@ public class Game extends Canvas {
         createBufferStrategy(2);
         strategy = getBufferStrategy();
 
-        // recognize what level is, what state of item is
+        // recognize what level is, how money have, what state of item is, what skin is
         this.level = level;
         this.enableItems = enableItems;
         this.money = money;
+        this.activeSkin = activeSkin.get();
 
         // initialise the entities in our game so there's something
         // to see at startup
@@ -249,7 +253,32 @@ public class Game extends Canvas {
      */
     private void initEntities() {
         // create the player ship and place it roughly in the center of the screen
-        ship = new ShipEntity(this, "sprites/ship.png", 370, 550);
+        switch(this.activeSkin){
+            case (0):{
+                ship = new ShipEntity(this, "sprites/ship1.png", 370, 550);
+                break;
+            }
+            case (1):{
+                ship = new ShipEntity(this, "sprites/ship2.png", 370, 550);
+                break;
+            }
+            case (2):{
+                ship = new ShipEntity(this, "sprites/ship3.png", 370, 550);
+                break;
+            }
+            case (3):{
+                ship = new ShipEntity(this, "sprites/ship4.png", 370, 550);
+                break;
+            }
+            case (4):{
+                ship = new ShipEntity(this, "sprites/ship5.png", 370, 550);
+                break;
+            }
+            default:{
+                ship = new ShipEntity(this, "sprites/ship.png", 370, 550);
+                break;
+            }
+        }
         entities.add(ship);
 
         if(this.enableItems[0]){
