@@ -281,7 +281,7 @@ public class Game extends Canvas {
                 alienCount = 0;
                 for (int row = 0; row < 4; row++) {
                     for (int x = 0; x < 5; x++) {
-                        alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
+                        alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 40);
                         entities.add(alien);
                         alienCount++;
                     }
@@ -293,7 +293,7 @@ public class Game extends Canvas {
                 alienCount = 0;
                 for (int row = 0; row < 6; row++) {
                     for (int x = 0; x < 7; x++) {
-                        alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
+                        alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 40);
                         entities.add(alien);
                         alienCount++;
                     }
@@ -306,7 +306,7 @@ public class Game extends Canvas {
                 alienCount = 0;
                 for (int row = 0; row < 5; row++) {
                     for (int x = 0; x < 12; x++) {
-                        alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
+                        alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 40);
                         if (row%2 == 0){
                             alien.setHorizontalMovement(alien.getHorizontalMovement()*(-1));
                         }
@@ -321,7 +321,7 @@ public class Game extends Canvas {
                 alienCount = 0;
                 for (int row = 0; row < 5; row++) {
                     for (int x = 0; x < 5; x++) {
-                        alien = new AlienEntity(this, 200 + (x * 50), (130) + row * 30);
+                        alien = new AlienEntity(this, 200 + (x * 50), (130) + row * 40);
                         entities.add(alien);
                         alienCount++;
 
@@ -339,7 +339,7 @@ public class Game extends Canvas {
 
                 for (int row = 0; row < 5; row++) {
                     for (int x = 0; x < 5; x++) {
-                        alien = new AlienEntity(this, 280 + (x * 50), (130) + row * 30);
+                        alien = new AlienEntity(this, 280 + (x * 50), (130) + row * 40);
                         entities.add(alien);
                         alienCount++;
                     }
