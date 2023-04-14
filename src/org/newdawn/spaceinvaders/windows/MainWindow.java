@@ -16,6 +16,8 @@ import java.util.Arrays;
 
 public class MainWindow extends JFrame {
 
+    private static Item item = new Item();
+    
     private FirebaseTool firebaseTool;
 
     private GlobalStorage globalStorage;
@@ -28,8 +30,6 @@ public class MainWindow extends JFrame {
     private JButton level3btn;
     private JButton level4btn;
     private JButton level5btn;
-
-    private static Item item = new Item();
 
     public MainWindow() {
         // 메인 윈도우 설정
@@ -80,10 +80,13 @@ public class MainWindow extends JFrame {
                     setLayout(null);
                     Thread shopThread = new Thread(new Runnable() {
                         public void run() {
-                            ShopWindow s = new ShopWindow(item.getMoney());
+                            System.out.print("shop Thread: " + Arrays.toString(item.enableItems())+ item.getMoney() + "\n");
+                            ShopWindow s = new ShopWindow(item.getMoney(), item.enableSkinList(), item.getActiveNum());
                             s.shopLoop();
                             synchronized(item){
-                                item.getBalance(s.recieveMoney());
+                                item.setMoney(s.recieveMoney());
+                                item.setEnableSkin(s.getEnableSkin());
+                                item.activateSkinNumber(s.getSelectedSkin());
                             }
                         }
                     });
@@ -110,10 +113,11 @@ public class MainWindow extends JFrame {
                     Thread gameThread = new Thread(new Runnable() {
                         public void run() {
                             System.out.print("game Thread: " + Arrays.toString(item.enableItems())+ item.getMoney() + "\n");
-                            Game g = new Game(button.getName(), item.enableItems(), item.getMoney());
+                            Game g = new Game(button.getName(), item.enableItems(), item.getMoney(), item.getActiveNum());
                             g.gameLoop();
                             synchronized(item){
-                                item.clearStage(g.getItemState(), g.recieveMoney());
+                                item.clearStage(g.getItemState());
+                                item.setMoney(g.recieveMoney());
                             }
                         }
                     });

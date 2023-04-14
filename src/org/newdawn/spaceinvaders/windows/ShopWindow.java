@@ -17,11 +17,17 @@ public class ShopWindow extends Canvas {
 
     private JFrame container;
 
-    private int money;
+    private AtomicInteger money;
+    private AtomicInteger activeSkin;
+    private Boolean[] enableSkins;
 
+    private BufferedImage shopShip1;
+    private BufferedImage shopShip2;
+    private BufferedImage shopShip3;
+    private BufferedImage shopShip4;
+    private BufferedImage shopShip5;
 
-    public ShopWindow(AtomicInteger money) {
-
+    public ShopWindow(AtomicInteger money, Boolean[] enableSkins, AtomicInteger activeSkin){
         container = new JFrame();
 
         JPanel panel = (JPanel) container.getContentPane();
@@ -53,114 +59,214 @@ public class ShopWindow extends Canvas {
         createBufferStrategy(2);
         strategy = getBufferStrategy();
 
-        this.money = money.intValue();
+        this.money = money;
+        this.enableSkins = enableSkins;
+        this.activeSkin = activeSkin;
+        
+        try{
+            shopShip1 = ImageIO.read(new File("src/sprites/Shopship1.png"));
+            shopShip2 = ImageIO.read(new File("src/sprites/Shopship2.png"));
+            shopShip3 = ImageIO.read(new File("src/sprites/Shopship3.png"));
+            shopShip4 = ImageIO.read(new File("src/sprites/Shopship4.png"));
+            shopShip5 = ImageIO.read(new File("src/sprites/Shopship5.png"));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e){
+                onShopClick (e.getX(), e.getY());
+            }
+        });
     }
 
-    public void shopLoop() {
-        while (true) {
-            Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
-//            g.setColor(Color.gray);
-//            g.fillRect(0, 0, 800, 600);
-            BufferedImage shopbackground;
-            try {
-                shopbackground = ImageIO.read(new File("src/sprites/shopbackground.png"));
-                g.drawImage(shopbackground, 0, 0, this);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            g.setColor(Color.WHITE);
-            g.drawString("Money: " + Integer.toString(this.money), 10, 20);
-
-
-            BufferedImage shopShip1;
-            try {
-                shopShip1 = ImageIO.read(new File("src/sprites/Shopship1.png"));
-                g.drawImage(shopShip1, 100, 200, this);
-
-                g.setColor(Color.WHITE);
-                g.drawString("Price: 200", 118, 320);
-                addMouseListener(new MouseAdapter() {
-                    public void mouseClicked(MouseEvent e) {
-                        // Check if the click event occurred within the bounds of shopShip1
-                        if (e.getX() >= 100 && e.getX() <= 100 + shopShip1.getWidth() &&
-                                e.getY() >= 200 && e.getY() <= 200 + shopShip1.getHeight()) {
-                            int response = JOptionPane.showConfirmDialog(ShopWindow.this,
-                                    "200 money를 주고 이 스킨을 구매할까요?", "구매 확인",
-                                    JOptionPane.YES_NO_OPTION);
-                            if (response == JOptionPane.YES_OPTION) {
-                                // Deduct the cost of the ship from the player's money
-                                if (money >= 200) {
-                                    money -= 200;
-                                    // TODO: Add code to actually purchase the ship
-                                } else {
-                                    JOptionPane.showMessageDialog(ShopWindow.this,
-                                            "이 스킨을 사기에 충분한 money가 없습니다!", "잔액 부족",
-                                            JOptionPane.ERROR_MESSAGE);
-                                }
+    private void onShopClick(int x, int y){
+        //shopShip1 click listener
+        if (x >= 25 && x <= 25 + shopShip1.getWidth() &&
+                y >= 255 && y <= 255 + shopShip1.getHeight()) {
+                    if (this.enableSkins[0] == true){
+                        int response = JOptionPane.showConfirmDialog(ShopWindow.this,
+                        "해당 스킨을 보유중이에요. 이 스킨으로 바꿀까요?", "스킨 변경 확인",
+                        JOptionPane.YES_NO_OPTION);
+                        if(response == JOptionPane.YES_OPTION){
+                            this.activeSkin.set(0);
+                        } else{ return; }
+                    } else {
+                        int response = JOptionPane.showConfirmDialog(ShopWindow.this,
+                        "200 money를 주고 이 스킨을 구매할까요?", "구매 확인",
+                        JOptionPane.YES_NO_OPTION);
+                        if (response == JOptionPane.YES_OPTION) {
+                            // Deduct the cost of the ship from the player's money
+                            if (this.money.get() >= 200) {
+                                this.money.set(money.get() - 200);
+                                this.enableSkins[0] = true;
+                                return;
                             } else {
-
+                                JOptionPane.showMessageDialog(ShopWindow.this,
+                                "이 스킨을 구매하기 충분한 money가 없습니다!", "잔액 부족",
+                                JOptionPane.ERROR_MESSAGE);
+                                return;
                             }
                         }
                     }
-                });
-            } catch (IOException e) {
-                e.printStackTrace();
+                }
+
+        //shopShip2 click listener
+        if (x >= 190 && x <= 190 + shopShip1.getWidth() &&
+                y >= 255 && y <= 255 + shopShip1.getHeight()) {
+                    if (this.enableSkins[1] == true){
+                        int response = JOptionPane.showConfirmDialog(ShopWindow.this,
+                        "해당 스킨을 보유중이에요. 이 스킨으로 바꿀까요?", "스킨 변경 확인",
+                        JOptionPane.YES_NO_OPTION);
+                        if(response == JOptionPane.YES_OPTION){
+                            this.activeSkin.set(1);
+                        } else{ return; }
+                    } else {
+                        int response = JOptionPane.showConfirmDialog(ShopWindow.this,
+                        "300 money를 주고 이 스킨을 구매할까요?", "구매 확인",
+                        JOptionPane.YES_NO_OPTION);
+                        if (response == JOptionPane.YES_OPTION) {
+                            // Deduct the cost of the ship from the player's money
+                            if (this.money.get() >= 300) {
+                                this.money.set(money.get() - 300);
+                                this.enableSkins[1] = true;
+                                return;
+                            } else {
+                                JOptionPane.showMessageDialog(ShopWindow.this,
+                                "이 스킨을 구매하기 충분한 money가 없습니다!", "잔액 부족",
+                                JOptionPane.ERROR_MESSAGE);
+                                return;
+                            }
+                        }
+                    }
+                }
+        
+        //shopShip3 click listener
+        if (x >= 355 && x <= 355 + shopShip1.getWidth() &&
+                y >= 255 && y <= 255 + shopShip1.getHeight()) {
+                    if (this.enableSkins[2] == true){
+                        int response = JOptionPane.showConfirmDialog(ShopWindow.this,
+                        "해당 스킨을 보유중이에요. 이 스킨으로 바꿀까요?", "스킨 변경 확인",
+                        JOptionPane.YES_NO_OPTION);
+                        if(response == JOptionPane.YES_OPTION){
+                            this.activeSkin.set(2);
+                        } else{ return; }
+                    } else {
+                        int response = JOptionPane.showConfirmDialog(ShopWindow.this,
+                        "500 money를 주고 이 스킨을 구매할까요?", "구매 확인",
+                        JOptionPane.YES_NO_OPTION);
+                        if (response == JOptionPane.YES_OPTION) {
+                            // Deduct the cost of the ship from the player's money
+                            if (this.money.get() >= 500) {
+                                this.money.set(money.get() - 500);
+                                this.enableSkins[2] = true;
+                                return;
+                            } else {
+                                JOptionPane.showMessageDialog(ShopWindow.this,
+                                "이 스킨을 구매하기 충분한 money가 없습니다!", "잔액 부족",
+                                JOptionPane.ERROR_MESSAGE);
+                                return;
+                            }
+                        }
+                    }
+                }
+
+        //shopShip4 click listener
+        if (x >= 520 && x <= 520 + shopShip1.getWidth() &&
+                y >= 255 && y <= 255 + shopShip1.getHeight()) {
+                    if (this.enableSkins[3] == true){
+                        int response = JOptionPane.showConfirmDialog(ShopWindow.this,
+                        "해당 스킨을 보유중이에요. 이 스킨으로 바꿀까요?", "스킨 변경 확인",
+                        JOptionPane.YES_NO_OPTION);
+                        if(response == JOptionPane.YES_OPTION){
+                            this.activeSkin.set(3);
+                        } else{ return; }
+                    } else {
+                        int response = JOptionPane.showConfirmDialog(ShopWindow.this,
+                        "700 money를 주고 이 스킨을 구매할까요?", "구매 확인",
+                        JOptionPane.YES_NO_OPTION);
+                        if (response == JOptionPane.YES_OPTION) {
+                            // Deduct the cost of the ship from the player's money
+                            if (this.money.get() >= 700) {
+                                this.money.set(money.get() - 700);
+                                this.enableSkins[3] = true;
+                                return;
+                            } else {
+                                JOptionPane.showMessageDialog(ShopWindow.this,
+                                "이 스킨을 구매하기 충분한 money가 없습니다!", "잔액 부족",
+                                JOptionPane.ERROR_MESSAGE);
+                                return;
+                            }
+                        }
+                    }
+                }
+
+        //shopShip5 click listener
+        if (x >= 685 && x <= 685 + shopShip1.getWidth() &&
+                y >= 255 && y <= 255 + shopShip1.getHeight()) {
+                    if (this.enableSkins[4] == true){
+                        int response = JOptionPane.showConfirmDialog(ShopWindow.this,
+                        "해당 스킨을 보유중이에요. 이 스킨으로 바꿀까요?", "스킨 변경 확인",
+                        JOptionPane.YES_NO_OPTION);
+                        if(response == JOptionPane.YES_OPTION){
+                            this.activeSkin.set(4);
+                        } else{ return; }
+                    } else {
+                        int response = JOptionPane.showConfirmDialog(ShopWindow.this,
+                        "1100 money를 주고 이 스킨을 구매할까요?", "구매 확인",
+                        JOptionPane.YES_NO_OPTION);
+                        if (response == JOptionPane.YES_OPTION) {
+                            // Deduct the cost of the ship from the player's money
+                            if (this.money.get() >= 1100) {
+                                this.money.set(money.get() - 1100);
+                                this.enableSkins[4] = true;
+                                return;
+                            } else {
+                                JOptionPane.showMessageDialog(ShopWindow.this,
+                                "이 스킨을 구매하기 충분한 money가 없습니다!", "잔액 부족",
+                                JOptionPane.ERROR_MESSAGE);
+                                return;
+                            }
+                        }
+                    }
+                }
             }
 
-            BufferedImage shopShip2;
-            try {
-                shopShip2 = ImageIO.read(new File("src/sprites/Shopship2.png"));
-                g.drawImage(shopShip2, 360, 200, this);
+    public void shopLoop(){
+        while(true){
+            Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
+            g.setColor(Color.black);
+            g.fillRect(0, 0, 800, 600);
 
-                g.setColor(Color.WHITE);
-                g.drawString("Price: 300", 378, 320);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            g.setColor(Color.WHITE);
+            g.drawString("Money: " + Integer.toString(this.money.intValue()), 10, 20);
+            
+            g.drawImage(this.shopShip1,25,255,this);
+            g.drawImage(this.shopShip2,190,255,this);
+            g.drawImage(this.shopShip3,355,255,this);
+            g.drawImage(this.shopShip4,520,255,this);
+            g.drawImage(this.shopShip5,685,255,this);
 
-            BufferedImage shopShip3;
-            try {
-                shopShip3 = ImageIO.read(new File("src/sprites/Shopship3.png"));
-                g.drawImage(shopShip3, 620, 200, this);
-
-                g.setColor(Color.WHITE);
-                g.drawString("Price: 500", 638, 320);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            BufferedImage shopShip4;
-            try {
-                shopShip4 = ImageIO.read(new File("src/sprites/Shopship4.png"));
-                g.drawImage(shopShip4, 230, 400, this);
-
-                g.setColor(Color.WHITE);
-                g.drawString("Price: 700", 248, 520);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            BufferedImage shopShip5;
-            try {
-                shopShip5 = ImageIO.read(new File("src/sprites/Shopship5.png"));
-                g.drawImage(shopShip5, 490, 400, this);
-
-                g.setColor(Color.WHITE);
-                g.drawString("Price: 1100", 508, 520);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            g.setColor(Color.WHITE);
+            g.drawString("Price: 200",43,375);
+            g.drawString("Price: 300",208,375);
+            g.drawString("Price: 500",373,375);
+            g.drawString("Price: 700",538,375);
+            g.drawString("Price: 1100",700,375);
 
             g.dispose();
             strategy.show();
         }
     }
 
-    public AtomicInteger recieveMoney() {
-        AtomicInteger returnValue = new AtomicInteger(this.money);
-        return returnValue;
-    }
+	public AtomicInteger recieveMoney() {
+        return this.money;
+	}
 
+	public Boolean[] getEnableSkin() {
+		return this.enableSkins;
+	}
+
+	public AtomicInteger getSelectedSkin() {
+		return this.activeSkin;
+	}
 }

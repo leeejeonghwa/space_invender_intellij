@@ -19,7 +19,6 @@ import javax.swing.*;
 import org.newdawn.spaceinvaders.SystemTimer;
 import org.newdawn.spaceinvaders.entity.*;
 import org.newdawn.spaceinvaders.entity.BossEntity;
-import org.newdawn.spaceinvaders.windows.MainWindow;
 
 
 
@@ -94,6 +93,8 @@ public class Game extends Canvas {
     private Boolean[] enableItems;
     /* Money for clearing stage */
     private AtomicInteger money;
+    /* Number of active skin */
+    private int activeSkin;
     /* Number of killed Aliean */
     private int alienKilled = 0;
     /**
@@ -158,8 +159,9 @@ public class Game extends Canvas {
     private Player bgmPlayer;
     /**
      * Construct our game and set it running.
+     * @param atomicInteger
      */
-    public Game(String level, Boolean[] enableItems, AtomicInteger money) {
+    public Game(String level, Boolean[] enableItems, AtomicInteger money, AtomicInteger activeSkin) {
         // create a frame to contain our game
         container = new JFrame("Space Invaders 102");
 
@@ -211,10 +213,11 @@ public class Game extends Canvas {
         createBufferStrategy(2);
         strategy = getBufferStrategy();
 
-        // recognize what level is, what state of item is
+        // recognize what level is, how money have, what state of item is, what skin is
         this.level = level;
         this.enableItems = enableItems;
         this.money = money;
+        this.activeSkin = activeSkin.get();
 
         // initialise the entities in our game so there's something
         // to see at startup
@@ -250,7 +253,32 @@ public class Game extends Canvas {
      */
     private void initEntities() {
         // create the player ship and place it roughly in the center of the screen
-        ship = new ShipEntity(this, "sprites/ship.png", 370, 550);
+        switch(this.activeSkin){
+            case (0):{
+                ship = new ShipEntity(this, "sprites/ship1.png", 370, 550);
+                break;
+            }
+            case (1):{
+                ship = new ShipEntity(this, "sprites/ship2.png", 370, 550);
+                break;
+            }
+            case (2):{
+                ship = new ShipEntity(this, "sprites/ship3.png", 370, 550);
+                break;
+            }
+            case (3):{
+                ship = new ShipEntity(this, "sprites/ship4.png", 370, 550);
+                break;
+            }
+            case (4):{
+                ship = new ShipEntity(this, "sprites/ship5.png", 370, 550);
+                break;
+            }
+            default:{
+                ship = new ShipEntity(this, "sprites/ship.png", 370, 550);
+                break;
+            }
+        }
         entities.add(ship);
 
         if(this.enableItems[0]){
@@ -387,30 +415,30 @@ public class Game extends Canvas {
         switch(this.level){
             case("src/image/level1.png"):{
                 this.enableItems[0] = true;
-                this.money.set(this.alienKilled * 10 * 1);
+                this.money.set(this.money.get() + this.alienKilled * 10 * 1);
                 System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
                 break;
             }
             case("src/image/level2.png"):{
                 this.enableItems[1] = true;
-                this.money.set(this.alienKilled * 10 * 2);
+                this.money.set(this.money.get() + this.alienKilled * 10 * 2);
                 System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
                 break;
             }
             case("src/image/level3.png"):{
                 this.enableItems[2] = true;
-                this.money.set(this.alienKilled * 10 * 3);
+                this.money.set(this.money.get() + this.alienKilled * 10 * 3);
                 System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
                 break;
             }
             case("src/image/level4.png"):{
                 this.enableItems[3] = true;
-                this.money.set(this.alienKilled * 10 * 4);
+                this.money.set(this.money.get() + this.alienKilled * 10 * 4);
                 System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
                 break;
             }
             case("src/image/level5.png"):{
-                this.money.set(this.alienKilled * 10 * 5);
+                this.money.set(this.money.get() + this.alienKilled * 10 * 5);
                 System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
                 break;
             }
@@ -519,7 +547,6 @@ public class Game extends Canvas {
 
     //return now money
     public AtomicInteger recieveMoney(){
-        System.out.print("recieveMoney: " + this.money + "\n");
         return this.money;
     }
 
