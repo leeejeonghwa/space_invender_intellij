@@ -18,7 +18,6 @@ import javax.swing.*;
 
 import org.newdawn.spaceinvaders.SystemTimer;
 import org.newdawn.spaceinvaders.entity.*;
-import org.newdawn.spaceinvaders.entity.BossEntity;
 
 
 
@@ -87,6 +86,8 @@ public class Game extends Canvas {
     private Boolean fireNum = false;
     /* Available to activate shield */
     private Boolean enableShield = false;
+    /* easterEgg */
+    private boolean easterEgg = false;
     /* Level is parameter of class instance */
     private String level;
     /* Backup Item information */
@@ -283,19 +284,23 @@ public class Game extends Canvas {
 
         if(this.enableItems[0]){
             ((ShipEntity) this.ship).increaseMaxHealth();
-            System.out.print("initEntities" + Arrays.toString(this.enableItems)+"\n");
+            //System.out.print("initEntities" + Arrays.toString(this.enableItems)+"\n");
         }
         if(this.enableItems[1]){
             this.increaseMoveSpeed();
-            System.out.print("initEntities" + Arrays.toString(this.enableItems)+"\n");
+            //System.out.print("initEntities" + Arrays.toString(this.enableItems)+"\n");
         }
         if(this.enableItems[2]){
             this.enableShield();
-            System.out.print("initEntities" + Arrays.toString(this.enableItems)+"\n");
+            //System.out.print("initEntities" + Arrays.toString(this.enableItems)+"\n");
         }
         if(this.enableItems[3]){
             this.increaseFireNum();
-            System.out.print("initEntities" + Arrays.toString(this.enableItems)+"\n");
+            //System.out.print("initEntities" + Arrays.toString(this.enableItems)+"\n");
+        }
+        if(this.enableItems[4]){
+            this.easterEgg();
+            //System.out.print("initEntities" + Arrays.toString(this.enableItems)+"\n");
         }
 
         if (this.enableShield == true) {
@@ -482,16 +487,21 @@ public class Game extends Canvas {
 
         // if we waited long enough, create the shot entity, and record the time.
         lastFire = System.currentTimeMillis();
-        if (fireNum == false) {
-            ShotEntity shot = new ShotEntity(this, "sprites/shipshot.png", ship.getX() + 10, ship.getY() - 30);
-            entities.add(shot);
+        if (easterEgg == true){
+            easterEggEntity penetration = new easterEggEntity(this, "sprites/longShipshot.png", ship.getX() + 10, ship.getY() - 30);
+            entities.add(penetration);
         } else {
-            ShotEntity leftShot = new ShotEntity(this, "sprites/shipshot.png", ship.getX() - 40, ship.getY() - 30);
-            ShotEntity middleShot = new ShotEntity(this, "sprites/shipshot.png", ship.getX() + 10, ship.getY() - 30);
-            ShotEntity rightShot = new ShotEntity(this, "sprites/shipshot.png", ship.getX() + 60, ship.getY() - 30);
-            entities.add(leftShot);
-            entities.add(middleShot);
-            entities.add(rightShot);
+            if (fireNum == false) {
+                ShotEntity shot = new ShotEntity(this, "sprites/shipshot.png", ship.getX() + 10, ship.getY() - 30);
+                entities.add(shot);
+            } else if (fireNum == true ) {
+                ShotEntity leftShot = new ShotEntity(this, "sprites/shipshot.png", ship.getX() - 40, ship.getY() - 30);
+                ShotEntity middleShot = new ShotEntity(this, "sprites/shipshot.png", ship.getX() + 10, ship.getY() - 30);
+                ShotEntity rightShot = new ShotEntity(this, "sprites/shipshot.png", ship.getX() + 60, ship.getY() - 30);
+                entities.add(leftShot);
+                entities.add(middleShot);
+                entities.add(rightShot);
+            }
         }
 
         Player shotplayer = new Player();
@@ -539,9 +549,13 @@ public class Game extends Canvas {
         this.enableShield = true;
     }
 
+    //implement easteregg item
+    public void easterEgg(){
+        this.easterEgg = true;
+    }
+
     //return now item state
     public Boolean[] getItemState() {
-        System.out.print("getItemState: " + Arrays.toString(this.enableItems) + "\n");
         return this.enableItems;
     }
 

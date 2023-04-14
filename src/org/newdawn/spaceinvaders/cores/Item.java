@@ -3,7 +3,7 @@ package org.newdawn.spaceinvaders.cores;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Item {
-    private Boolean[] itemList = new Boolean[]{false, false, false, false};
+    private Boolean[] itemList = new Boolean[]{false, false, false, false, false};
     private Boolean[] skinList = new Boolean[]{false, false, false, false, false};
     //primitive 자료형 synchronized하려면 Atomic 자료형 필요
     private AtomicInteger money = new AtomicInteger(0);

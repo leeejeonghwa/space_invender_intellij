@@ -2,34 +2,29 @@ package org.newdawn.spaceinvaders.entity;
 
 import org.newdawn.spaceinvaders.cores.Game;
 
-/**
- * An entity representing a shot fired by the player's ship //총알
- *
- * @author Kevin Glass
- */
-public class ShotEntity extends Entity {
-    /**
+public class easterEggEntity extends Entity{
+        /**
      * The vertical speed at which the players shot moves
      */ //총알이 움직이는 수직 속도
     private double moveSpeed = -300;
-    /**
-     * The game in which this entity exists
-     */
+     /**
+      * The game in which this entity exists
+      */
     private Game game;
-    /**
-     * True if this shot has been "used", i.e. its hit something
-     */ //총알이 충돌해서 사용되었는지 여부를 나타내는 값
+     /**
+      * True if this shot has been "used", i.e. its hit something
+      */ //총알이 충돌해서 사용되었는지 여부를 나타내는 값
     private boolean used = false;
-
-    /**
-     * Create a new shot from the player
-     *
-     * @param game   The game in which the shot has been created
-     * @param sprite The sprite representing this shot
-     * @param x      The initial x location of the shot
-     * @param y      The initial y location of the shot
-     */
-    public ShotEntity(Game game, String sprite, int x, int y) {
+ 
+     /**
+      * Create a new shot from the player
+      *
+      * @param game   The game in which the shot has been created
+      * @param sprite The sprite representing this shot
+      * @param x      The initial x location of the shot
+      * @param y      The initial y location of the shot
+      */
+    public easterEggEntity(Game game, String sprite, int x, int y) {
         super(sprite, x, y);
 
         this.game = game;
@@ -59,23 +54,12 @@ public class ShotEntity extends Entity {
      * @parma other The other entity with which we've collided
      */
     public void collidedWith(Entity other) {
-        // prevents double kills, if we've already hit something,
-        // don't collide
-        if (used) {
-            return;
-        }
         // if we've hit an alien, kill it!
         if (other instanceof AlienEntity) {
             // remove the affected entities
-            game.removeEntity(this);
             game.removeEntity(other);
             // notify the game that the alien has been killed
             game.notifyAlienKilled();
-            used = true;
-        }
-        else if (other instanceof BossEntity){
-            game.removeEntity(this);
-            used = true;
         }
     }
 }
