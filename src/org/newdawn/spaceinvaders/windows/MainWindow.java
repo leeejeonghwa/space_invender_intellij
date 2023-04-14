@@ -33,7 +33,7 @@ public class MainWindow extends JFrame {
 
     public MainWindow() {
         // 메인 윈도우 설정
-        setTitle("SPACE INVANDERS");
+        setTitle("SPACE INVADERS");
 
         //현재 프레임 창 가운데 정렬 setSize를 먼저 해주어야 정상적으로 프레임이 가운데 정렬이 됨!
         setSize(800, 600);
