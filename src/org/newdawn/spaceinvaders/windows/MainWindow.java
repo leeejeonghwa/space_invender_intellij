@@ -81,7 +81,7 @@ public class MainWindow extends JFrame {
                     Thread shopThread = new Thread(new Runnable() {
                         public void run() {
                             System.out.print("shop Thread: " + Arrays.toString(item.enableItems())+ item.getMoney() + "\n");
-                            ShopWindow s = new ShopWindow(item.getMoney(), item.enableSkinList(), item.getActiveNum());
+                            ShopWindow s = new ShopWindow(item.getMoney(), item.enableItems(), item.enableSkinList(), item.getActiveNum());
                             s.shopLoop();
                             synchronized(item){
                                 item.setMoney(s.recieveMoney());
