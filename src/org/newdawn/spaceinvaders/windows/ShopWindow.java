@@ -26,6 +26,7 @@ public class ShopWindow extends Canvas {
     private BufferedImage shopShip3;
     private BufferedImage shopShip4;
     private BufferedImage shopShip5;
+    BufferedImage coin;
 
     private int easterEggClicked;
     private Boolean[] enableItem;
@@ -268,8 +269,14 @@ public class ShopWindow extends Canvas {
                 e.printStackTrace();
             }
 
-            g.setColor(Color.WHITE);
-            g.drawString("Coin: " + Integer.toString(this.money.intValue()), 10, 20);
+            try{
+                coin = ImageIO.read(new File("src/sprites/coin.png"));
+                g.drawImage(coin, 10, 47, this);
+                g.setColor(Color.WHITE);
+                g.drawString(Integer.toString(this.money.get()), 20 + coin.getWidth(), 60);
+            } catch (IOException e){
+                e.printStackTrace();
+            }
             
             g.drawImage(this.shopShip1,100,200,this);
             g.drawImage(this.shopShip2,360,200,this);

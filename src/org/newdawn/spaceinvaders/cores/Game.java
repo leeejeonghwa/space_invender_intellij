@@ -613,16 +613,48 @@ public class Game extends Canvas {
             g.setColor(Color.WHITE);
             g.drawString("Killed: " + Integer.toString(this.alienKilled - alienCount), 10, 40);
 
-            g.setColor(Color.WHITE);
-            g.drawString("Coin: " + Integer.toString(this.money.get()), 10, 60);
+            BufferedImage coin;
+            try{
+                coin = ImageIO.read(new File("src/sprites/coin.png"));
+                g.drawImage(coin, 10, 47, this);
+                g.setColor(Color.WHITE);
+                g.drawString(Integer.toString(this.money.get()), 20 + coin.getWidth(), 60);
+            } catch (IOException e){
+                e.printStackTrace();
+            }
 
             BufferedImage heart;
+            BufferedImage maxHealth;
+            BufferedImage getFaster;
+            BufferedImage enableShield;
+            BufferedImage moreBullet;
             try {
+                //draw health
 				int heartNum = ((ShipEntity) ship).returnNowHealth();
 				for(int i=0;i<heartNum;i++){
 					heart = ImageIO.read(new File("src/sprites/heart.png"));
 					g.drawImage(heart,32*i+10,558,this);
 				}
+                //draw enable items
+                maxHealth = ImageIO.read(new File("src/sprites/Item maxheartpng.png"));
+                getFaster = ImageIO.read(new File("src/sprites/Item speed.png"));
+                enableShield = ImageIO.read(new File("src/sprites/Item shield.png"));
+                moreBullet = ImageIO.read(new File("src/sprites/Item shot.png"));
+
+                if (enableItems[0] == true){
+                    g.drawImage(maxHealth,730 - moreBullet.getWidth() - enableShield.getWidth() - getFaster.getWidth() - maxHealth.getWidth()
+                    ,558,this);
+                }
+                if (enableItems[1] == true){
+                    g.drawImage(getFaster, 745 - moreBullet.getWidth() - enableShield.getWidth() - getFaster.getWidth()
+                    ,558,this);
+                }
+                if (enableItems[2] == true){
+                    g.drawImage(enableShield,760 - moreBullet.getWidth() - enableShield.getWidth(),558,this);
+                }
+                if (enableItems[3] == true){
+                    g.drawImage(moreBullet,775 - moreBullet.getWidth(),558,this);
+                }
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
