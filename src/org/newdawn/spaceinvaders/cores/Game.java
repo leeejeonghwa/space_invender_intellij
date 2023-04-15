@@ -613,8 +613,15 @@ public class Game extends Canvas {
             g.setColor(Color.WHITE);
             g.drawString("Killed: " + Integer.toString(this.alienKilled - alienCount), 10, 40);
 
-            g.setColor(Color.WHITE);
-            g.drawString("Coin: " + Integer.toString(this.money.get()), 10, 60);
+            BufferedImage coin;
+            try{
+                coin = ImageIO.read(new File("src/sprites/coin.png"));
+                g.drawImage(coin, 10, 47, this);
+                g.setColor(Color.WHITE);
+                g.drawString(Integer.toString(this.money.get()), 20 + coin.getWidth(), 60);
+            } catch (IOException e){
+                e.printStackTrace();
+            }
 
             BufferedImage heart;
             BufferedImage maxHealth;
@@ -629,10 +636,10 @@ public class Game extends Canvas {
 					g.drawImage(heart,32*i+10,558,this);
 				}
                 //draw enable items
-                maxHealth = ImageIO.read(new File("src/sprites/maxHealth.gif"));
-                getFaster = ImageIO.read(new File("src/sprites/getFaster.gif"));
-                enableShield = ImageIO.read(new File("src/sprites/enableShield.gif"));
-                moreBullet = ImageIO.read(new File("src/sprites/moreBullet.gif"));
+                maxHealth = ImageIO.read(new File("src/sprites/Item maxheartpng.png"));
+                getFaster = ImageIO.read(new File("src/sprites/Item speed.png"));
+                enableShield = ImageIO.read(new File("src/sprites/Item shield.png"));
+                moreBullet = ImageIO.read(new File("src/sprites/Item shot.png"));
 
                 if (enableItems[0] == true){
                     g.drawImage(maxHealth,730 - moreBullet.getWidth() - enableShield.getWidth() - getFaster.getWidth() - maxHealth.getWidth()
