@@ -11,9 +11,9 @@ import java.io.File;
 public class Player implements LineListener {
     private Clip bgmclip;
     private Clip shotclip;
-    private Clip successclip;
     private boolean playCompleted;
     private long pausedPosition;
+
     public void play(String audioFilePath) {
         try {
             File audioFile = new File(audioFilePath);
@@ -62,36 +62,6 @@ public class Player implements LineListener {
     }
 
 
-    public void playSuccessSound(String audioFilePath) {
-        try {
-            File audioFile = new File(audioFilePath);
-            if (!audioFile.exists()) {
-                System.err.println("Audio file not found: " + audioFilePath);
-                return;
-            }
-
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
-
-            successclip = AudioSystem.getClip();
-
-            successclip.addLineListener(this);
-
-            successclip.open(audioStream);
-
-            successclip.start();
-
-        } catch (Exception ex) {
-            System.err.println(ex.getMessage());
-        }
-    }
-
-    public void stopSuccessSound() {
-        if (successclip != null && successclip.isRunning()) {
-            successclip.stop();
-            successclip.removeLineListener(this);
-        }
-    }
-
     public void playShotSound(String audioFilePath) {
         try {
             File audioFile = new File(audioFilePath);
@@ -133,4 +103,5 @@ public class Player implements LineListener {
         }
     }
 }
+
 
