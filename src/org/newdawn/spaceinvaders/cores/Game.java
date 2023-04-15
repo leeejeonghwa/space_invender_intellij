@@ -236,6 +236,7 @@ public class Game extends Canvas {
      */
     private void startGame() {
         // clear out any existing entities and intialise a new set
+        bgmPlayer.resume();
         entities.clear();
         initEntities();
 
@@ -406,6 +407,7 @@ public class Game extends Canvas {
      */
     public void notifyDeath() {
         message = "Oh no! They got you, try again?";
+        bgmPlayer.pause();
         firebaseTool.SetUserBestScore(globalStorage.getUserID(), bestScore);
         waitingForKeyPress = true;
     }
@@ -416,6 +418,7 @@ public class Game extends Canvas {
      */
     public void notifyWin() {
         message = "Well done! You Win!";
+        bgmPlayer.pause();
         firebaseTool.SetUserBestScore(globalStorage.getUserID(), bestScore);
         switch(this.level){
             case("src/image/level1.png"):{
