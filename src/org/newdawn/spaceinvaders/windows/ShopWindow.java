@@ -21,12 +21,13 @@ public class ShopWindow extends Canvas {
     private AtomicInteger activeSkin;
     private Boolean[] enableSkins;
 
+    private BufferedImage shopImg;
     private BufferedImage shopShip1;
     private BufferedImage shopShip2;
     private BufferedImage shopShip3;
     private BufferedImage shopShip4;
     private BufferedImage shopShip5;
-    BufferedImage coin;
+    private BufferedImage coin;
 
     private int easterEggClicked;
     private Boolean[] enableItem;
@@ -40,12 +41,6 @@ public class ShopWindow extends Canvas {
         int centerX = (int) ((screenSize.getWidth() - container.getWidth()) / 2);
         int centerY = (int) ((screenSize.getHeight() - container.getHeight()) / 2);
         container.setLocation(centerX, centerY);
-
-        JLabel shopimg = new JLabel();
-        ImageIcon shop = new ImageIcon("src/sprites/shop.png");
-        shopimg.setIcon(shop);
-        shopimg.setBounds(300, 40, 226, 73);
-        container.getContentPane().add(shopimg);
 
         panel.setLayout(null);
 
@@ -69,6 +64,7 @@ public class ShopWindow extends Canvas {
         this.enableItem = enableItem;
         
         try{
+            shopImg = ImageIO.read(new File("src/sprites/shop.png"));
             shopShip1 = ImageIO.read(new File("src/sprites/Shopship1.png"));
             shopShip2 = ImageIO.read(new File("src/sprites/Shopship2.png"));
             shopShip3 = ImageIO.read(new File("src/sprites/Shopship3.png"));
@@ -116,8 +112,8 @@ public class ShopWindow extends Canvas {
                 }
 
         //shopShip2 click listener
-        if (x >= 360 && x <= 360 + shopShip1.getWidth() &&
-                y >= 200 && y <= 200 + shopShip1.getHeight()) {
+        if (x >= 360 && x <= 360 + shopShip2.getWidth() &&
+                y >= 200 && y <= 200 + shopShip2.getHeight()) {
                     if (this.enableSkins[1] == true){
                         int response = JOptionPane.showConfirmDialog(ShopWindow.this,
                         "해당 스킨을 보유중이에요. 이 스킨으로 바꿀까요?", "스킨 변경 확인",
@@ -146,8 +142,8 @@ public class ShopWindow extends Canvas {
                 }
         
         //shopShip3 click listener
-        if (x >= 620 && x <= 620 + shopShip1.getWidth() &&
-                y >= 200 && y <= 200 + shopShip1.getHeight()) {
+        if (x >= 620 && x <= 620 + shopShip3.getWidth() &&
+                y >= 200 && y <= 200 + shopShip3.getHeight()) {
                     if (this.enableSkins[2] == true){
                         int response = JOptionPane.showConfirmDialog(ShopWindow.this,
                         "해당 스킨을 보유중이에요. 이 스킨으로 바꿀까요?", "스킨 변경 확인",
@@ -176,8 +172,8 @@ public class ShopWindow extends Canvas {
                 }
 
         //shopShip4 click listener
-        if (x >= 230 && x <= 230 + shopShip1.getWidth() &&
-                y >= 400 && y <= 400 + shopShip1.getHeight()) {
+        if (x >= 230 && x <= 230 + shopShip4.getWidth() &&
+                y >= 400 && y <= 400 + shopShip4.getHeight()) {
                     if (this.enableSkins[3] == true){
                         int response = JOptionPane.showConfirmDialog(ShopWindow.this,
                         "해당 스킨을 보유중이에요. 이 스킨으로 바꿀까요?", "스킨 변경 확인",
@@ -206,8 +202,8 @@ public class ShopWindow extends Canvas {
                 }
 
         //shopShip5 click listener
-        if (x >= 490 && x <= 490 + shopShip1.getWidth() &&
-                y >= 400 && y <= 400 + shopShip1.getHeight()) {
+        if (x >= 490 && x <= 490 + shopShip5.getWidth() &&
+                y >= 400 && y <= 400 + shopShip5.getHeight()) {
                     easterEggClicked++;
                     if (easterEggClicked == 5){
                         String response = JOptionPane.showInputDialog(ShopWindow.this,
@@ -278,6 +274,7 @@ public class ShopWindow extends Canvas {
                 e.printStackTrace();
             }
             
+            g.drawImage(this.shopImg,400-this.shopImg.getWidth()/2,40,this);
             g.drawImage(this.shopShip1,100,200,this);
             g.drawImage(this.shopShip2,360,200,this);
             g.drawImage(this.shopShip3,620,200,this);
