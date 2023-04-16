@@ -119,26 +119,5 @@ public class Signup extends JDialog {
             }
         });
     }
-
-    //메인 클래스에서 다이얼로그 회원가입 창 데이터를 가져오기 위한 get 메소드 선언
-    public String getIdText() {
-        return this.idText.getText().trim();
-    }
-
-    public String getPwText() {
-        return this.pwText.getText().trim();
-    }
-
-    public String getPwCheckText() {
-        return this.pwCheckText.getText().trim();
-    }
-
-    public String getNameText() {
-        return this.nameText.getText().trim();
-    }
-
-    public boolean memberCheck() {
-        return membershipProgress;
-    }
 }
 
