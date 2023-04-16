@@ -75,7 +75,7 @@ public class MainWindow extends JFrame {
     public void btnMouseListener(JButton button){
         button.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
-                if (button.getName() == "src/image/start.png"){
+                if (button.getName() == "src/image/shop.png"){
                     button.setVisible(true);
                     setLayout(null);
                     Thread shopThread = new Thread(new Runnable() {
@@ -103,7 +103,7 @@ public class MainWindow extends JFrame {
                     });
                     ruleThread.start();
                 }
-                else  {
+                else if (button.getName() == "src/image/level1.png" || button.getName() == "src/image/level2.png" || button.getName() == "src/image/level3.png" || button.getName() == "src/image/level4.png" || button.getName() == "src/image/level5.png") {
                     // level 버튼 누른 경우
                     button.setVisible(true);
                     setLayout(null);
@@ -144,25 +144,25 @@ public class MainWindow extends JFrame {
         panel.setPreferredSize(new Dimension(800, 600));
 
         // shop 버튼 생성
-        shopbtn = drawButton(shopbtn, "src/image/start.png", 100, 50, 270, 200);
+        shopbtn = drawButton(shopbtn, "src/image/shop.png", 150, 65, 460, 410);
         this.btnMouseListener(shopbtn);
         //설명 버튼 생성
-        rulebtn = drawButton(rulebtn, "src/image/rule.png", 100, 50, 400, 200);
+        rulebtn = drawButton(rulebtn, "src/image/rule.png", 150, 65, 460, 480);
         this.btnMouseListener(rulebtn);
         //level1 버튼 생성
-        level1btn = drawButton(level1btn, "src/image/level1.png", 100, 50, 120, 400);
+        level1btn = drawButton(level1btn, "src/image/level1.png", 150, 65, 630, 200);
         this.btnMouseListener(level1btn);
         //level2 버튼 생성
-        level2btn = drawButton(level2btn, "src/image/level2.png", 100, 50, 230, 400);
+        level2btn = drawButton(level2btn, "src/image/level2.png", 150, 65, 630, 270);
         this.btnMouseListener(level2btn);
         //level3 버튼 생성
-        level3btn = drawButton(level3btn, "src/image/level3.png", 100, 50, 340, 400);
+        level3btn = drawButton(level3btn, "src/image/level3.png", 150, 65, 630, 340);
         this.btnMouseListener(level3btn);
         //level4 버튼 생성
-        level4btn = drawButton(level4btn, "src/image/level4.png", 100, 50, 450, 400);
+        level4btn = drawButton(level4btn, "src/image/level4.png", 150, 65, 630, 410);
         this.btnMouseListener(level4btn);
         //level5 버튼 생성
-        level5btn = drawButton(level5btn, "src/image/level5.png", 100, 50, 560, 400);
+        level5btn = drawButton(level5btn, "src/image/level5.png", 150, 65, 630, 480);
         this.btnMouseListener(level5btn);
 
         // 패널에 시작 버튼 추가
