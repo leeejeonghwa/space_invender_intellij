@@ -21,6 +21,7 @@ public class ShopWindow extends Canvas {
     private AtomicInteger activeSkin;
     private Boolean[] enableSkins;
 
+    private BufferedImage shopImg;
     private BufferedImage shopShip1;
     private BufferedImage shopShip2;
     private BufferedImage shopShip3;
@@ -40,12 +41,6 @@ public class ShopWindow extends Canvas {
         int centerX = (int) ((screenSize.getWidth() - container.getWidth()) / 2);
         int centerY = (int) ((screenSize.getHeight() - container.getHeight()) / 2);
         container.setLocation(centerX, centerY);
-
-        JLabel shopimg = new JLabel();
-        ImageIcon shop = new ImageIcon("src/sprites/shop.png");
-        shopimg.setIcon(shop);
-        shopimg.setBounds(300, 40, 226, 73);
-        container.getContentPane().add(shopimg);
 
         panel.setLayout(null);
 
@@ -69,6 +64,7 @@ public class ShopWindow extends Canvas {
         this.enableItem = enableItem;
         
         try{
+            shopImg = ImageIO.read(new File("src/image/shop.png"));
             shopShip1 = ImageIO.read(new File("src/sprites/Shopship1.png"));
             shopShip2 = ImageIO.read(new File("src/sprites/Shopship2.png"));
             shopShip3 = ImageIO.read(new File("src/sprites/Shopship3.png"));
@@ -278,6 +274,7 @@ public class ShopWindow extends Canvas {
                 e.printStackTrace();
             }
             
+            g.drawImage(this.shopImg,400-this.shopImg.getWidth()/2,40,this);
             g.drawImage(this.shopShip1,100,200,this);
             g.drawImage(this.shopShip2,360,200,this);
             g.drawImage(this.shopShip3,620,200,this);
