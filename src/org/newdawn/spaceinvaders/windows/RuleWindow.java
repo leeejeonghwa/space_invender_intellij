@@ -2,7 +2,11 @@ package org.newdawn.spaceinvaders.windows;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -47,11 +51,17 @@ public class RuleWindow extends Canvas{
     public void ruleLoop(){
         while(true){
             Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
-            g.setColor(Color.black);
-            g.fillRect(0, 0, 800, 600);
 
-            g.setColor(Color.WHITE);
-            g.drawString("Created by leeejeonghwa, Indigo_Coder, zlatjdus in Github", 240, 300);
+            BufferedImage rule;
+            try {
+                rule = ImageIO.read(new File("src/sprites/rule.png"));
+                g.drawImage(rule, 0, 0, this);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
 
             g.dispose();
             strategy.show();
