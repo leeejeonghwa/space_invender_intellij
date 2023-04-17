@@ -1,5 +1,7 @@
-package org.newdawn.spaceinvaders;
+package org.newdawn.spaceinvaders.Entity;
 
+
+import org.newdawn.spaceinvaders.Game;
 
 /**
      * An entity representing a shot fired by the player's ship //총알

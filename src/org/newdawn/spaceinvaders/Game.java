@@ -2,6 +2,8 @@ package org.newdawn.spaceinvaders;
 
 
 
+import org.newdawn.spaceinvaders.Entity.*;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;

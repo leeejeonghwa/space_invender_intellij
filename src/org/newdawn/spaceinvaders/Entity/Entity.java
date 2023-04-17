@@ -1,4 +1,7 @@
-package org.newdawn.spaceinvaders;
+package org.newdawn.spaceinvaders.Entity;
+
+import org.newdawn.spaceinvaders.Sprite;
+import org.newdawn.spaceinvaders.SpriteStore;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;

@@ -1,11 +1,15 @@
-package org.newdawn.spaceinvaders;
+package org.newdawn.spaceinvaders.Entity;
+
+import org.newdawn.spaceinvaders.Game;
+import org.newdawn.spaceinvaders.Sprite;
+import org.newdawn.spaceinvaders.SpriteStore;
 
 /**
  * An entity which represents one of our space invader aliens.
  *
  * @author Kevin Glass
  */
-public class BossEntity extends Entity {
+public class AlienEntity extends Entity {
     /**
      * The speed at which the alient moves horizontally
      */ // 에일리언이 수평으로 이동하는 속도
@@ -33,8 +37,6 @@ public class BossEntity extends Entity {
      */
     private int frameNumber;
 
-    private int health = 50;
-
     /**
      * Create a new alien entity
      *
@@ -42,13 +44,14 @@ public class BossEntity extends Entity {
      * @param x    The intial x location of this alien
      * @param y    The intial y location of this alient
      */
-    public BossEntity(Game game, int x, int y) {
-        super("sprites/boss.png", x, y);
+    public AlienEntity(Game game, int x, int y) {
+        super("sprites/alien.png", x, y);
 
+        // setup the animatin frames
         frames[0] = sprite;
-        frames[1] = SpriteStore.get().getSprite("sprites/boss1.png");
+        frames[1] = SpriteStore.get().getSprite("sprites/alien2.png");
         frames[2] = sprite;
-        frames[3] = SpriteStore.get().getSprite("sprites/boss2.png");
+        frames[3] = SpriteStore.get().getSprite("sprites/alien3.png");
 
         this.game = game;
         dx = -moveSpeed;
@@ -88,7 +91,7 @@ public class BossEntity extends Entity {
         }
         // and vice vesa, if we have reached the right hand side of
         // the screen and are moving right, request a logic update //오른쪽 끝
-        if ((dx > 0) && (x > 750 - sprite.getWidth() + 30)) {
+        if ((dx > 0) && (x > 750)) {
             game.updateLogic();
         }
 
@@ -112,9 +115,6 @@ public class BossEntity extends Entity {
         }
     }
 
-    public int gethealth(){
-        return health;
-    }
     /**
      * Notification that this alien has collided with another entity
      *
@@ -122,13 +122,7 @@ public class BossEntity extends Entity {
      */
     public void collidedWith(Entity other) {
         // collisions with aliens are handled elsewhere
-        if (other instanceof ShotEntity){
-            health--;
-        }
-        if (health <= 0){
-            game.removeEntity(this);
-            game.notifyAlienKilled();}
+
+
     }
-
-
 }
