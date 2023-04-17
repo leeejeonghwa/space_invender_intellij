@@ -1,14 +1,8 @@
-package org.newdawn.spaceinvaders.windows;
+package org.newdawn.spaceinvaders;
 
 
 import java.awt.*;
 import javax.swing.*;
-
-import org.newdawn.spaceinvaders.cores.FirebaseTool;
-import org.newdawn.spaceinvaders.cores.Game;
-import org.newdawn.spaceinvaders.cores.GlobalStorage;
-import org.newdawn.spaceinvaders.cores.Item;
-import org.newdawn.spaceinvaders.cores.Login;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;

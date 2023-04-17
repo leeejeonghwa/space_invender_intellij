@@ -1,4 +1,4 @@
-package org.newdawn.spaceinvaders.cores;
+package org.newdawn.spaceinvaders;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
