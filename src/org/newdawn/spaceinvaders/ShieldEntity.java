@@ -1,6 +1,4 @@
-package org.newdawn.spaceinvaders.entity;
-
-import org.newdawn.spaceinvaders.cores.Game;
+package org.newdawn.spaceinvaders;
 
 public class ShieldEntity extends Entity {
     private Game game;

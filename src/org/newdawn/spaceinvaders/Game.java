@@ -1,4 +1,4 @@
-package org.newdawn.spaceinvaders.cores;
+package org.newdawn.spaceinvaders;
 
 
 
@@ -15,9 +15,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.imageio.ImageIO;
 
 import javax.swing.*;
-
-import org.newdawn.spaceinvaders.SystemTimer;
-import org.newdawn.spaceinvaders.entity.*;
 
 
 

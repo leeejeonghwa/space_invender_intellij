@@ -1,4 +1,4 @@
-package org.newdawn.spaceinvaders.cores;
+package org.newdawn.spaceinvaders;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
