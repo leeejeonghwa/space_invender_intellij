@@ -44,19 +44,15 @@ public class Game extends Canvas {
     /**
      * The stragey that allows us to use accelerate page flipping
      */
-    private BufferStrategy strategy;
-    /**
-     * True if the game is currently "running", i.e. the game loop is looping
-     */
-    private boolean gameRunning = true;
+    private final BufferStrategy strategy;
     /**
      * The list of all the entities that exist in our game
      */
-    private ArrayList entities = new ArrayList();
+    private final ArrayList<Entity> entities = new ArrayList<>();
     /**
      * The list of entities that need to be removed from the game this loop
      */
-    private ArrayList removeList = new ArrayList();
+    private final ArrayList<Entity> removeList = new ArrayList<>();
     /**
      * The entity representing the player
      */
@@ -73,11 +69,6 @@ public class Game extends Canvas {
     private long lastFire = 0;
     private long lastAlienShot = 0;
     /**
-     * The interval between our players shot (ms)
-     */
-    private long firingInterval = 200; //총알 사이의 간격
-    private long AlienShotInterval = 200;
-    /**
      * The number of aliens left on the screen
      */
     private int alienCount;
@@ -88,13 +79,13 @@ public class Game extends Canvas {
     /* easterEgg */
     private boolean easterEgg = false;
     /* Level is parameter of class instance */
-    private String level;
+    private final String level;
     /* Backup Item information */
-    private Boolean[] enableItems;
+    private final Boolean[] enableItems;
     /* Money for clearing stage */
-    private AtomicInteger money;
+    private final AtomicInteger money;
     /* Number of active skin */
-    private int activeSkin;
+    private final int activeSkin;
     /* Number of killed Aliean */
     private int alienKilled = 0;
     /**
@@ -140,26 +131,17 @@ public class Game extends Canvas {
      */
     private int fps; // 현재 기록된 프레임 수
     /**
-     * The normal title of the game window
-     */
-    private String windowTitle = "Space Invaders 102";
-    /**
      * The game window that we'll update with the frame count
      */
-    private JFrame container;
+    private final JFrame container;
 
-    private FirebaseTool firebaseTool;
+    private final FirebaseTool firebaseTool;
 
-    private GlobalStorage globalStorage;
+    private final GlobalStorage globalStorage;
 
-    private Entity alien;
-
-    private BossEntity bossAlien;
-
-    private Player bgmPlayer;
+    private final Player bgmPlayer;
     /**
      * Construct our game and set it running.
-     * @param
      */
     public Game(String level, Boolean[] enableItems, AtomicInteger money, AtomicInteger activeSkin) {
         // create a frame to contain our game
@@ -177,7 +159,7 @@ public class Game extends Canvas {
 
         panel.setLayout(null);
 
-        // setup our canvas size and put it into the content of the frame
+        // set up our canvas size and put it into the content of the frame
         setBounds(0, 0, 800, 600);
         panel.add(this);
 
@@ -201,7 +183,7 @@ public class Game extends Canvas {
 //            }
 //        });
 
-        // add a key input system (defined below) to our canvas
+        // add a key input system (defined below) to our canvas,
         // so we can respond to key pressed
         addKeyListener(new KeyInputHandler());
 
@@ -224,9 +206,7 @@ public class Game extends Canvas {
         initEntities();
 
         bgmPlayer = new Player();
-        new Thread(() -> {
-            bgmPlayer.play("src/sound/backgroundmusic.wav");
-        }).start();
+        new Thread(() -> bgmPlayer.play("src/sound/backgroundmusic.wav")).start();
     }
 
     /**
@@ -254,31 +234,19 @@ public class Game extends Canvas {
      */
     private void initEntities() {
         // create the player ship and place it roughly in the center of the screen
-        switch(this.activeSkin){
-            case (0):{
-                ship = new ShipEntity(this, "sprites/ship1.png", 370, 550);
-                break;
-            }
-            case (1):{
-                ship = new ShipEntity(this, "sprites/ship2.png", 370, 550);
-                break;
-            }
-            case (2):{
-                ship = new ShipEntity(this, "sprites/ship3.png", 370, 550);
-                break;
-            }
-            case (3):{
-                ship = new ShipEntity(this, "sprites/ship4.png", 370, 550);
-                break;
-            }
-            case (4):{
-                ship = new ShipEntity(this, "sprites/ship5.png", 370, 550);
-                break;
-            }
-            default:{
-                ship = new ShipEntity(this, "sprites/ship.png", 370, 550);
-                break;
-            }
+        switch (this.activeSkin) {
+            case (0) ->
+                    ship = new ShipEntity(this, "sprites/ship1.png", 370, 550);
+            case (1) ->
+                    ship = new ShipEntity(this, "sprites/ship2.png", 370, 550);
+            case (2) ->
+                    ship = new ShipEntity(this, "sprites/ship3.png", 370, 550);
+            case (3) ->
+                    ship = new ShipEntity(this, "sprites/ship4.png", 370, 550);
+            case (4) ->
+                    ship = new ShipEntity(this, "sprites/ship5.png", 370, 550);
+            default ->
+                    ship = new ShipEntity(this, "sprites/ship.png", 370, 550);
         }
         entities.add(ship);
 
@@ -303,13 +271,14 @@ public class Game extends Canvas {
             //System.out.print("initEntities" + Arrays.toString(this.enableItems)+"\n");
         }
 
-        if (this.enableShield == true) {
+        if (this.enableShield) {
             shield = new ShieldEntity(this, "sprites/shield.gif", 362, 538);
             entities.add(shield);
         }
 
-        switch(this.level){
-            case("src/image/level1.png"):{
+        Entity alien;
+        switch (this.level) {
+            case ("src/image/level1.png") -> {
                 // create a block of aliens (4 rows, by 5 aliens, spaced evenly)
                 alienCount = 0;
                 for (int row = 0; row < 4; row++) {
@@ -319,9 +288,8 @@ public class Game extends Canvas {
                         alienCount++;
                     }
                 }
-                break;
             }
-            case("src/image/level2.png"):{
+            case ("src/image/level2.png") -> {
                 // create a block of aliens (6 rows, by 7 aliens, spaced evenly)
                 alienCount = 0;
                 for (int row = 0; row < 6; row++) {
@@ -331,25 +299,23 @@ public class Game extends Canvas {
                         alienCount++;
                     }
                 }
-                break;
             }
-            case("src/image/level3.png"):{
+            case ("src/image/level3.png") -> {
                 // create a block of aliens (7 rows, by 12 aliens, spaced evenly)
                 // even row move inversely
                 alienCount = 0;
                 for (int row = 0; row < 5; row++) {
                     for (int x = 0; x < 12; x++) {
                         alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 40);
-                        if (row%2 == 0){
-                            alien.setHorizontalMovement(alien.getHorizontalMovement()*(-1));
+                        if (row % 2 == 0) {
+                            alien.setHorizontalMovement(alien.getHorizontalMovement() * (-1));
                         }
                         entities.add(alien);
                         alienCount++;
                     }
                 }
-                break;
             }
-            case("src/image/level4.png"):{
+            case ("src/image/level4.png") -> {
                 // create a block of aliens (5 rows, by 5 aliens, spaced evenly)
                 alienCount = 0;
                 for (int row = 0; row < 5; row++) {
@@ -360,13 +326,12 @@ public class Game extends Canvas {
 
                     }
                 }
-                break;
             }
-            case("src/image/level5.png"):{
+            case ("src/image/level5.png") -> {
                 // create a block of aliens (9 rows, by 12 aliens, spaced evenly)
                 alienCount = 0;
 
-                bossAlien = new BossEntity(this, 370,50);
+                BossEntity bossAlien = new BossEntity(this, 370, 50);
                 entities.add(bossAlien);
                 alienCount++;
 
@@ -377,7 +342,6 @@ public class Game extends Canvas {
                         alienCount++;
                     }
                 }
-                break;
             }
         }
     }
@@ -419,35 +383,30 @@ public class Game extends Canvas {
         message = "Well done! You Win!";
         bgmPlayer.pause();
         firebaseTool.SetUserBestScore(globalStorage.getUserID(), bestScore);
-        switch(this.level){
-            case("src/image/level1.png"):{
+        switch (this.level) {
+            case ("src/image/level1.png") -> {
                 this.enableItems[0] = true;
-                this.money.set(this.money.get() + this.alienKilled * 10 * 1);
-                System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
-                break;
+                this.money.set(this.money.get() + this.alienKilled * 10);
+                System.out.print("notifyWin: " + Arrays.toString(this.enableItems) + this.money + "\n");
             }
-            case("src/image/level2.png"):{
+            case ("src/image/level2.png") -> {
                 this.enableItems[1] = true;
                 this.money.set(this.money.get() + this.alienKilled * 10 * 2);
-                System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
-                break;
+                System.out.print("notifyWin: " + Arrays.toString(this.enableItems) + this.money + "\n");
             }
-            case("src/image/level3.png"):{
+            case ("src/image/level3.png") -> {
                 this.enableItems[2] = true;
                 this.money.set(this.money.get() + this.alienKilled * 10 * 3);
-                System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
-                break;
+                System.out.print("notifyWin: " + Arrays.toString(this.enableItems) + this.money + "\n");
             }
-            case("src/image/level4.png"):{
+            case ("src/image/level4.png") -> {
                 this.enableItems[3] = true;
                 this.money.set(this.money.get() + this.alienKilled * 10 * 4);
-                System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
-                break;
+                System.out.print("notifyWin: " + Arrays.toString(this.enableItems) + this.money + "\n");
             }
-            case("src/image/level5.png"):{
+            case ("src/image/level5.png") -> {
                 this.money.set(this.money.get() + this.alienKilled * 10 * 5);
-                System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
-                break;
+                System.out.print("notifyWin: " + Arrays.toString(this.enableItems) + this.money + "\n");
             }
         }
         waitingForKeyPress = true;
@@ -466,12 +425,11 @@ public class Game extends Canvas {
 
         // if there are still some aliens left then they all need to get faster, so
         // speed up all the existing aliens
-        for (int i = 0; i < entities.size(); i++) {
-            Entity entity = (Entity) entities.get(i);
+        for (Entity value : entities) {
 
-            if (entity instanceof AlienEntity) {
+            if (value instanceof AlienEntity) {
                 // speed up by 2%
-                entity.setHorizontalMovement(entity.getHorizontalMovement() * 1.02);
+                value.setHorizontalMovement(value.getHorizontalMovement() * 1.02);
             }
         }
     }
@@ -483,20 +441,25 @@ public class Game extends Canvas {
      */
     public void tryToFire() {
         // check that we have waiting long enough to fire
+        /*
+          The interval between our players shot (ms)
+         */
+        //총알 사이의 간격
+        long firingInterval = 200;
         if (System.currentTimeMillis() - lastFire < firingInterval) {
             return;
         }
 
         // if we waited long enough, create the shot entity, and record the time.
         lastFire = System.currentTimeMillis();
-        if (easterEgg == true){
+        if (easterEgg){
             easterEggEntity penetration = new easterEggEntity(this, "sprites/longShipshot.png", ship.getX() + 10, ship.getY() - 30);
             entities.add(penetration);
         } else {
-            if (fireNum == false) {
+            if (!fireNum) {
                 ShotEntity shot = new ShotEntity(this, "sprites/shipshot.png", ship.getX() + 10, ship.getY() - 30);
                 entities.add(shot);
-            } else if (fireNum == true ) {
+            } else {
                 ShotEntity leftShot = new ShotEntity(this, "sprites/shipshot.png", ship.getX() - 40, ship.getY() - 30);
                 ShotEntity middleShot = new ShotEntity(this, "sprites/shipshot.png", ship.getX() + 10, ship.getY() - 30);
                 ShotEntity rightShot = new ShotEntity(this, "sprites/shipshot.png", ship.getX() + 60, ship.getY() - 30);
@@ -507,26 +470,25 @@ public class Game extends Canvas {
         }
 
         Player shotplayer = new Player();
-        new Thread(() -> {
-            shotplayer.playShotSound("src/sound/shot.wav");
-        }).start();
+        new Thread(() -> shotplayer.playShotSound("src/sound/shot.wav")).start();
     }
 
     public void shotAlien(){
         // check that we have waiting long enough to fire
 
-        if (System.currentTimeMillis() - lastAlienShot < AlienShotInterval) {
+        long alienShotInterval = 200;
+        if (System.currentTimeMillis() - lastAlienShot < alienShotInterval) {
             return;
         }
         // if we waited long enough, create the shot entity, and record the time.
         lastAlienShot = System.currentTimeMillis();
-        Entity randomAlien = null;
+        Entity randomAlien;
         int size = entities.size() - 1;
         int randomIdx = (int) (Math.random() * size) -1;
         for (int i=0; i<=size; i++) {
             if (randomIdx == i) {
                 if (entities.get(i) instanceof AlienEntity) {
-                    randomAlien = (Entity) entities.get(i);
+                    randomAlien = entities.get(i);
                     ShotAlienEntity shot = new ShotAlienEntity(this,"sprites/shot.gif",randomAlien.getX(),randomAlien.getY());
                     entities.add(shot);
                 }
@@ -583,8 +545,11 @@ public class Game extends Canvas {
         this.alienKilled = alienCount;
 
         // keep looping round til the game ends
-        while (gameRunning) {
-            // work out how long its been since the last update, this
+        /*
+         * True if the game is currently "running", i.e. the game loop is looping
+         */
+        while (true) {
+            // work out how long it's been since the last update, this
             // will be used to calculate how far the entities should
             // move this loop
             long delta = SystemTimer.getTime() - lastLoopTime;
@@ -598,6 +563,10 @@ public class Game extends Canvas {
             // update our FPS counter if a second has passed since
             // we last recorded
             if (lastFpsTime >= 1000) {
+                /*
+                  The normal title of the game window
+                 */
+                String windowTitle = "Space Invaders 102";
                 container.setTitle(windowTitle + " (FPS: " + fps + ")");
                 lastFpsTime = 0;
                 fps = 0; //fps = 현재 기록된 프레임 수 -> 화면이 바뀌는 횟수
@@ -610,10 +579,10 @@ public class Game extends Canvas {
             g.fillRect(0, 0, 800, 600);
 
             g.setColor(Color.WHITE);
-            g.drawString("Time: " + Long.toString(timerTime), 10, 20);
+            g.drawString("Time: " + timerTime, 10, 20);
 
             g.setColor(Color.WHITE);
-            g.drawString("Killed: " + Integer.toString(this.alienKilled - alienCount), 10, 40);
+            g.drawString("Killed: " + (this.alienKilled - alienCount), 10, 40);
 
             BufferedImage coin;
             try{
@@ -632,51 +601,49 @@ public class Game extends Canvas {
             BufferedImage moreBullet;
             try {
                 //draw health
-				int heartNum = ((ShipEntity) ship).returnNowHealth();
-				for(int i=0;i<heartNum;i++){
-					heart = ImageIO.read(new File("src/sprites/heart.png"));
-					g.drawImage(heart,32*i+10,558,this);
-				}
+                int heartNum = ((ShipEntity) ship).returnNowHealth();
+                for(int i=0;i<heartNum;i++){
+                    heart = ImageIO.read(new File("src/sprites/heart.png"));
+                    g.drawImage(heart,32*i+10,558,this);
+                }
                 //draw enable items
                 maxHealth = ImageIO.read(new File("src/sprites/Item maxheartpng.png"));
                 getFaster = ImageIO.read(new File("src/sprites/Item speed.png"));
                 enableShield = ImageIO.read(new File("src/sprites/Item shield.png"));
                 moreBullet = ImageIO.read(new File("src/sprites/Item shot.png"));
 
-                if (enableItems[0] == true){
+                if (enableItems[0]){
                     g.drawImage(maxHealth,730 - moreBullet.getWidth() - enableShield.getWidth() - getFaster.getWidth() - maxHealth.getWidth()
-                    ,558,this);
+                            ,558,this);
                 }
-                if (enableItems[1] == true){
+                if (enableItems[1]){
                     g.drawImage(getFaster, 745 - moreBullet.getWidth() - enableShield.getWidth() - getFaster.getWidth()
-                    ,558,this);
+                            ,558,this);
                 }
-                if (enableItems[2] == true){
+                if (enableItems[2]){
                     g.drawImage(enableShield,760 - moreBullet.getWidth() - enableShield.getWidth(),558,this);
                 }
-                if (enableItems[3] == true){
+                if (enableItems[3]){
                     g.drawImage(moreBullet,775 - moreBullet.getWidth(),558,this);
                 }
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             bestScore = Integer.toString(this.alienKilled - alienCount);
 
             // cycle round asking each entity to move itself
             if (!waitingForKeyPress) {
-                for (int i = 0; i < entities.size(); i++) {
-                    Entity entity = (Entity) entities.get(i);
-                    
-                    entity.move(delta);
+                for (Entity value : entities) {
+
+                    value.move(delta);
                 }
             }
 
             // cycle round drawing all the entities we have in the game
-            for (int i = 0; i < entities.size(); i++) {
-                Entity entity = (Entity) entities.get(i);
+            for (Entity value : entities) {
 
-                entity.draw(g);
+                value.draw(g);
             }
 
             // brute force collisions, compare every entity against
@@ -684,8 +651,8 @@ public class Game extends Canvas {
             // both entities that the collision has occured  // 충돌 알림
             for (int p = 0; p < entities.size(); p++) {
                 for (int s = p + 1; s < entities.size(); s++) {
-                    Entity me = (Entity) entities.get(p);
-                    Entity him = (Entity) entities.get(s);
+                    Entity me = entities.get(p);
+                    Entity him = entities.get(s);
 
                     if (me.collidesWith(him)) {
                         me.collidedWith(him);
@@ -702,9 +669,8 @@ public class Game extends Canvas {
             // be resolved, cycle round every entity requesting that
             // their personal logic should be considered.   //
             if (logicRequiredThisLoop) {
-                for (int i = 0; i < entities.size(); i++) {
-                    Entity entity = (Entity) entities.get(i);
-                    entity.doLogic();
+                for (Entity value : entities) {
+                    value.doLogic();
                 }
 
                 logicRequiredThisLoop = false;
@@ -742,7 +708,7 @@ public class Game extends Canvas {
             }
 
             //shield will move with ship
-            if (this.enableShield == true) {
+            if (this.enableShield) {
                 shield.setHorizontalMovement(0);
                 shield.setVerticalMovement(0);
 
@@ -784,7 +750,7 @@ public class Game extends Canvas {
      * continue)
      * <p>
      * This has been implemented as an inner class more through
-     * habbit then anything else. Its perfectly normal to implement
+     * habbit than anything else. Its perfectly normal to implement
      * this as seperate class if slight less convienient.
      * // 키보드 입력 처리 클래스 이동 및 발사
      *
@@ -864,7 +830,7 @@ public class Game extends Canvas {
          * @param e The details of the key that was typed.
          */
         public void keyTyped(KeyEvent e) {
-            // if we're waiting for a "any key" type then
+            // if we're waiting for an "any key" type then
             // check if we've recieved any recently. We may
             // have had a keyType() event from the user releasing
             // the shoot or move keys, hence the use of the "pressCount"
