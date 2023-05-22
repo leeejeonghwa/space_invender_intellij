@@ -3,16 +3,18 @@ package org.newdawn.spaceinvaders;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineEvent;
-import javax.sound.sampled.LineListener;
+import javax.sound.sampled.FloatControl;
 import java.io.File;
 
 
-public class Player implements LineListener {
+public class Player {
     private Clip bgmclip;
+    private Clip successclip;
+    private Clip failclip;
     private Clip shotclip;
     private boolean playCompleted;
     private long pausedPosition;
+
 
     public void play(String audioFilePath) {
         try {
@@ -26,9 +28,12 @@ public class Player implements LineListener {
 
             bgmclip = AudioSystem.getClip();
 
-            bgmclip.addLineListener(this);
-
             bgmclip.open(audioStream);
+            //소리설정
+            FloatControl gainControl = (FloatControl) bgmclip.getControl(FloatControl.Type.MASTER_GAIN);
+
+            //볼륨조정
+            gainControl.setValue(-7.0f);
 
             bgmclip.loop(Clip.LOOP_CONTINUOUSLY);
 
@@ -60,9 +65,91 @@ public class Player implements LineListener {
             bgmclip.start();
         }
     }
+    public void successPlay(String audioFilePath) {
+        try {
+            File audioFile = new File(audioFilePath);
+            if (!audioFile.exists()) {
+                System.err.println("Audio file not found: " + audioFilePath);
+                return;
+            }
 
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
 
-    public void playShotSound(String audioFilePath) {
+            successclip = AudioSystem.getClip();
+
+            successclip.open(audioStream);
+
+            //소리설정
+            FloatControl gainControl = (FloatControl) successclip.getControl(FloatControl.Type.MASTER_GAIN);
+
+            //볼륨조정
+            gainControl.setValue(-15.0f);
+
+            successclip.start();
+
+            while (!playCompleted) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+
+    public void successPause() {
+        if (successclip != null && successclip.isRunning()) {
+            successclip.stop();
+            pausedPosition = successclip.getMicrosecondPosition();
+        }
+    }
+
+    public void failPlay(String audioFilePath) {
+        try {
+            File audioFile = new File(audioFilePath);
+            if (!audioFile.exists()) {
+                System.err.println("Audio file not found: " + audioFilePath);
+                return;
+            }
+
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+
+            failclip = AudioSystem.getClip();
+
+            failclip.open(audioStream);
+
+            //소리설정
+            FloatControl gainControl = (FloatControl) failclip.getControl(FloatControl.Type.MASTER_GAIN);
+
+            //볼륨조정
+            gainControl.setValue(-15.0f);
+
+            failclip.start();
+
+            while (!playCompleted) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+
+    public void failPause() {
+        if (failclip != null && failclip.isRunning()) {
+            failclip.stop();
+            pausedPosition = failclip.getMicrosecondPosition();
+        }
+    }
+
+    public void shootPlay(String audioFilePath) {
         try {
             File audioFile = new File(audioFilePath);
             if (!audioFile.exists()) {
@@ -74,9 +161,12 @@ public class Player implements LineListener {
 
             shotclip = AudioSystem.getClip();
 
-            shotclip.addLineListener(this);
-
             shotclip.open(audioStream);
+            //소리설정
+            FloatControl gainControl = (FloatControl) shotclip.getControl(FloatControl.Type.MASTER_GAIN);
+
+            //볼륨조정
+            gainControl.setValue(-20.0f);
 
             shotclip.start();
 
@@ -87,21 +177,12 @@ public class Player implements LineListener {
                     ex.printStackTrace();
                 }
             }
-
-            shotclip.stop();
-            shotclip.close();
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
         }
     }
 
-    @Override
-    public void update(LineEvent event) {
-        LineEvent.Type type = event.getType();
-        if (type == LineEvent.Type.STOP) {
-            playCompleted = true;
-        }
-    }
+
 }
 
 
