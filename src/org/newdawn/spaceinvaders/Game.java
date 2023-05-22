@@ -156,7 +156,7 @@ public class Game extends Canvas {
 
     private BossEntity bossAlien;
 
-    private Player bgmPlayer;
+    private Player player;
     /**
      * Construct our game and set it running.
      * @param
@@ -184,6 +184,8 @@ public class Game extends Canvas {
         // Tell AWT not to bother repainting our canvas since we're
         // going to do that our self in accelerated mode
         setIgnoreRepaint(true);
+
+        container.addWindowListener(windowListener);
 
         // finally make the window visible
         container.pack();
@@ -223,19 +225,62 @@ public class Game extends Canvas {
         // to see at startup
         initEntities();
 
-        bgmPlayer = new Player();
+        player = new Player();
         new Thread(() -> {
-            bgmPlayer.play("src/sound/backgroundmusic.wav");
+            player.play("src/sound/backgroundmusic.wav");
         }).start();
+
+
     }
 
     /**
      * Start a fresh game, this should clear out any old data and
      * create a new set. // 이전 기록 보관하기
      */
+
+    WindowListener windowListener = new WindowAdapter() {
+        @Override
+        public void windowOpened(WindowEvent e) {
+            // 윈도우 창이 열릴 때 처리할 내용
+        }
+
+        @Override
+        public void windowClosing(WindowEvent e) {
+            // 윈도우 창이 닫힐 때 처리할 내용
+            player.pause();
+        }
+
+        @Override
+        public void windowClosed(WindowEvent e) {
+            // 윈도우 창이 닫힌 후 처리할 내용
+            player.pause();
+        }
+
+        @Override
+        public void windowIconified(WindowEvent e) {
+            // 윈도우 창이 최소화될 때 처리할 내용
+        }
+
+        @Override
+        public void windowDeiconified(WindowEvent e) {
+            // 윈도우 창이 최소화에서 복원될 때 처리할 내용
+        }
+
+        @Override
+        public void windowActivated(WindowEvent e) {
+            // 윈도우 창이 활성화될 때 처리할 내용
+        }
+
+        @Override
+        public void windowDeactivated(WindowEvent e) {
+            // 윈도우 창이 비활성화될 때 처리할 내용
+        }
+    };
     private void startGame() {
         // clear out any existing entities and intialise a new set
-        bgmPlayer.resume();
+//        player.successPause();
+//        player.failPause();
+        player.resume();
         entities.clear();
         initEntities();
 
@@ -406,7 +451,12 @@ public class Game extends Canvas {
      */
     public void notifyDeath() {
         message = "Oh no! They got you, try again?";
-        bgmPlayer.pause();
+
+        player.pause();
+        new Thread(() -> {
+            player.failPlay("src/sound/fail.wav");
+        }).start();
+
         firebaseTool.SetUserBestScore(globalStorage.getUserID(), bestScore);
         waitingForKeyPress = true;
     }
@@ -417,7 +467,7 @@ public class Game extends Canvas {
      */
     public void notifyWin() {
         message = "Well done! You Win!";
-        bgmPlayer.pause();
+
         firebaseTool.SetUserBestScore(globalStorage.getUserID(), bestScore);
         switch(this.level){
             case("src/image/level1.png"):{
@@ -450,6 +500,14 @@ public class Game extends Canvas {
                 break;
             }
         }
+
+        player.pause();
+
+        new Thread(() -> {
+            player.successPlay("src/sound/success.wav");
+        }).start();
+
+
         waitingForKeyPress = true;
     }
 
@@ -506,9 +564,8 @@ public class Game extends Canvas {
             }
         }
 
-        Player shotplayer = new Player();
         new Thread(() -> {
-            shotplayer.playShotSound("src/sound/shot.wav");
+            player.shootPlay("src/sound/shot.wav");
         }).start();
     }
 
