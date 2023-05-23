@@ -610,7 +610,7 @@ public class Game extends Canvas {
             g.fillRect(0, 0, 800, 600);
 
             g.setColor(Color.WHITE);
-            g.drawString("Time: " + Long.toString((startTime - System.currentTimeMillis())/1000), 10, 20);
+            g.drawString("Time: " + Long.toString((System.currentTimeMillis() - startTime)/1000), 10, 20);
 
             g.setColor(Color.WHITE);
             g.drawString("Killed: " + Integer.toString(this.alienKilled - alienCount), 10, 40);
@@ -716,6 +716,7 @@ public class Game extends Canvas {
                 g.setColor(Color.white);
                 g.drawString(message, (800 - g.getFontMetrics().stringWidth(message)) / 2, 250);
                 g.drawString("Press any key", (800 - g.getFontMetrics().stringWidth("Press any key")) / 2, 300);
+                startTime = System.currentTimeMillis(); // pree any key를 기다리는 상태면 startTime을 계속 갱신시켜 흘러가지 않도록 함
             }
 
             // finally, we've completed drawing so clear up the graphics
@@ -773,7 +774,7 @@ public class Game extends Canvas {
             // to this and then factor in the current time to give
             // us our final value to wait for //?? 화면 바뀌는 거 관련해서 말하는게 맞나요
             try{
-                Thread.sleep(lastLoopTime + 10 - System.currentTimeMillis());
+                Thread.sleep(System.currentTimeMillis() - lastLoopTime + 10);
             } catch(InterruptedException e){
                 e.printStackTrace();
             }
