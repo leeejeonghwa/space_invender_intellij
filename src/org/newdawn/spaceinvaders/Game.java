@@ -77,6 +77,11 @@ public class Game extends Canvas {
      */
     private long firingInterval = 200; //총알 사이의 간격
     private long AlienShotInterval = 200;
+
+    // 기록용 시간은 event를 통해 발생한 시작시각과 끝난 시각만 파악하도록 함
+    private long finishedTime;
+    private long startTimeForRecord;
+
     /**
      * The number of aliens left on the screen
      */
@@ -283,6 +288,7 @@ public class Game extends Canvas {
         player.resume();
         entities.clear();
         initEntities();
+        startTimeForRecord = System.currentTimeMillis();
 
         // blank out any keyboard settings we might currently have
         leftPressed = false;
@@ -349,7 +355,7 @@ public class Game extends Canvas {
         }
 
         if (this.enableShield == true) {
-            shield = new ShieldEntity(this, "sprites/shield.gif", 362, 538);
+            shield = new ShieldEntity(this, "sprites/shield.gif", (ShipEntity)ship, 362, 538);
             entities.add(shield);
         }
 
@@ -467,36 +473,36 @@ public class Game extends Canvas {
      */
     public void notifyWin() {
         message = "Well done! You Win!";
-
+        finishedTime = System.currentTimeMillis();
         firebaseTool.SetUserBestScore(globalStorage.getUserID(), bestScore);
         switch(this.level){
             case("src/image/level1.png"):{
                 this.enableItems[0] = true;
                 this.money.set(this.money.get() + this.alienKilled * 10 * 1);
-                System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
+                //System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
                 break;
             }
             case("src/image/level2.png"):{
                 this.enableItems[1] = true;
                 this.money.set(this.money.get() + this.alienKilled * 10 * 2);
-                System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
+                //System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
                 break;
             }
             case("src/image/level3.png"):{
                 this.enableItems[2] = true;
                 this.money.set(this.money.get() + this.alienKilled * 10 * 3);
-                System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
+                //System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
                 break;
             }
             case("src/image/level4.png"):{
                 this.enableItems[3] = true;
                 this.money.set(this.money.get() + this.alienKilled * 10 * 4);
-                System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
+                //System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
                 break;
             }
             case("src/image/level5.png"):{
                 this.money.set(this.money.get() + this.alienKilled * 10 * 5);
-                System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
+                //System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
                 break;
             }
         }
@@ -517,7 +523,6 @@ public class Game extends Canvas {
     public void notifyAlienKilled() {
         // reduce the alient count, if there are none left, the player has won!
         alienCount--;
-
         if (alienCount == 0) {
             notifyWin();
         }
@@ -637,7 +642,7 @@ public class Game extends Canvas {
     public void gameLoop() {
 
         long lastLoopTime = System.currentTimeMillis();
-        long startTime = System.currentTimeMillis();
+        long startTimeForDisplay = System.currentTimeMillis();
         this.alienKilled = alienCount;
 
         // keep looping round til the game ends
@@ -667,7 +672,7 @@ public class Game extends Canvas {
             g.fillRect(0, 0, 800, 600);
 
             g.setColor(Color.WHITE);
-            g.drawString("Time: " + Long.toString((System.currentTimeMillis() - startTime)/1000), 10, 20);
+            g.drawString("Time: " + Long.toString((System.currentTimeMillis() - startTimeForDisplay)/1000), 10, 20);
 
             g.setColor(Color.WHITE);
             g.drawString("Killed: " + Integer.toString(this.alienKilled - alienCount), 10, 40);
@@ -690,10 +695,15 @@ public class Game extends Canvas {
             try {
                 //draw health
 				int heartNum = ((ShipEntity) ship).returnNowHealth();
-				for(int i=0;i<heartNum;i++){
-					heart = ImageIO.read(new File("src/sprites/heart.png"));
-					g.drawImage(heart,32*i+10,558,this);
-				}
+                if(heartNum > 0){
+                    for(int i=0;i<heartNum;i++){
+				    	heart = ImageIO.read(new File("src/sprites/heart.png"));
+				    	g.drawImage(heart,32*i+10,558,this);
+				    }
+                } else {
+                    g.setBackground(Color.BLACK);
+                    g.clearRect(10, 558, 40, 40);
+                }
                 //draw enable items
                 maxHealth = ImageIO.read(new File("src/sprites/Item maxheartpng.png"));
                 getFaster = ImageIO.read(new File("src/sprites/Item speed.png"));
@@ -772,8 +782,12 @@ public class Game extends Canvas {
             if (waitingForKeyPress) {
                 g.setColor(Color.white);
                 g.drawString(message, (800 - g.getFontMetrics().stringWidth(message)) / 2, 250);
+                if (message.equals("Well done! You Win!")){
+                    g.drawString("Play Time: " + (finishedTime- startTimeForRecord)/1000 + " sec",
+                    (800 - g.getFontMetrics().stringWidth("Play Time: " + (finishedTime - startTimeForRecord)/1000 + " sec")) / 2, 275);
+                }
                 g.drawString("Press any key", (800 - g.getFontMetrics().stringWidth("Press any key")) / 2, 300);
-                startTime = System.currentTimeMillis(); // pree any key를 기다리는 상태면 startTime을 계속 갱신시켜 흘러가지 않도록 함
+                startTimeForDisplay = System.currentTimeMillis(); // press any key를 기다리는 상태면 startTime을 계속 갱신시켜 흘러가지 않도록 함
             }
 
             // finally, we've completed drawing so clear up the graphics

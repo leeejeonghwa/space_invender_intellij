@@ -121,8 +121,16 @@ public class AlienEntity extends Entity {
      * @param other The other entity
      */
     public void collidedWith(Entity other) {
-        // collisions with aliens are handled elsewhere
-
-
+        // if we've hit an alien, kill it!
+        if (other instanceof ShotEntity) {
+            // remove the affected entities
+            game.removeEntity(this);
+            game.removeEntity(other);
+            // notify the game that the alien has been killed
+            game.notifyAlienKilled();
+        } else if (other instanceof easterEggEntity){
+            game.removeEntity(this);
+            game.notifyAlienKilled();
+        }
     }
 }

@@ -1,5 +1,8 @@
 package org.newdawn.spaceinvaders.Entity;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import org.newdawn.spaceinvaders.Game;
 
 /**
@@ -12,7 +15,7 @@ public class ShipEntity extends Entity {
      * The game in which the ship exists
      */
     private Game game;
-    private boolean collided;
+    private boolean invincible = false;
     private int health = 3;
 
     /**
@@ -65,14 +68,25 @@ public class ShipEntity extends Entity {
      */
     public void collidedWith(Entity other) {
         if(other instanceof AlienEntity || other instanceof ShotAlienEntity){
-            collided = true;
-            if (health <= 0 && collided == true){
-                game.notifyDeath();
-            }
-            else if(health > 0 && collided == true){
-                health -= 1;
-                collided = false;
-            }
+            this.activateInvinciblity();
+        }
+    }
+
+    public void activateInvinciblity(){
+        if (this.health <= 1 && invincible == false){
+            health -= 1;
+            game.notifyDeath();
+        }
+        else if(this.health > 0 && invincible == false){
+            health -= 1;
+            invincible = true;
+            Timer invincibleTimer = new Timer();
+            TimerTask task = new TimerTask() {
+                public void run(){
+                    invincible = false;
+                }
+            };
+            invincibleTimer.schedule(task, 3000);
         }
     }
 

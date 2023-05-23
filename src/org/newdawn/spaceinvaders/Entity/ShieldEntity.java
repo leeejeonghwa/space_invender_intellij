@@ -4,11 +4,13 @@ import org.newdawn.spaceinvaders.Game;
 
 public class ShieldEntity extends Entity {
     private Game game;
+    private ShipEntity shipEntity;
 
-    public ShieldEntity(Game game, String ref, int x, int y) {
+    public ShieldEntity(Game game, String ref, ShipEntity ship, int x, int y) {
         super(ref, x, y);
 
         this.game = game;
+        this.shipEntity = ship;
     }
 
     public void move(long delta) {
@@ -35,8 +37,9 @@ public class ShieldEntity extends Entity {
     }
 
     public void collidedWith(Entity other) {
-        if (other instanceof AlienEntity) {
+        if (other instanceof AlienEntity || other instanceof ShotAlienEntity) {
             game.removeEntity(this);
+            shipEntity.activateInvinciblity();
         }
     }
 }
