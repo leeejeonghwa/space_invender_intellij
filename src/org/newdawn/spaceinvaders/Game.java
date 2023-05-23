@@ -579,7 +579,8 @@ public class Game extends Canvas {
      */ // 게임 메인 루프 -> 플레이 중 활동
     public void gameLoop() {
 
-        long lastLoopTime = SystemTimer.getTime();
+        long lastLoopTime = System.currentTimeMillis();
+        long startTime = System.currentTimeMillis();
         this.alienKilled = alienCount;
 
         // keep looping round til the game ends
@@ -587,9 +588,8 @@ public class Game extends Canvas {
             // work out how long its been since the last update, this
             // will be used to calculate how far the entities should
             // move this loop
-            long delta = SystemTimer.getTime() - lastLoopTime;
-            lastLoopTime = SystemTimer.getTime();
-            long timerTime = SystemTimer.getTime() / 1000;
+            long delta = System.currentTimeMillis() - lastLoopTime;
+            lastLoopTime = System.currentTimeMillis();
 
             // update the frame counter
             lastFpsTime += delta;
@@ -610,7 +610,7 @@ public class Game extends Canvas {
             g.fillRect(0, 0, 800, 600);
 
             g.setColor(Color.WHITE);
-            g.drawString("Time: " + Long.toString(timerTime), 10, 20);
+            g.drawString("Time: " + Long.toString((startTime - System.currentTimeMillis())/1000), 10, 20);
 
             g.setColor(Color.WHITE);
             g.drawString("Killed: " + Integer.toString(this.alienKilled - alienCount), 10, 40);
@@ -772,8 +772,11 @@ public class Game extends Canvas {
             // we've recorded when we started the frame. We add 10 milliseconds
             // to this and then factor in the current time to give
             // us our final value to wait for //?? 화면 바뀌는 거 관련해서 말하는게 맞나요
-            SystemTimer.sleep(lastLoopTime + 10 - SystemTimer.getTime());
-
+            try{
+                Thread.sleep(lastLoopTime + 10 - System.currentTimeMillis());
+            } catch(InterruptedException e){
+                e.printStackTrace();
+            }
         }
     }
 
