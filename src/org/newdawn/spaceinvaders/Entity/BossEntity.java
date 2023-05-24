@@ -127,12 +127,13 @@ public class BossEntity extends Entity {
     public void collidedWith(Entity other) {
         // collisions with aliens are handled elsewhere
         if (other instanceof ShotEntity){
+            game.removeEntity(other);
+            health--;
+        } else if (other instanceof easterEggEntity){
             health--;
         }
         if (health <= 0){
             game.removeEntity(this);
             game.notifyAlienKilled();}
     }
-
-
 }
