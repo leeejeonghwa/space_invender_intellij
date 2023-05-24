@@ -11,12 +11,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class RuleWindow extends Canvas{
-    private BufferStrategy strategy;
-
-    private JFrame container;
+    private final BufferStrategy strategy;
 
     public RuleWindow(){
-        container = new JFrame();
+        JFrame container = new JFrame();
 
         JPanel panel = (JPanel) container.getContentPane();
         panel.setPreferredSize(new Dimension(800, 600));
@@ -35,13 +33,6 @@ public class RuleWindow extends Canvas{
         container.pack();
         container.setResizable(false);
         container.setVisible(true);
-
-//        container.addWindowListener(new WindowAdapter(){
-//            public void windowClosing(WindowEvent e){
-//                System.exit(0);
-//            }
-//        });
-
         requestFocus();
 
         createBufferStrategy(2);

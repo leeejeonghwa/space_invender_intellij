@@ -10,7 +10,6 @@ import java.io.File;
 
 public class Player implements LineListener {
     private Clip bgmclip;
-    private Clip shotclip;
     private boolean playCompleted;
     private long pausedPosition;
 
@@ -72,7 +71,7 @@ public class Player implements LineListener {
 
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
 
-            shotclip = AudioSystem.getClip();
+            Clip shotclip = AudioSystem.getClip();
 
             shotclip.addLineListener(this);
 

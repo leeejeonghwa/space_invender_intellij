@@ -16,7 +16,7 @@ public class Sprite {
     /**
      * The image to be drawn for this sprite
      */
-    private Image image;
+    private final Image image;
 
     /**
      * Create a new sprite based on an image

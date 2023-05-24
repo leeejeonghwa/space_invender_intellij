@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Objects;
 
 import javax.imageio.ImageIO;
 
@@ -26,7 +27,7 @@ public class SpriteStore {
     /**
      * The single instance of this class
      */ //이 클래스의 유일한 인스턴스
-    private static SpriteStore single = new SpriteStore();
+    private static final SpriteStore single = new SpriteStore();
 
     /**
      * Get the single instance of this class
@@ -40,7 +41,7 @@ public class SpriteStore {
     /**
      * The cached sprite map, from reference to sprite instance
      */
-    private HashMap sprites = new HashMap();
+    private final HashMap sprites = new HashMap();
 
     /**
      * Retrieve a sprite from the store
@@ -71,14 +72,14 @@ public class SpriteStore {
             }
 
             // use ImageIO to read the image in
-            sourceImage = ImageIO.read(url);
+            sourceImage = ImageIO.read(Objects.requireNonNull(url));
         } catch (IOException e) {
             fail("Failed to load: " + ref);
         }
 
         // create an accelerated image of the right size to store our sprite in
         GraphicsConfiguration gc = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
-        Image image = gc.createCompatibleImage(sourceImage.getWidth(), sourceImage.getHeight(), Transparency.BITMASK);
+        Image image = gc.createCompatibleImage(Objects.requireNonNull(sourceImage).getWidth(), sourceImage.getHeight(), Transparency.BITMASK);
 
         // draw our source image into the accelerated image // 원본 이미지를 가속화된 이미지에 그리시오
         image.getGraphics().drawImage(sourceImage, 0, 0, null);

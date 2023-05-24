@@ -11,11 +11,10 @@ public class ShipEntity extends Entity {
     /**
      * The game in which the ship exists
      */
-    private Game game;
-    private boolean collided;
+    private final Game game;
     private int health = 3;
 
-    /**
+    /*
      * Create a new entity to represent the players ship
      *
      * @param game The game in which the ship is being created
@@ -29,7 +28,7 @@ public class ShipEntity extends Entity {
         this.game = game;
     }
 
-    /**
+    /*
      * Request that the ship move itself based on an elapsed ammount of
      * time
      *
@@ -65,13 +64,12 @@ public class ShipEntity extends Entity {
      */
     public void collidedWith(Entity other) {
         if(other instanceof AlienEntity || other instanceof ShotAlienEntity){
-            collided = true;
+            boolean collided = true;
             if (health <= 0 && collided == true){
                 game.notifyDeath();
             }
             else if(health > 0 && collided == true){
                 health -= 1;
-                collided = false;
             }
         }
     }

@@ -43,11 +43,11 @@ public abstract class Entity {
     /**
      * The rectangle used for this entity during collisions  resolution
      */ //이 엔티티의 충돌 해결시 사용되는 직사각형
-    private Rectangle me = new Rectangle();
+    private final Rectangle me = new Rectangle();
     /**
      * The rectangle used for other entities during collision resolution
      */
-    private Rectangle him = new Rectangle();
+    private final Rectangle him = new Rectangle();
 
     /**
      * Construct a entity based on a sprite image and a location.

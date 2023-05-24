@@ -14,11 +14,11 @@ public class SystemTimer {
     /**
      * Our link into the GAGE timer library
      */
-    private static AdvancedTimer timer = new AdvancedTimer();
+    private static final AdvancedTimer timer = new AdvancedTimer();
     /**
      * The number of "timer ticks" per second
      */
-    private static long timerTicksPerSecond;
+    private static final long timerTicksPerSecond;
 
     /** A little initialisation at startup, we're just going to get the GAGE timer going */
     static {

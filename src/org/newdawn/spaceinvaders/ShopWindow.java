@@ -13,13 +13,11 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class ShopWindow extends Canvas {
-    private BufferStrategy strategy;
+    private final BufferStrategy strategy;
 
-    private JFrame container;
-
-    private AtomicInteger money;
-    private AtomicInteger activeSkin;
-    private Boolean[] enableSkins;
+    private final AtomicInteger money;
+    private final AtomicInteger activeSkin;
+    private final Boolean[] enableSkins;
 
     private BufferedImage shopImg;
     private BufferedImage shopShip1;
@@ -27,13 +25,12 @@ public class ShopWindow extends Canvas {
     private BufferedImage shopShip3;
     private BufferedImage shopShip4;
     private BufferedImage shopShip5;
-    private BufferedImage coin;
 
     private int easterEggClicked;
-    private Boolean[] enableItem;
+    private final Boolean[] enableItem;
 
     public ShopWindow(AtomicInteger money, Boolean[] enableItem, Boolean[] enableSkins, AtomicInteger activeSkin){
-        container = new JFrame();
+        JFrame container = new JFrame();
 
         JPanel panel = (JPanel) container.getContentPane();
         panel.setPreferredSize(new Dimension(800, 600));
@@ -84,7 +81,7 @@ public class ShopWindow extends Canvas {
         //shopShip1 click listener
         if (x >= 100 && x <= 100 + shopShip1.getWidth() &&
                 y >= 200 && y <= 200 + shopShip1.getHeight()) {
-                    if (this.enableSkins[0] == true){
+                    if (this.enableSkins[0]){
                         int response = JOptionPane.showConfirmDialog(ShopWindow.this,
                         "해당 스킨을 보유중이에요. 이 스킨으로 바꿀까요?", "스킨 변경 확인",
                         JOptionPane.YES_NO_OPTION);
@@ -114,7 +111,7 @@ public class ShopWindow extends Canvas {
         //shopShip2 click listener
         if (x >= 360 && x <= 360 + shopShip2.getWidth() &&
                 y >= 200 && y <= 200 + shopShip2.getHeight()) {
-                    if (this.enableSkins[1] == true){
+                    if (this.enableSkins[1]){
                         int response = JOptionPane.showConfirmDialog(ShopWindow.this,
                         "해당 스킨을 보유중이에요. 이 스킨으로 바꿀까요?", "스킨 변경 확인",
                         JOptionPane.YES_NO_OPTION);
@@ -144,7 +141,7 @@ public class ShopWindow extends Canvas {
         //shopShip3 click listener
         if (x >= 620 && x <= 620 + shopShip3.getWidth() &&
                 y >= 200 && y <= 200 + shopShip3.getHeight()) {
-                    if (this.enableSkins[2] == true){
+                    if (this.enableSkins[2]){
                         int response = JOptionPane.showConfirmDialog(ShopWindow.this,
                         "해당 스킨을 보유중이에요. 이 스킨으로 바꿀까요?", "스킨 변경 확인",
                         JOptionPane.YES_NO_OPTION);
@@ -174,7 +171,7 @@ public class ShopWindow extends Canvas {
         //shopShip4 click listener
         if (x >= 230 && x <= 230 + shopShip4.getWidth() &&
                 y >= 400 && y <= 400 + shopShip4.getHeight()) {
-                    if (this.enableSkins[3] == true){
+                    if (this.enableSkins[3]){
                         int response = JOptionPane.showConfirmDialog(ShopWindow.this,
                         "해당 스킨을 보유중이에요. 이 스킨으로 바꿀까요?", "스킨 변경 확인",
                         JOptionPane.YES_NO_OPTION);
@@ -214,7 +211,6 @@ public class ShopWindow extends Canvas {
                             JOptionPane.INFORMATION_MESSAGE);
                             easterEggClicked = 0;
                             this.enableItem[4] = true;
-                            return;
                             //TO DO: implement easterEgg
                         } else {
                             JOptionPane.showMessageDialog(ShopWindow.this,
@@ -223,14 +219,14 @@ public class ShopWindow extends Canvas {
                             System.exit(0);
                         }
                     } else {
-                        if (this.enableSkins[4] == true){
+                        if (this.enableSkins[4]){
                         int response = JOptionPane.showConfirmDialog(ShopWindow.this,
                         "해당 스킨을 보유중이에요. 이 스킨으로 바꿀까요?", "스킨 변경 확인",
                         JOptionPane.YES_NO_OPTION);
                         if(response == JOptionPane.YES_OPTION){
                             this.activeSkin.set(4);
-                        } else{ return; }
-                    } else {
+                        }
+                        } else {
                         int response = JOptionPane.showConfirmDialog(ShopWindow.this,
                         "1100 money를 주고 이 스킨을 구매할까요?", "구매 확인",
                         JOptionPane.YES_NO_OPTION);
@@ -239,12 +235,10 @@ public class ShopWindow extends Canvas {
                             if (this.money.get() >= 1100) {
                                 this.money.set(money.get() - 1100);
                                 this.enableSkins[4] = true;
-                                return;
                             } else {
                                 JOptionPane.showMessageDialog(ShopWindow.this,
                                 "이 스킨을 구매하기 충분한 money가 없습니다!", "잔액 부족",
                                 JOptionPane.ERROR_MESSAGE);
-                                return;
                             }
                         }
                     }
@@ -266,7 +260,7 @@ public class ShopWindow extends Canvas {
             }
 
             try{
-                coin = ImageIO.read(new File("src/sprites/coin.png"));
+                BufferedImage coin = ImageIO.read(new File("src/sprites/coin.png"));
                 g.drawImage(coin, 10, 47, this);
                 g.setColor(Color.WHITE);
                 g.drawString(Integer.toString(this.money.get()), 20 + coin.getWidth(), 60);

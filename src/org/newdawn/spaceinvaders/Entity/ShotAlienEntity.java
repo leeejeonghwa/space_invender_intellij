@@ -9,14 +9,10 @@ import org.newdawn.spaceinvaders.Game;
      * @author Kevin Glass
      */
     public class ShotAlienEntity extends Entity {
-        /**
-         * The vertical speed at which the players shot moves
-         */ //총알이 움직이는 수직 속도
-        private double moveSpeed = 300;
-        /**
+    /**
          * The game in which this entity exists
          */
-        private Game game;
+        private final Game game;
         /**
          * True if this shot has been "used", i.e. its hit something
          */ //총알이 충돌해서 사용되었는지 여부를 나타내는 값
@@ -35,6 +31,11 @@ import org.newdawn.spaceinvaders.Game;
 
             this.game = game;
 
+            /*
+             * The vertical speed at which the players shot moves
+             */
+            //총알이 움직이는 수직 속도
+            double moveSpeed = 300;
             dy = moveSpeed;
         }
 
