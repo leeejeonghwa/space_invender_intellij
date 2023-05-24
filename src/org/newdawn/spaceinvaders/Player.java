@@ -12,7 +12,6 @@ public class Player {
     private Clip successclip;
     private Clip failclip;
     private Clip shotclip;
-    private boolean playCompleted;
     private long pausedPosition;
 
 
@@ -38,14 +37,6 @@ public class Player {
             bgmclip.loop(Clip.LOOP_CONTINUOUSLY);
 
             bgmclip.start();
-
-            while (!playCompleted) {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                }
-            }
 
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
@@ -87,23 +78,8 @@ public class Player {
 
             successclip.start();
 
-            while (!playCompleted) {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                }
-            }
-
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
-        }
-    }
-
-    public void successPause() {
-        if (successclip != null && successclip.isRunning()) {
-            successclip.stop();
-            pausedPosition = successclip.getMicrosecondPosition();
         }
     }
 
@@ -129,25 +105,11 @@ public class Player {
 
             failclip.start();
 
-            while (!playCompleted) {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                }
-            }
-
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
         }
     }
 
-    public void failPause() {
-        if (failclip != null && failclip.isRunning()) {
-            failclip.stop();
-            pausedPosition = failclip.getMicrosecondPosition();
-        }
-    }
 
     public void shootPlay(String audioFilePath) {
         try {

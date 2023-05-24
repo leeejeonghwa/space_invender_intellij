@@ -245,46 +245,13 @@ public class Game extends Canvas {
 
     WindowListener windowListener = new WindowAdapter() {
         @Override
-        public void windowOpened(WindowEvent e) {
-            // 윈도우 창이 열릴 때 처리할 내용
-        }
-
-        @Override
         public void windowClosing(WindowEvent e) {
             // 윈도우 창이 닫힐 때 처리할 내용
             player.pause();
         }
-
-        @Override
-        public void windowClosed(WindowEvent e) {
-            // 윈도우 창이 닫힌 후 처리할 내용
-            player.pause();
-        }
-
-        @Override
-        public void windowIconified(WindowEvent e) {
-            // 윈도우 창이 최소화될 때 처리할 내용
-        }
-
-        @Override
-        public void windowDeiconified(WindowEvent e) {
-            // 윈도우 창이 최소화에서 복원될 때 처리할 내용
-        }
-
-        @Override
-        public void windowActivated(WindowEvent e) {
-            // 윈도우 창이 활성화될 때 처리할 내용
-        }
-
-        @Override
-        public void windowDeactivated(WindowEvent e) {
-            // 윈도우 창이 비활성화될 때 처리할 내용
-        }
     };
     private void startGame() {
         // clear out any existing entities and intialise a new set
-//        player.successPause();
-//        player.failPause();
         player.resume();
         entities.clear();
         initEntities();
