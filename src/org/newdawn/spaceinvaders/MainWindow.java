@@ -53,9 +53,8 @@ public class MainWindow extends JFrame {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                ImageIcon imageIcon = new ImageIcon("src/image/background.png"); // 이미지 파일
-                Image image = imageIcon.getImage();
-                g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+                Image backgorundImage = new ImageIcon("src/image/background.png").getImage(); // 이미지 파일
+                g.drawImage(backgorundImage, 0, 0, getWidth(), getHeight(), this);
             }
         };
         panel.setLayout(null); // 레이아웃 매니저를 사용하지 않음
@@ -93,13 +92,12 @@ public class MainWindow extends JFrame {
     public void btnMouseListener(JButton button){
         button.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
-                if (button.getName() == "src/image/shop.png"){
+                if (button.getName().equals("src/image/shop.png")){
                     button.setVisible(true);
                     setLayout(null);
                     Thread shopThread = new Thread(new Runnable() {
                         public void run() {
                             ShopWindow s = new ShopWindow(item.getMoney(), item.enableItems(), item.enableSkinList(), item.getActiveNum());
-                            s.shopLoop();
                             synchronized(item){
                                 item.setMoney(s.recieveMoney());
                                 item.setEnableSkin(s.getEnableSkin());
@@ -108,13 +106,12 @@ public class MainWindow extends JFrame {
                         }
                     }); shopThread.start();
                 }
-                else if (button.getName() == "src/image/rule.png"){
+                else if (button.getName().equals("src/image/rule.png")){
                     button.setVisible(true);
                     setLayout(null);
                     Thread ruleThread = new Thread(new Runnable() {
                         public void run() {
                             RuleWindow r = new RuleWindow();
-                            r.ruleLoop();
                         }
                     }); ruleThread.start();
                 }
