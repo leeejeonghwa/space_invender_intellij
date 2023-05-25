@@ -14,7 +14,7 @@ import java.awt.Rectangle;
  * Note that doubles are used for positions. This may seem strange
  * given that pixels locations are integers. However, using double means
  * that an entity can move a partial pixel. It doesn't of course mean that
- * they will be display half way through a pixel but allows us not lose
+ * they will be display halfway through a pixel but allows us not lose
  * accuracy as we move.
  *
  * @author Kevin Glass
@@ -50,7 +50,7 @@ public abstract class Entity {
     private final Rectangle him = new Rectangle();
 
     /**
-     * Construct a entity based on a sprite image and a location.
+     * Construct an entity based on a sprite image and a location.
      *
      * @param ref The reference to the image to be displayed for this entity
      * @param x   The initial x location of this entity
@@ -63,10 +63,10 @@ public abstract class Entity {
     }
 
     /**
-     * Request that this entity move itself based on a certain ammount
+     * Request that this entity move itself based on a certain amount
      * of time passing.
      *
-     * @param delta The ammount of time that has passed in milliseconds
+     * @param delta The amount of time that has passed in milliseconds
      */
     public void move(long delta) {
         // update the location of the entity based on move speeds
@@ -144,7 +144,7 @@ public abstract class Entity {
     }
 
     /**
-     * Check if this entity collised with another. // 다른 엔티티와 충돌했는지 확인
+     * Check if this entity collided with another. // 다른 엔티티와 충돌했는지 확인
      *
      * @param other The other entity to check collision against
      * @return True if the entities collide with each other

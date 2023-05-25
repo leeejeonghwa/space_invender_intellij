@@ -33,7 +33,7 @@ public class ShipEntity extends Entity {
     }
 
     /**
-     * Request that the ship move itself based on an elapsed ammount of
+     * Request that the ship move itself based on an elapsed amount of
      * time
      *
      * @param delta The time that has elapsed since last move (ms) // 마지막 이동 이후 경과한 시간
@@ -68,11 +68,11 @@ public class ShipEntity extends Entity {
      */
     public void collidedWith(Entity other) {
         if(other instanceof AlienEntity || other instanceof ShotAlienEntity){
-            this.activateInvinciblity();
+            this.activateInvincibility();
         }
     }
 
-    public void activateInvinciblity(){
+    public void activateInvincibility(){
         if (this.health <= 1 && invincible == false){
             health -= 1;
             game.notifyDeath();

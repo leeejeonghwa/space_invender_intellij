@@ -116,7 +116,7 @@ public class FirebaseTool {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     String score = dataSnapshot.getValue(String.class);
-                    System.out.println("Data Receivced " + score);
+                    System.out.println("Data Received " + score);
                     globalStorage.setUserBestScore(score);
                 }
 

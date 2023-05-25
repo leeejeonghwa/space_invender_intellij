@@ -39,7 +39,7 @@ public class ShieldEntity extends Entity {
     public void collidedWith(Entity other) {
         if (other instanceof AlienEntity || other instanceof ShotAlienEntity) {
             game.removeEntity(this);
-            shipEntity.activateInvinciblity();
+            shipEntity.activateInvincibility();
         }
     }
 }

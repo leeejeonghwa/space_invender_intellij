@@ -204,7 +204,7 @@ public class ShopWindow extends Canvas {
                     easterEggClicked++;
                     if (easterEggClicked == 5){
                         String response = JOptionPane.showInputDialog(ShopWindow.this,
-                        "Write the name of professor who teachs this class");
+                        "Write the name of professor who teaches this class");
                         if (response.equals("김순태")|| response.equals("김순태 교수님")){
                             JOptionPane.showMessageDialog(ShopWindow.this,
                             "넌 강해졌다. 돌격해! (!وريهم قوتك)", "뽕 활성화",
@@ -287,7 +287,7 @@ public class ShopWindow extends Canvas {
         }
     }
 
-	public AtomicInteger recieveMoney() {
+	public AtomicInteger receiveMoney() {
         return this.money;
 	}
 

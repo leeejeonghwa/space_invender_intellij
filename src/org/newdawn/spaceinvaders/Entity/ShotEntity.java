@@ -46,7 +46,7 @@ public class ShotEntity extends Entity {
         // proceed with normal move
         super.move(delta);
 
-        // if we shot off the screen, remove ourselfs // 화면 밖으러 나가면 총알 제거
+        // if we shot off the screen, remove ourselves // 화면 밖으러 나가면 총알 제거
         if (y < -100) {
             game.removeEntity(this);
         }

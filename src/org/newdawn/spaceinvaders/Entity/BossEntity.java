@@ -35,8 +35,8 @@ public class BossEntity extends Entity {
      * Create a new alien entity
      *
      * @param game The game in which this entity is being created
-     * @param x    The intial x location of this alien
-     * @param y    The intial y location of this alient
+     * @param x    The initial x location of this alien
+     * @param y    The initial y location of this alien
      */
     public BossEntity(Game game, int x, int y) {
         super("sprites/boss.png", x, y);
@@ -48,7 +48,7 @@ public class BossEntity extends Entity {
 
         this.game = game;
         /*
-         * The speed at which the alient moves horizontally
+         * The speed at which the alien moves horizontally
          */
         // 에일리언이 수평으로 이동하는 속도
         double moveSpeed = 75;
@@ -64,7 +64,7 @@ public class BossEntity extends Entity {
     public void move(long delta) {
         // since the move tells us how much time has passed
         // by we can use it to drive the animation, however
-        // its the not the prettiest solution
+        // it's not the prettiest solution
         lastFrameChange += delta;
 
         // if we need to change the frame, update the frame number

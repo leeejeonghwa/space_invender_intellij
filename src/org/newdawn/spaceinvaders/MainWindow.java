@@ -100,7 +100,7 @@ public class MainWindow extends JFrame {
                         g.gameLoop();
                         synchronized(item){
                             item.clearStage(g.getItemState());
-                            item.setMoney(g.recieveMoney());
+                            item.setMoney(g.receiveMoney());
                         }
                     });
                     gameThread.start();

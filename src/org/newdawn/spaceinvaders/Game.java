@@ -31,7 +31,7 @@ import javax.swing.*;
  * will also allow the player to control the main ship.
  * <p>
  * As a mediator it will be informed when entities within our game
- * detect events (e.g. alient killed, played died) and will take
+ * detect events (e.g. alien killed, played died) and will take
  * appropriate game actions.
  *
  * @author Kevin Glass
@@ -41,7 +41,7 @@ public class Game extends Canvas {
 
     private static String bestScore = "";
     /**
-     * The stragey that allows us to use accelerate page flipping
+     * The strategy that allows us to use accelerate page flipping
      */
     private final BufferStrategy strategy;
     /**
@@ -90,7 +90,7 @@ public class Game extends Canvas {
     private final AtomicInteger money;
     /* Number of active skin */
     private final int activeSkin;
-    /* Number of killed Aliean */
+    /* Number of killed Alien */
     private int alienKilled = 0;
     /**
      * The message to display which waiting for a key press
@@ -163,7 +163,7 @@ public class Game extends Canvas {
 
         panel.setLayout(null);
 
-        // setup our canvas size and put it into the content of the frame
+        // set up our canvas size and put it into the content of the frame
         setBounds(0, 0, 800, 600);
         panel.add(this);
 
@@ -230,7 +230,7 @@ public class Game extends Canvas {
         }
     };
     private void startGame() {
-        // clear out any existing entities and intialise a new set
+        // clear out any existing entities and initialise a new set
         player.resume();
         entities.clear();
         initEntities();
@@ -247,7 +247,7 @@ public class Game extends Canvas {
 
     /**
      * Initialise the starting state of the entities (ship and aliens). Each
-     * entitiy will be added to the overall list of entities in the game.
+     * entity will be added to the overall list of entities in the game.
      */
     private void initEntities() {
         // create the player ship and place it roughly in the center of the screen
@@ -433,7 +433,7 @@ public class Game extends Canvas {
      * Notification that an alien has been killed
      */
     public void notifyAlienKilled() {
-        // reduce the alient count, if there are none left, the player has won!
+        // reduce the alien count, if there are none left, the player has won!
         alienCount--;
         if (alienCount == 0) {
             notifyWin();
@@ -540,7 +540,7 @@ public class Game extends Canvas {
     }
 
     //return now money
-    public AtomicInteger recieveMoney(){
+    public AtomicInteger receiveMoney(){
         return this.money;
     }
 
@@ -567,7 +567,7 @@ public class Game extends Canvas {
          */
         boolean gameRunning = true;
         while (true) {
-            // work out how long its been since the last update, this
+            // work out how long it's been since the last update, this
             // will be used to calculate how far the entities should
             // move this loop
             long delta = System.currentTimeMillis() - lastLoopTime;
@@ -672,7 +672,7 @@ public class Game extends Canvas {
 
             // brute force collisions, compare every entity against
             // every other entity. If any of them collide notify
-            // both entities that the collision has occured  // 충돌 알림
+            // both entities that the collision has occurred  // 충돌 알림
             for (int p = 0; p < entities.size(); p++) {
                 for (int s = p + 1; s < entities.size(); s++) {
                     Entity me = (Entity) entities.get(p);
@@ -721,7 +721,7 @@ public class Game extends Canvas {
 
             // resolve the movement of the ship. First assume the ship
             // isn't moving. If either cursor key is pressed then
-            // update the movement appropraitely
+            // update the movement appropriately
             ship.setHorizontalMovement(0);
             ship.setVerticalMovement(0);
 
@@ -783,8 +783,8 @@ public class Game extends Canvas {
      * continue)
      * <p>
      * This has been implemented as an inner class more through
-     * habbit then anything else. Its perfectly normal to implement
-     * this as seperate class if slight less convienient.
+     * habbit than anything else. Its perfectly normal to implement
+     * this as separate class if slight less convenient.
      * // 키보드 입력 처리 클래스 이동 및 발사
      *
      * @author Kevin Glass
@@ -798,7 +798,7 @@ public class Game extends Canvas {
         /**
          * Notification from AWT that a key has been pressed. Note that
          * a key being pressed is equal to being pushed down but *NOT*
-         * released. Thats where keyTyped() comes in.
+         * released. That's where keyTyped() comes in.
          *
          * @param e The details of the key that was pressed
          */
@@ -863,14 +863,14 @@ public class Game extends Canvas {
          * @param e The details of the key that was typed.
          */
         public void keyTyped(KeyEvent e) {
-            // if we're waiting for a "any key" type then
-            // check if we've recieved any recently. We may
+            // if we're waiting for an "any key" type then
+            // check if we've received any recently. We may
             // have had a keyType() event from the user releasing
             // the shoot or move keys, hence the use of the "pressCount"
             // counter.
             if (waitingForKeyPress) {
                 if (pressCount == 1) {
-                    // since we've now recieved our key typed
+                    // since we've now received our key typed
                     // event we can mark it as such and start
                     // our new game
                     waitingForKeyPress = false;
