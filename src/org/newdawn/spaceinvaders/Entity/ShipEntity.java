@@ -14,7 +14,7 @@ public class ShipEntity extends Entity {
     /**
      * The game in which the ship exists
      */
-    private Game game;
+    private final Game game;
     private boolean invincible = false;
     private int health = 3;
 

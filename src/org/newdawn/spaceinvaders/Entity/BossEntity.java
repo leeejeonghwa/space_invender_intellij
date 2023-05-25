@@ -11,27 +11,19 @@ import org.newdawn.spaceinvaders.SpriteStore;
  */
 public class BossEntity extends Entity {
     /**
-     * The speed at which the alient moves horizontally
-     */ // 에일리언이 수평으로 이동하는 속도
-    private double moveSpeed = 75;
-    /**
      * The game in which the entity exists
      */
-    private Game game;
+    private final Game game;
 
-    private int shotCooldown = 0;
+    /* private int shotCooldown = 0; */
     /**
      * The animation frames
      */
-    private Sprite[] frames = new Sprite[4];
+    private final Sprite[] frames = new Sprite[4];
     /**
      * The time since the last frame change took place
      */
     private long lastFrameChange;
-    /**
-     * The frame duration in milliseconds, i.e. how long any given frame of animation lasts
-     */ //각 프레임이 얼마 동안 보여질지를 결정하는 프레임 지속 시간 (밀리초)
-    private long frameDuration = 250;
     /**
      * The current frame of animation being displayed
      */
@@ -55,6 +47,11 @@ public class BossEntity extends Entity {
         frames[3] = SpriteStore.get().getSprite("sprites/boss2.png");
 
         this.game = game;
+        /*
+         * The speed at which the alient moves horizontally
+         */
+        // 에일리언이 수평으로 이동하는 속도
+        double moveSpeed = 75;
         dx = -moveSpeed;
 
     }
@@ -72,6 +69,11 @@ public class BossEntity extends Entity {
 
         // if we need to change the frame, update the frame number
         // and flip over the sprite in use
+        /*
+         * The frame duration in milliseconds, i.e. how long any given frame of animation lasts
+         */
+        //각 프레임이 얼마 동안 보여질지를 결정하는 프레임 지속 시간 (밀리초)
+        long frameDuration = 250;
         if (lastFrameChange > frameDuration) {
             // reset our frame change time counter
             lastFrameChange = 0;

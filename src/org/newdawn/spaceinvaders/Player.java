@@ -9,9 +9,6 @@ import java.io.File;
 
 public class Player {
     private Clip bgmclip;
-    private Clip successclip;
-    private Clip failclip;
-    private Clip shotclip;
     private long pausedPosition;
 
 
@@ -66,7 +63,7 @@ public class Player {
 
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
 
-            successclip = AudioSystem.getClip();
+            Clip successclip = AudioSystem.getClip();
 
             successclip.open(audioStream);
 
@@ -93,7 +90,7 @@ public class Player {
 
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
 
-            failclip = AudioSystem.getClip();
+            Clip failclip = AudioSystem.getClip();
 
             failclip.open(audioStream);
 
@@ -121,7 +118,7 @@ public class Player {
 
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
 
-            shotclip = AudioSystem.getClip();
+            Clip shotclip = AudioSystem.getClip();
 
             shotclip.open(audioStream);
             //소리설정

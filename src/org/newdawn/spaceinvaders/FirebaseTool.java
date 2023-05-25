@@ -20,9 +20,8 @@ public class FirebaseTool {
     private static final String KEY_LOCATION = "\\resource\\key.json";
     private static FirebaseTool firebaseTool = null;
     private FirebaseApp firebaseApp;
-    private DatabaseReference databaseReference;
 
-    private GlobalStorage globalStorage;
+    private final GlobalStorage globalStorage;
 
     public static FirebaseTool getInstance() {
         if (firebaseTool == null) {
@@ -50,7 +49,7 @@ public class FirebaseTool {
             if (firebaseApp != null) {
                 System.out.println(firebaseApp.getName());
 
-                databaseReference = FirebaseDatabase.getInstance(firebaseApp).getReference();
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance(firebaseApp).getReference();
             }
 
         } catch (IOException e) {
@@ -139,11 +138,8 @@ public class FirebaseTool {
         try {
             DatabaseReference userScoreDatabase = FirebaseDatabase.getInstance(firebaseApp).getReference();
 
-            userScoreDatabase.child("user").child(id.split("@")[0]).setValue(bestscore, new DatabaseReference.CompletionListener() {
-                @Override
-                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+            userScoreDatabase.child("user").child(id.split("@")[0]).setValue(bestscore, (databaseError, databaseReference) -> {
 
-                }
             });
 
         } catch (NullPointerException e) {

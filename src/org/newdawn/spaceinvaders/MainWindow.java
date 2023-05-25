@@ -7,23 +7,17 @@ import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class MainWindow extends JFrame {
 
-    private static Item item = new Item();
+    private static final Item item = new Item();
     
-    private FirebaseTool firebaseTool;
+    private final FirebaseTool firebaseTool;
 
-    private GlobalStorage globalStorage;
+    private final GlobalStorage globalStorage;
 
     private JPanel panel;
-    private JButton shopbtn;
-    private JButton rulebtn;
-    private JButton level1btn;
-    private JButton level2btn;
-    private JButton level3btn;
-    private JButton level4btn;
-    private JButton level5btn;
 
     public MainWindow() {
         // 메인 윈도우 설정
@@ -50,18 +44,18 @@ public class MainWindow extends JFrame {
         globalStorage = GlobalStorage.getInstance();
     }
 
-    private JButton drawButton(JButton button, String ref, int width, int height, int x, int y){
+    private JButton drawButton(String ref, int x, int y){
         ImageIcon buttonIcon = new ImageIcon(ref);
         Image buttonimg = buttonIcon.getImage();
-        Image buttonimgchange = buttonimg.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        Image buttonimgchange = buttonimg.getScaledInstance(150, 65, Image.SCALE_SMOOTH);
         ImageIcon buttonchange = new ImageIcon(buttonimgchange);
-        button = new JButton(buttonchange);
+        JButton button = new JButton(buttonchange);
         button.setName(ref);
         button.setFocusPainted(false);
         button.setBorderPainted(false);
         button.setContentAreaFilled(false);
-        button.setSize(width, height);
-        button.setBounds(x, y, width, height);
+        button.setSize(150, 65);
+        button.setBounds(x, y, 150, 65);
 
         return button;
     }
@@ -69,50 +63,44 @@ public class MainWindow extends JFrame {
     public void btnMouseListener(JButton button){
         button.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
-                if (button.getName() == "src/image/shop.png"){
+                if (Objects.equals(button.getName(), "src/image/shop.png")){
                     button.setVisible(true);
                     setLayout(null);
-                    Thread shopThread = new Thread(new Runnable() {
-                        public void run() {
-                            System.out.print("shop Thread: " + Arrays.toString(item.enableItems())+ item.getMoney() + "\n");
-                            ShopWindow s = new ShopWindow(item.getMoney(), item.enableItems(), item.enableSkinList(), item.getActiveNum());
-                            s.shopLoop();
-                            synchronized(item){
-                                item.setMoney(s.recieveMoney());
-                                item.setEnableSkin(s.getEnableSkin());
-                                item.activateSkinNumber(s.getSelectedSkin());
-                            }
+                    Thread shopThread = new Thread(() -> {
+                        System.out.print("shop Thread: " + Arrays.toString(item.enableItems())+ item.getMoney() + "\n");
+                        ShopWindow s = new ShopWindow(item.getMoney(), item.enableItems(), item.enableSkinList(), item.getActiveNum());
+                        s.shopLoop();
+                        synchronized(item){
+                            item.setMoney(s.recieveMoney());
+                            item.setEnableSkin(s.getEnableSkin());
+                            item.activateSkinNumber(s.getSelectedSkin());
                         }
                     });
                     shopThread.start();
                 }
-                else if (button.getName() == "src/image/rule.png"){
+                else if (Objects.equals(button.getName(), "src/image/rule.png")){
                     button.setVisible(true);
                     setLayout(null);
-                    Thread ruleThread = new Thread(new Runnable() {
-                        public void run() {
-                            RuleWindow r = new RuleWindow();
-                            r.ruleLoop();
-                        }
+                    Thread ruleThread = new Thread(() -> {
+                        RuleWindow r = new RuleWindow();
+                        r.ruleLoop();
                     });
                     ruleThread.start();
                 }
-                else if (button.getName() == "src/image/level1.png" || button.getName() == "src/image/level2.png" || button.getName() == "src/image/level3.png" || button.getName() == "src/image/level4.png" || button.getName() == "src/image/level5.png") {
+                else if (Objects.equals(button.getName(), "src/image/level1.png") || Objects.equals(button.getName(), "src/image/level2.png") || Objects.equals(button.getName(), "src/image/level3.png") || Objects.equals(button.getName(), "src/image/level4.png") || Objects.equals(button.getName(), "src/image/level5.png")) {
                     // level 버튼 누른 경우
                     button.setVisible(true);
                     setLayout(null);
                     firebaseTool.GetUserBestScore(globalStorage.getUserID());
                     JOptionPane.showMessageDialog(null, globalStorage.getUserID() + " 님 최고점수 : " + globalStorage.getUserBestScore());
                     // 게임 루프를 실행하는 스레드 생성
-                    Thread gameThread = new Thread(new Runnable() {
-                        public void run() {
-                            System.out.print("game Thread: " + Arrays.toString(item.enableItems())+ item.getMoney() + "\n");
-                            Game g = new Game(button.getName(), item.enableItems(), item.getMoney(), item.getActiveNum());
-                            g.gameLoop();
-                            synchronized(item){
-                                item.clearStage(g.getItemState());
-                                item.setMoney(g.recieveMoney());
-                            }
+                    Thread gameThread = new Thread(() -> {
+                        System.out.print("game Thread: " + Arrays.toString(item.enableItems())+ item.getMoney() + "\n");
+                        Game g = new Game(button.getName(), item.enableItems(), item.getMoney(), item.getActiveNum());
+                        g.gameLoop();
+                        synchronized(item){
+                            item.clearStage(g.getItemState());
+                            item.setMoney(g.recieveMoney());
                         }
                     });
                     gameThread.start();
@@ -138,25 +126,25 @@ public class MainWindow extends JFrame {
         panel.setPreferredSize(new Dimension(800, 600));
 
         // shop 버튼 생성
-        shopbtn = drawButton(shopbtn, "src/image/shop.png", 150, 65, 460, 410);
+        JButton shopbtn = drawButton("src/image/shop.png", 460, 410);
         this.btnMouseListener(shopbtn);
         //설명 버튼 생성
-        rulebtn = drawButton(rulebtn, "src/image/rule.png", 150, 65, 460, 480);
+        JButton rulebtn = drawButton("src/image/rule.png", 460, 480);
         this.btnMouseListener(rulebtn);
         //level1 버튼 생성
-        level1btn = drawButton(level1btn, "src/image/level1.png", 150, 65, 630, 200);
+        JButton level1btn = drawButton("src/image/level1.png", 630, 200);
         this.btnMouseListener(level1btn);
         //level2 버튼 생성
-        level2btn = drawButton(level2btn, "src/image/level2.png", 150, 65, 630, 270);
+        JButton level2btn = drawButton("src/image/level2.png", 630, 270);
         this.btnMouseListener(level2btn);
         //level3 버튼 생성
-        level3btn = drawButton(level3btn, "src/image/level3.png", 150, 65, 630, 340);
+        JButton level3btn = drawButton("src/image/level3.png", 630, 340);
         this.btnMouseListener(level3btn);
         //level4 버튼 생성
-        level4btn = drawButton(level4btn, "src/image/level4.png", 150, 65, 630, 410);
+        JButton level4btn = drawButton("src/image/level4.png", 630, 410);
         this.btnMouseListener(level4btn);
         //level5 버튼 생성
-        level5btn = drawButton(level5btn, "src/image/level5.png", 150, 65, 630, 480);
+        JButton level5btn = drawButton("src/image/level5.png", 630, 480);
         this.btnMouseListener(level5btn);
 
         // 패널에 시작 버튼 추가
@@ -170,11 +158,8 @@ public class MainWindow extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                Login login = new Login();
-            }
+        SwingUtilities.invokeLater(() -> {
+            Login login = new Login();
         });
     }
 }

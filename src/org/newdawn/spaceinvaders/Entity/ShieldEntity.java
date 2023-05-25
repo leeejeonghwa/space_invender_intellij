@@ -3,8 +3,8 @@ package org.newdawn.spaceinvaders.Entity;
 import org.newdawn.spaceinvaders.Game;
 
 public class ShieldEntity extends Entity {
-    private Game game;
-    private ShipEntity shipEntity;
+    private final Game game;
+    private final ShipEntity shipEntity;
 
     public ShieldEntity(Game game, String ref, ShipEntity ship, int x, int y) {
         super(ref, x, y);
