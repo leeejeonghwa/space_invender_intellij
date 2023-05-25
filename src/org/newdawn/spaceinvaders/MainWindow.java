@@ -64,11 +64,11 @@ public class MainWindow extends JFrame {
 
     private void createButtons() {
         String[] srcList = new String[]{"shop", "rule", "level1", "level2", "level3", "level4", "level5"};
-        Integer[] xList = new Integer[]{460, 410, 630, 630, 630, 630, 630};
+        Integer[] xList = new Integer[]{460, 460, 630, 630, 630, 630, 630};
         Integer[] yList = new Integer[]{410, 480, 200, 270, 340, 410, 480};
 
         for (int i=0;i<7;i+=1){
-            drawButton("src/image/"+srcList[i]+".png", 150, 65, xList[i], yList[i]);
+            btnList.add(drawButton("src/image/"+srcList[i]+".png", 150, 65, xList[i], yList[i]));
             panel.add(btnList.get(i));
             this.btnMouseListener(btnList.get(i));
         }
