@@ -9,9 +9,6 @@ import java.io.File;
 
 public class Player {
     private Clip bgmclip;
-    private Clip successclip;
-    private Clip failclip;
-    private Clip shotclip;
     private long pausedPosition;
 
 
@@ -28,10 +25,8 @@ public class Player {
             bgmclip = AudioSystem.getClip();
 
             bgmclip.open(audioStream);
-            //소리설정
-            FloatControl gainControl = (FloatControl) bgmclip.getControl(FloatControl.Type.MASTER_GAIN);
 
-            //볼륨조정
+            FloatControl gainControl = (FloatControl) bgmclip.getControl(FloatControl.Type.MASTER_GAIN);
             gainControl.setValue(-7.0f);
 
             bgmclip.loop(Clip.LOOP_CONTINUOUSLY);
@@ -66,14 +61,12 @@ public class Player {
 
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
 
-            successclip = AudioSystem.getClip();
+            Clip successclip = AudioSystem.getClip();
 
             successclip.open(audioStream);
 
-            //소리설정
-            FloatControl gainControl = (FloatControl) successclip.getControl(FloatControl.Type.MASTER_GAIN);
 
-            //볼륨조정
+            FloatControl gainControl = (FloatControl) successclip.getControl(FloatControl.Type.MASTER_GAIN);
             gainControl.setValue(-15.0f);
 
             successclip.start();
@@ -93,14 +86,11 @@ public class Player {
 
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
 
-            failclip = AudioSystem.getClip();
+            Clip failclip = AudioSystem.getClip();
 
             failclip.open(audioStream);
 
-            //소리설정
             FloatControl gainControl = (FloatControl) failclip.getControl(FloatControl.Type.MASTER_GAIN);
-
-            //볼륨조정
             gainControl.setValue(-15.0f);
 
             failclip.start();
@@ -121,13 +111,11 @@ public class Player {
 
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
 
-            shotclip = AudioSystem.getClip();
+            Clip shotclip = AudioSystem.getClip();
 
             shotclip.open(audioStream);
-            //소리설정
-            FloatControl gainControl = (FloatControl) shotclip.getControl(FloatControl.Type.MASTER_GAIN);
 
-            //볼륨조정
+            FloatControl gainControl = (FloatControl) shotclip.getControl(FloatControl.Type.MASTER_GAIN);
             gainControl.setValue(-20.0f);
 
             shotclip.start();
