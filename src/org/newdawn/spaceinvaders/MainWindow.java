@@ -71,7 +71,7 @@ public class MainWindow extends JFrame {
                         ShopWindow s = new ShopWindow(item.getMoney(), item.enableItems(), item.enableSkinList(), item.getActiveNum());
                         s.shopLoop();
                         synchronized(item){
-                            item.setMoney(s.recieveMoney());
+                            item.setMoney(s.receiveMoney());
                             item.setEnableSkin(s.getEnableSkin());
                             item.activateSkinNumber(s.getSelectedSkin());
                         }
