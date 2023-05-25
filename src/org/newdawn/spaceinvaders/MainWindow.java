@@ -9,8 +9,6 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 public class MainWindow extends JFrame {
-
-    private static Item item = new Item();
     
     private FirebaseTool firebaseTool;
 
@@ -18,7 +16,7 @@ public class MainWindow extends JFrame {
 
     private JPanel panel;
 
-    //shopbtn, rulebtn, level1, level2, level3, level4, levle5
+    //shopbtn, rulebtn, level1, level2, level3, level4, level5
     private ArrayList<JButton> btnList = new ArrayList<>();
 
     public MainWindow() {
@@ -67,24 +65,24 @@ public class MainWindow extends JFrame {
         Integer[] yList = new Integer[]{410, 480, 200, 270, 340, 410, 480};
 
         for (int i=0;i<7;i+=1){
-            btnList.add(drawButton("src/image/"+srcList[i]+".png", 150, 65, xList[i], yList[i]));
+            btnList.add(drawButton("src/image/"+srcList[i]+".png", xList[i], yList[i]));
             panel.add(btnList.get(i));
             this.btnMouseListener(btnList.get(i));
         }
     }
 
-    private JButton drawButton(String ref, int width, int height, int x, int y){
+    private JButton drawButton(String ref, int x, int y){
         ImageIcon buttonIcon = new ImageIcon(ref);
         Image buttonimg = buttonIcon.getImage();
-        Image buttonimgchange = buttonimg.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        Image buttonimgchange = buttonimg.getScaledInstance(150, 65, Image.SCALE_SMOOTH);
         ImageIcon buttonchange = new ImageIcon(buttonimgchange);
         JButton button = new JButton(buttonchange);
         button.setName(ref);
         button.setFocusPainted(false);
         button.setBorderPainted(false);
         button.setContentAreaFilled(false);
-        button.setSize(width, height);
-        button.setBounds(x, y, width, height);
+        button.setSize(150, 65);
+        button.setBounds(x, y, 150, 65);
 
         return button;
     }
@@ -97,12 +95,7 @@ public class MainWindow extends JFrame {
                     setLayout(null);
                     Thread shopThread = new Thread(new Runnable() {
                         public void run() {
-                            ShopWindow s = new ShopWindow(item.getMoney(), item.enableItems(), item.enableSkinList(), item.getActiveNum());
-                            synchronized(item){
-                                item.setMoney(s.recieveMoney());
-                                item.setEnableSkin(s.getEnableSkin());
-                                item.activateSkinNumber(s.getSelectedSkin());
-                            }
+                            ShopWindow s = new ShopWindow();
                         }
                     }); shopThread.start();
                 }
@@ -124,12 +117,8 @@ public class MainWindow extends JFrame {
                     // 게임 루프를 실행하는 스레드 생성
                     Thread gameThread = new Thread(new Runnable() {
                         public void run() {
-                            Game g = new Game(button.getName(), item.enableItems(), item.getMoney(), item.getActiveNum());
+                            Game g = new Game(button.getName());
                             g.gameLoop();
-                            synchronized(item){
-                                item.clearStage(g.getItemState());
-                                item.setMoney(g.recieveMoney());
-                            }
                         }
                     }); gameThread.start();
                 }
