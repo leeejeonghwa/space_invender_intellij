@@ -101,7 +101,7 @@ public class Player {
     }
 
 
-    public void shootPlay(String audioFilePath) {
+    public void shotPlay(String audioFilePath) {
         try {
             File audioFile = new File(audioFilePath);
             if (!audioFile.exists()) {

@@ -537,7 +537,7 @@ public class Game extends Canvas {
         }
 
         new Thread(() -> {
-            player.shootPlay("src/sound/shot.wav");
+            player.shotPlay("src/sound/shot.wav");
         }).start();
     }
 
