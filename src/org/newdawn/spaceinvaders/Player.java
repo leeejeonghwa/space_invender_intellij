@@ -6,13 +6,11 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import java.io.File;
 
-
 public class Player {
-    private Clip bgmclip;
+    private Clip bgmClip;
     private long pausedPosition;
 
-
-    public void play(String audioFilePath) {
+    public void bgmPlay(String audioFilePath) {
         try {
             File audioFile = new File(audioFilePath);
             if (!audioFile.exists()) {
@@ -22,33 +20,32 @@ public class Player {
 
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
 
-            bgmclip = AudioSystem.getClip();
+            bgmClip = AudioSystem.getClip();
 
-            bgmclip.open(audioStream);
+            bgmClip.open(audioStream);
 
-            FloatControl gainControl = (FloatControl) bgmclip.getControl(FloatControl.Type.MASTER_GAIN);
+            FloatControl gainControl = (FloatControl) bgmClip.getControl(FloatControl.Type.MASTER_GAIN);
             gainControl.setValue(-7.0f);
 
-            bgmclip.loop(Clip.LOOP_CONTINUOUSLY);
+            bgmClip.loop(Clip.LOOP_CONTINUOUSLY);
 
-            bgmclip.start();
+            bgmClip.start();
 
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
         }
     }
-
-    public void pause() {
-        if (bgmclip != null && bgmclip.isRunning()) {
-            bgmclip.stop();
-            pausedPosition = bgmclip.getMicrosecondPosition();
+    public void bgmPause() {
+        if (bgmClip != null && bgmClip.isRunning()) {
+            bgmClip.stop();
+            pausedPosition = bgmClip.getMicrosecondPosition();
         }
     }
 
-    public void resume() {
-        if (bgmclip != null && !bgmclip.isRunning()) {
-            bgmclip.setMicrosecondPosition(pausedPosition);
-            bgmclip.start();
+    public void bgmResume() {
+        if (bgmClip != null && !bgmClip.isRunning()) {
+            bgmClip.setMicrosecondPosition(pausedPosition);
+            bgmClip.start();
         }
     }
     public void successPlay(String audioFilePath) {
@@ -75,7 +72,6 @@ public class Player {
             System.err.println(ex.getMessage());
         }
     }
-
     public void failPlay(String audioFilePath) {
         try {
             File audioFile = new File(audioFilePath);
@@ -86,22 +82,20 @@ public class Player {
 
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
 
-            Clip failclip = AudioSystem.getClip();
+            Clip failClip = AudioSystem.getClip();
 
-            failclip.open(audioStream);
+            failClip.open(audioStream);
 
-            FloatControl gainControl = (FloatControl) failclip.getControl(FloatControl.Type.MASTER_GAIN);
+            FloatControl gainControl = (FloatControl) failClip.getControl(FloatControl.Type.MASTER_GAIN);
             gainControl.setValue(-15.0f);
 
-            failclip.start();
+            failClip.start();
 
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
         }
     }
-
-
-    public void shootPlay(String audioFilePath) {
+    public void shotPlay(String audioFilePath) {
         try {
             File audioFile = new File(audioFilePath);
             if (!audioFile.exists()) {
@@ -111,16 +105,16 @@ public class Player {
 
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
 
-            Clip shotclip = AudioSystem.getClip();
+            Clip shotClip = AudioSystem.getClip();
 
-            shotclip.open(audioStream);
+            shotClip.open(audioStream);
 
-            FloatControl gainControl = (FloatControl) shotclip.getControl(FloatControl.Type.MASTER_GAIN);
+            FloatControl gainControl = (FloatControl) shotClip.getControl(FloatControl.Type.MASTER_GAIN);
             gainControl.setValue(-20.0f);
 
-            shotclip.start();
+            shotClip.start();
 
-            while (shotclip.getMicrosecondLength() != shotclip.getMicrosecondPosition()) {
+            while (shotClip.getMicrosecondLength() != shotClip.getMicrosecondPosition()) {
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException ex) {
@@ -131,8 +125,6 @@ public class Player {
             System.err.println(ex.getMessage());
         }
     }
-
-
 }
 
 
