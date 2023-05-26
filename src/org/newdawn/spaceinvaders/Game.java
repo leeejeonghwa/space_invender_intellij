@@ -11,7 +11,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.imageio.ImageIO;
@@ -38,9 +37,10 @@ import javax.swing.*;
  * @author Kevin Glass
  */
 
-public class Game extends Canvas {
+public class Game extends JFrame {
 
     private static String bestScore = "";
+    private JPanel panel;
     /**
      * The stragey that allows us to use accelerate page flipping
      */
@@ -94,12 +94,6 @@ public class Game extends Canvas {
     private boolean easterEgg = false;
     /* Level is parameter of class instance */
     private String level;
-    /* Backup Item information */
-    private Boolean[] enableItems;
-    /* Money for clearing stage */
-    private AtomicInteger money;
-    /* Number of active skin */
-    private int activeSkin;
     /* Number of killed Aliean */
     private int alienKilled = 0;
     /**
@@ -144,14 +138,6 @@ public class Game extends Canvas {
      * The current number of frames recorded
      */
     private int fps; // 현재 기록된 프레임 수
-    /**
-     * The normal title of the game window
-     */
-    private String windowTitle = "Space Invaders 102";
-    /**
-     * The game window that we'll update with the frame count
-     */
-    private JFrame container;
 
     private FirebaseTool firebaseTool;
 
@@ -164,23 +150,20 @@ public class Game extends Canvas {
     private Player player;
     /**
      * Construct our game and set it running.
+     *
      * @param
      */
-    public Game(String level, Boolean[] enableItems, AtomicInteger money, AtomicInteger activeSkin) {
+    public Game(String level) {
         // create a frame to contain our game
-        container = new JFrame("Space Invaders 102");
+        setTitle("Space Invader 102");
 
-        // get hold the content of the frame and set up the resolution of the game //프레임 내용 가져오고 해상도 설정
-        JPanel panel = (JPanel) container.getContentPane();
-        panel.setPreferredSize(new Dimension(800, 600));
-        // 화면의 중앙 위치를 계산하여 게임 창을 중앙에 위치시킴
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int centerX = (int) ((screenSize.getWidth() - container.getWidth()) / 2);
-        int centerY = (int) ((screenSize.getHeight() - container.getHeight()) / 2);
-        container.setLocation(centerX, centerY);
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
 
+        createPanel();
 
-        panel.setLayout(null);
+        getContentPane().add(panel);
+        setVisible(true);
 
         // setup our canvas size and put it into the content of the frame
         setBounds(0, 0, 800, 600);
@@ -192,21 +175,8 @@ public class Game extends Canvas {
 
         container.addWindowListener(windowListener);
 
-        // finally make the window visible
-        container.pack();
-        container.setResizable(false);
-        container.setVisible(true);
-
         firebaseTool = FirebaseTool.getInstance();
         globalStorage = GlobalStorage.getInstance();
-
-        // add a listener to respond to the user closing the window. If they
-        // do we'd like to exit the game
-//        container.addWindowListener(new WindowAdapter() {
-//            public void windowClosing(WindowEvent e) {
-//                System.exit(0);
-//            }
-//        });
 
         // add a key input system (defined below) to our canvas
         // so we can respond to key pressed
@@ -236,6 +206,17 @@ public class Game extends Canvas {
         }).start();
 
 
+    }
+
+    private void createPanel() {
+        panel = new JPanel(){
+            @Override
+            protected  void paintComponent(Graphics g){
+                super.paintComponent(g);
+            }
+        };
+        panel.setLayout(null); // 레이아웃 매니저를 사용하지 않음
+        panel.setPreferredSize(new Dimension(800, 600));
     }
 
     /**
