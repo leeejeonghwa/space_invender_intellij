@@ -232,7 +232,7 @@ public class Game extends Canvas {
 
         player = new Player();
         new Thread(() -> {
-            player.play("src/sound/backgroundmusic.wav");
+            player.bgmPlay("src/sound/backgroundmusic.wav");
         }).start();
 
 
@@ -247,12 +247,12 @@ public class Game extends Canvas {
         @Override
         public void windowClosing(WindowEvent e) {
             // 윈도우 창이 닫힐 때 처리할 내용
-            player.pause();
+            player.bgmPause();
         }
     };
     private void startGame() {
         // clear out any existing entities and intialise a new set
-        player.resume();
+        player.bgmResume();
         entities.clear();
         initEntities();
         startTimeForRecord = System.currentTimeMillis();
@@ -425,7 +425,7 @@ public class Game extends Canvas {
     public void notifyDeath() {
         message = "Oh no! They got you, try again?";
 
-        player.pause();
+        player.bgmPause();
         new Thread(() -> {
             player.failPlay("src/sound/fail.wav");
         }).start();
@@ -474,8 +474,7 @@ public class Game extends Canvas {
             }
         }
 
-        player.pause();
-
+        player.bgmPause();
         new Thread(() -> {
             player.successPlay("src/sound/success.wav");
         }).start();
