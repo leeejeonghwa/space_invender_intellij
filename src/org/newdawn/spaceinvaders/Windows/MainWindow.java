@@ -1,5 +1,7 @@
-package org.newdawn.spaceinvaders;
+package org.newdawn.spaceinvaders.Windows;
 
+
+import org.newdawn.spaceinvaders.*;
 
 import java.awt.*;
 import javax.swing.*;
@@ -9,9 +11,6 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 public class MainWindow extends JFrame {
-
-    private static Item item = new Item();
-    
     private FirebaseTool firebaseTool;
 
     private GlobalStorage globalStorage;
@@ -68,24 +67,24 @@ public class MainWindow extends JFrame {
         Integer[] yList = new Integer[]{410, 480, 200, 270, 340, 410, 480};
 
         for (int i=0;i<7;i+=1){
-            btnList.add(drawButton("src/image/"+srcList[i]+".png", 150, 65, xList[i], yList[i]));
+            btnList.add(drawButton("src/image/"+srcList[i]+".png", xList[i], yList[i]));
             panel.add(btnList.get(i));
             this.btnMouseListener(btnList.get(i));
         }
     }
 
-    private JButton drawButton(String ref, int width, int height, int x, int y){
+    private JButton drawButton(String ref, int x, int y){
         ImageIcon buttonIcon = new ImageIcon(ref);
         Image buttonimg = buttonIcon.getImage();
-        Image buttonimgchange = buttonimg.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        Image buttonimgchange = buttonimg.getScaledInstance(150, 65, Image.SCALE_SMOOTH);
         ImageIcon buttonchange = new ImageIcon(buttonimgchange);
         JButton button = new JButton(buttonchange);
         button.setName(ref);
         button.setFocusPainted(false);
         button.setBorderPainted(false);
         button.setContentAreaFilled(false);
-        button.setSize(width, height);
-        button.setBounds(x, y, width, height);
+        button.setSize(150, 65);
+        button.setBounds(x, y, 150, 65);
 
         return button;
     }
@@ -96,19 +95,15 @@ public class MainWindow extends JFrame {
                 if (button.getName().equals("src/image/shop.png")){
                     button.setVisible(true);
                     setLayout(null);
-                    Thread shopThread = new Thread(new Runnable() {
-                        public void run() {
-                            ShopWindow s = new ShopWindow();
-                        }
+                    Thread shopThread = new Thread(() -> {
+                        ShopWindow s = new ShopWindow();
                     }); shopThread.start();
                 }
                 else if (button.getName().equals("src/image/rule.png")){
                     button.setVisible(true);
                     setLayout(null);
-                    Thread ruleThread = new Thread(new Runnable() {
-                        public void run() {
-                            RuleWindow r = new RuleWindow();
-                        }
+                    Thread ruleThread = new Thread(() -> {
+                        RuleWindow r = new RuleWindow();
                     }); ruleThread.start();
                 }
                 else{
@@ -118,11 +113,9 @@ public class MainWindow extends JFrame {
                     firebaseTool.GetUserBestScore(globalStorage.getUserID());
                     JOptionPane.showMessageDialog(null, globalStorage.getUserID() + " 님 최고점수 : " + globalStorage.getUserBestScore());
                     // 게임 루프를 실행하는 스레드 생성
-                    Thread gameThread = new Thread(new Runnable() {
-                        public void run() {
-                            Game g = new Game(button.getName());
-                            g.gameLoop();
-                        }
+                    Thread gameThread = new Thread(() -> {
+                        Game g = new Game(button.getName());
+                        g.gameLoop();
                     }); gameThread.start();
                 }
             }
@@ -130,11 +123,8 @@ public class MainWindow extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                Login login = new Login();
-            }
+        SwingUtilities.invokeLater(() -> {
+            Login login = new Login();
         });
     }
 }
