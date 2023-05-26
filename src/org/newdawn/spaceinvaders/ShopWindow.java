@@ -1,3 +1,5 @@
+package org.newdawn.spaceinvaders;
+
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -126,4 +128,19 @@ public class ShopWindow extends JFrame {
         });
     }
 
-	public AtomicInteger recieveMoney() {
+    public AtomicInteger recieveMoney() {
+        return this.money;
+    }
+
+    public Boolean[] getEnableSkin() {
+        return this.enableSkins;
+    }
+
+    public AtomicInteger getSelectedSkin() {
+        return this.activeSkin;
+    }
+
+    public Boolean[] getItemState(){
+        return this.enableItem;
+    }
+}
