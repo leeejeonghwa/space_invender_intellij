@@ -64,10 +64,6 @@ public class Game extends JFrame {
     /* The entity representing the shield */
     private Entity shield;
     /**
-     * The speed at which the player's ship should move (pixels/sec)
-     */
-    private double moveSpeed = 300; //우주선 속도
-    /**
      * The time at which last fired a shot
      */
     private long lastFire = 0;
@@ -93,7 +89,7 @@ public class Game extends JFrame {
     /* easterEgg */
     private boolean easterEgg = false;
     /* Level is parameter of class instance */
-    private String level;
+    private int level;
     /* Number of killed Aliean */
     private int alienKilled = 0;
     /**
@@ -143,10 +139,6 @@ public class Game extends JFrame {
 
     private GlobalStorage globalStorage;
 
-    private Entity alien;
-
-    private BossEntity bossAlien;
-
     private Player player;
     /**
      * Construct our game and set it running.
@@ -157,7 +149,9 @@ public class Game extends JFrame {
         // create a frame to contain our game
         setTitle("Space Invader 102");
 
+        setSize(800,600);
         this.setLocationRelativeTo(null);
+
         this.setVisible(true);
 
         createPanel();
@@ -167,13 +161,12 @@ public class Game extends JFrame {
 
         // setup our canvas size and put it into the content of the frame
         setBounds(0, 0, 800, 600);
-        panel.add(this);
 
         // Tell AWT not to bother repainting our canvas since we're
         // going to do that our self in accelerated mode
         setIgnoreRepaint(true);
 
-        container.addWindowListener(windowListener);
+        addWindowListener(windowListener);
 
         firebaseTool = FirebaseTool.getInstance();
         globalStorage = GlobalStorage.getInstance();
@@ -190,22 +183,18 @@ public class Game extends JFrame {
         createBufferStrategy(2);
         strategy = getBufferStrategy();
 
-        // recognize what level is, how money have, what state of item is, what skin is
-        this.level = level;
-        this.enableItems = enableItems;
-        this.money = money;
-        this.activeSkin = activeSkin.get();
+        // recognize what level is
+        this.level = level.charAt(15) - 34;
 
-        // initialise the entities in our game so there's something
-        // to see at startup
         initEntities();
+        playBgm();
+    }
 
+    private void playBgm(){
         player = new Player();
         new Thread(() -> {
             player.play("src/sound/backgroundmusic.wav");
         }).start();
-
-
     }
 
     private void createPanel() {
@@ -253,53 +242,24 @@ public class Game extends JFrame {
      */
     private void initEntities() {
         // create the player ship and place it roughly in the center of the screen
-        switch(this.activeSkin){
-            case (0):{
-                ship = new ShipEntity(this, "sprites/ship1.png", 370, 550);
-                break;
-            }
-            case (1):{
-                ship = new ShipEntity(this, "sprites/ship2.png", 370, 550);
-                break;
-            }
-            case (2):{
-                ship = new ShipEntity(this, "sprites/ship3.png", 370, 550);
-                break;
-            }
-            case (3):{
-                ship = new ShipEntity(this, "sprites/ship4.png", 370, 550);
-                break;
-            }
-            case (4):{
-                ship = new ShipEntity(this, "sprites/ship5.png", 370, 550);
-                break;
-            }
-            default:{
-                ship = new ShipEntity(this, "sprites/ship.png", 370, 550);
-                break;
-            }
-        }
+        if (Item.activeSkinIndex.get() == -1){ ship = new ShipEntity(this, "sprites/ship.png", 370, 550); }
+        else { ship = new ShipEntity(this, "sprites/ship" + Integer.toString(Item.activeSkinIndex.get()+1) +".png", 370, 550); }
         entities.add(ship);
 
-        if(this.enableItems[0]){
+        if(Item.gainedItems[0]){
             ((ShipEntity) this.ship).increaseMaxHealth();
-            //System.out.print("initEntities" + Arrays.toString(this.enableItems)+"\n");
         }
-        if(this.enableItems[1]){
+        if(Item.gainedItems[1]){
             this.increaseMoveSpeed();
-            //System.out.print("initEntities" + Arrays.toString(this.enableItems)+"\n");
         }
-        if(this.enableItems[2]){
+        if(Item.gainedItems[2]){
             this.enableShield();
-            //System.out.print("initEntities" + Arrays.toString(this.enableItems)+"\n");
         }
-        if(this.enableItems[3]){
+        if(Item.gainedItems[3]){
             this.increaseFireNum();
-            //System.out.print("initEntities" + Arrays.toString(this.enableItems)+"\n");
         }
-        if(this.enableItems[4]){
+        if(Item.gainedItems[4]){
             this.easterEgg();
-            //System.out.print("initEntities" + Arrays.toString(this.enableItems)+"\n");
         }
 
         if (this.enableShield == true) {
@@ -307,38 +267,36 @@ public class Game extends JFrame {
             entities.add(shield);
         }
 
+        alienCount = 0;
         switch(this.level){
-            case("src/image/level1.png"):{
+            case(0):{
                 // create a block of aliens (4 rows, by 5 aliens, spaced evenly)
-                alienCount = 0;
                 for (int row = 0; row < 4; row++) {
                     for (int x = 0; x < 5; x++) {
-                        alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 40);
+                        AlienEntity alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 40);
                         entities.add(alien);
                         alienCount++;
                     }
                 }
                 break;
             }
-            case("src/image/level2.png"):{
+            case(1):{
                 // create a block of aliens (6 rows, by 7 aliens, spaced evenly)
-                alienCount = 0;
                 for (int row = 0; row < 6; row++) {
                     for (int x = 0; x < 7; x++) {
-                        alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 40);
+                        AlienEntity alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 40);
                         entities.add(alien);
                         alienCount++;
                     }
                 }
                 break;
             }
-            case("src/image/level3.png"):{
+            case(2):{
                 // create a block of aliens (7 rows, by 12 aliens, spaced evenly)
                 // even row move inversely
-                alienCount = 0;
                 for (int row = 0; row < 5; row++) {
                     for (int x = 0; x < 12; x++) {
-                        alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 40);
+                        AlienEntity alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 40);
                         if (row%2 == 0){
                             alien.setHorizontalMovement(alien.getHorizontalMovement()*(-1));
                         }
@@ -348,12 +306,11 @@ public class Game extends JFrame {
                 }
                 break;
             }
-            case("src/image/level4.png"):{
+            case(3):{
                 // create a block of aliens (5 rows, by 5 aliens, spaced evenly)
-                alienCount = 0;
                 for (int row = 0; row < 5; row++) {
                     for (int x = 0; x < 5; x++) {
-                        alien = new AlienEntity(this, 200 + (x * 50), (130) + row * 40);
+                        AlienEntity alien = new AlienEntity(this, 200 + (x * 50), (130) + row * 40);
                         entities.add(alien);
                         alienCount++;
 
@@ -361,17 +318,15 @@ public class Game extends JFrame {
                 }
                 break;
             }
-            case("src/image/level5.png"):{
+            case(4):{
                 // create a block of aliens (9 rows, by 12 aliens, spaced evenly)
-                alienCount = 0;
-
-                bossAlien = new BossEntity(this, 370,50);
+                BossEntity bossAlien = new BossEntity(this, 370,50);
                 entities.add(bossAlien);
                 alienCount++;
 
                 for (int row = 0; row < 5; row++) {
                     for (int x = 0; x < 5; x++) {
-                        alien = new AlienEntity(this, 280 + (x * 50), (130) + row * 40);
+                        AlienEntity alien = new AlienEntity(this, 280 + (x * 50), (130) + row * 40);
                         entities.add(alien);
                         alienCount++;
                     }
@@ -423,37 +378,9 @@ public class Game extends JFrame {
         message = "Well done! You Win!";
         finishedTime = System.currentTimeMillis();
         firebaseTool.SetUserBestScore(globalStorage.getUserID(), bestScore);
-        switch(this.level){
-            case("src/image/level1.png"):{
-                this.enableItems[0] = true;
-                this.money.set(this.money.get() + this.alienKilled * 10 * 1);
-                //System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
-                break;
-            }
-            case("src/image/level2.png"):{
-                this.enableItems[1] = true;
-                this.money.set(this.money.get() + this.alienKilled * 10 * 2);
-                //System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
-                break;
-            }
-            case("src/image/level3.png"):{
-                this.enableItems[2] = true;
-                this.money.set(this.money.get() + this.alienKilled * 10 * 3);
-                //System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
-                break;
-            }
-            case("src/image/level4.png"):{
-                this.enableItems[3] = true;
-                this.money.set(this.money.get() + this.alienKilled * 10 * 4);
-                //System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
-                break;
-            }
-            case("src/image/level5.png"):{
-                this.money.set(this.money.get() + this.alienKilled * 10 * 5);
-                //System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
-                break;
-            }
-        }
+        
+        Item.gainedItems[this.level] = true;
+        Item.money.set(Item.money.get() + this.alienKilled * 10 * this.level);
 
         player.pause();
 
@@ -546,11 +473,6 @@ public class Game extends JFrame {
 
     }
 
-    //implement setter of moveSpeed for Item.increaseMoveSpeed
-    public void increaseMoveSpeed() {
-        this.moveSpeed *= 1.5;
-    }
-
     //implement setter of fireNum for Item.
     public void increaseFireNum() {
         this.fireNum = true;
@@ -564,16 +486,6 @@ public class Game extends JFrame {
     //implement easteregg item
     public void easterEgg(){
         this.easterEgg = true;
-    }
-
-    //return now item state
-    public Boolean[] getItemState() {
-        return this.enableItems;
-    }
-
-    //return now money
-    public AtomicInteger recieveMoney(){
-        return this.money;
     }
 
     /**
@@ -608,7 +520,7 @@ public class Game extends JFrame {
             // update our FPS counter if a second has passed since
             // we last recorded
             if (lastFpsTime >= 1000) {
-                container.setTitle(windowTitle + " (FPS: " + fps + ")");
+                setTitle("Space Invaders 102" + " (FPS: " + fps + ")");
                 lastFpsTime = 0;
                 fps = 0; //fps = 현재 기록된 프레임 수 -> 화면이 바뀌는 횟수
             }
@@ -630,7 +542,7 @@ public class Game extends JFrame {
                 coin = ImageIO.read(new File("src/sprites/coin.png"));
                 g.drawImage(coin, 10, 47, this);
                 g.setColor(Color.WHITE);
-                g.drawString(Integer.toString(this.money.get()), 20 + coin.getWidth(), 60);
+                g.drawString(Integer.toString(Item.money.get()), 20 + coin.getWidth(), 60);
             } catch (IOException e){
                 e.printStackTrace();
             }
@@ -658,18 +570,18 @@ public class Game extends JFrame {
                 enableShield = ImageIO.read(new File("src/sprites/Item shield.png"));
                 moreBullet = ImageIO.read(new File("src/sprites/Item shot.png"));
 
-                if (enableItems[0] == true){
+                if (Item.gainedItems[0]){
                     g.drawImage(maxHealth,730 - moreBullet.getWidth() - enableShield.getWidth() - getFaster.getWidth() - maxHealth.getWidth()
                     ,558,this);
                 }
-                if (enableItems[1] == true){
+                if (Item.gainedItems[1]){
                     g.drawImage(getFaster, 745 - moreBullet.getWidth() - enableShield.getWidth() - getFaster.getWidth()
                     ,558,this);
                 }
-                if (enableItems[2] == true){
+                if (Item.gainedItems[2]){
                     g.drawImage(enableShield,760 - moreBullet.getWidth() - enableShield.getWidth(),558,this);
                 }
-                if (enableItems[3] == true){
+                if (Item.gainedItems[3]){
                     g.drawImage(moreBullet,775 - moreBullet.getWidth(),558,this);
                 }
 			} catch (IOException e) {
@@ -749,43 +661,13 @@ public class Game extends JFrame {
             ship.setHorizontalMovement(0);
             ship.setVerticalMovement(0);
 
-            if ((leftPressed) && (!rightPressed)) {
-                ship.setHorizontalMovement(-moveSpeed);
-            } else if ((rightPressed) && (!leftPressed)) {
-                ship.setHorizontalMovement(moveSpeed);
-            }
-
-            if ((upPressed) && (!downPressed)) {
-                ship.setVerticalMovement(-moveSpeed);
-            } else if ((downPressed) && (!upPressed)) {
-                ship.setVerticalMovement(moveSpeed);
-            }
-
-            //shield will move with ship
-            if (this.enableShield == true) {
-                shield.setHorizontalMovement(0);
-                shield.setVerticalMovement(0);
-
-                if ((leftPressed) && (!rightPressed)) {
-                    shield.setHorizontalMovement(-moveSpeed);
-                } else if ((rightPressed) && (!leftPressed)) {
-                    shield.setHorizontalMovement(moveSpeed);
-                }
-
-                if ((upPressed) && (!downPressed)) {
-                    shield.setVerticalMovement(-moveSpeed);
-                } else if ((downPressed) && (!upPressed)) {
-                    shield.setVerticalMovement(moveSpeed);
-                }
-            }
+            checkKeyboardPressed(this.ship);
+            if (Item.gainedItems[2]){ checkKeyboardPressed(this.shield); }
 
             // if we're pressing fire, attempt to fire
-            if (firePressed) {
-                tryToFire();
-            }
-            if (this.level.equals("src/image/level4.png") || this.level.equals("src/image/level5.png")) {
-                shotAlien();
-            }
+            if (firePressed) { tryToFire(); }
+            // if level 4 or 5, alien can fire
+            if (this.level == 4 || this.level == 5) { shotAlien(); }
 
 
             // we want each frame to take 10 milliseconds, to do this
@@ -797,6 +679,25 @@ public class Game extends JFrame {
             } catch(InterruptedException e){
                 e.printStackTrace();
             }
+        }
+    }
+
+    private void checkKeyboardPressed(Entity entity) {
+        double moveSpeed;
+
+        if (Item.gainedItems[1]){ moveSpeed = 450; }
+        else { moveSpeed = 300; }
+    
+        if ((leftPressed) && (!rightPressed)) {
+            entity.setHorizontalMovement(-moveSpeed);
+        } else if ((rightPressed) && (!leftPressed)) {
+            entity.setHorizontalMovement(moveSpeed);
+        }
+
+        if ((upPressed) && (!downPressed)) {
+            entity.setVerticalMovement(-moveSpeed);
+        } else if ((downPressed) && (!upPressed)) {
+            entity.setVerticalMovement(moveSpeed);
         }
     }
 

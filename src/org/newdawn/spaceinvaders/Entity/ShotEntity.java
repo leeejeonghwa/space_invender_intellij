@@ -16,10 +16,6 @@ public class ShotEntity extends Entity {
      * The game in which this entity exists
      */
     private Game game;
-    /**
-     * True if this shot has been "used", i.e. its hit something
-     */ //총알이 충돌해서 사용되었는지 여부를 나타내는 값
-    private boolean used = false;
 
     /**
      * Create a new shot from the player
