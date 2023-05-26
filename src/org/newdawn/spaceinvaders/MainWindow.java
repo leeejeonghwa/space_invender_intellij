@@ -18,7 +18,7 @@ public class MainWindow extends JFrame {
 
     private JPanel panel;
 
-    //shopbtn, rulebtn, level1, level2, level3, level4, levle5
+    //shopbtn, rulebtn, level1, level2, level3, level4, level5
     private ArrayList<JButton> btnList = new ArrayList<>();
 
     public MainWindow() {
@@ -41,6 +41,7 @@ public class MainWindow extends JFrame {
 
         // 메인 윈도우 크기 조정 및 표시
         pack();
+        setResizable(false);
         setVisible(true);
 
         firebaseTool = FirebaseTool.getInstance();
@@ -97,12 +98,7 @@ public class MainWindow extends JFrame {
                     setLayout(null);
                     Thread shopThread = new Thread(new Runnable() {
                         public void run() {
-                            ShopWindow s = new ShopWindow(item.getMoney(), item.enableItems(), item.enableSkinList(), item.getActiveNum());
-                            synchronized(item){
-                                item.setMoney(s.recieveMoney());
-                                item.setEnableSkin(s.getEnableSkin());
-                                item.activateSkinNumber(s.getSelectedSkin());
-                            }
+                            ShopWindow s = new ShopWindow();
                         }
                     }); shopThread.start();
                 }
@@ -124,12 +120,8 @@ public class MainWindow extends JFrame {
                     // 게임 루프를 실행하는 스레드 생성
                     Thread gameThread = new Thread(new Runnable() {
                         public void run() {
-                            Game g = new Game(button.getName(), item.enableItems(), item.getMoney(), item.getActiveNum());
+                            Game g = new Game(button.getName());
                             g.gameLoop();
-                            synchronized(item){
-                                item.clearStage(g.getItemState());
-                                item.setMoney(g.recieveMoney());
-                            }
                         }
                     }); gameThread.start();
                 }

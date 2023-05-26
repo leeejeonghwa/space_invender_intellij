@@ -9,18 +9,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.*;
 
 public class ShopWindow extends JFrame {
-
-    private AtomicInteger money;
-    private AtomicInteger activeSkin;
-    private Boolean[] enableSkins;
-    private Boolean[] enableItem;
-
     private JPanel panel;
 
     //shopShip1, shopShip2, shopShip3, shopShip4, shopShip5
     private ArrayList<JButton> btnList = new ArrayList<>();
 
-    public ShopWindow(AtomicInteger money, Boolean[] enableItem, Boolean[] enableSkins, AtomicInteger activeSkin){
+    public ShopWindow(){
 
         setTitle("SHOP");
 
@@ -32,12 +26,9 @@ public class ShopWindow extends JFrame {
         createButtons();
 
         getContentPane().add(panel);
+        pack();
+        setResizable(false);
         setVisible(true);
-
-        this.money = money;
-        this.enableSkins = enableSkins;
-        this.activeSkin = activeSkin;
-        this.enableItem = enableItem;
     }
 
     private void createPanel() {
@@ -52,8 +43,9 @@ public class ShopWindow extends JFrame {
 
                 Image coin = new ImageIcon("src/sprites/coin.png").getImage();
                 g.drawImage(coin, 10, 47, this);
+
                 g.setColor(Color.WHITE);
-                //g.drawString(Integer.toString(money.get()), 35, 60);
+                g.drawString(Integer.toString(Item.money.get()), 35, 60);
 
                 Integer[] priceList = new Integer[]{200, 300, 500, 700, 1100};
                 Integer[] xList = new Integer[]{118, 378, 638, 248, 508};
@@ -99,12 +91,12 @@ public class ShopWindow extends JFrame {
         button.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e){
                 Integer[] priceList = new Integer[]{200, 300, 500, 700, 1100};
-                if (enableSkins[index]){
+                if (Item.purchasedSkins[index]){
                     int response = JOptionPane.showConfirmDialog(ShopWindow.this,
                     "해당 스킨을 보유중이에요. 이 스킨으로 바꿀까요?", "스킨 변경 확인",
                     JOptionPane.YES_NO_OPTION);
                     if(response == JOptionPane.YES_OPTION){
-                        activeSkin.set(0);
+                        Item.activeSkin.set(index);
                     } else{ return; }
                 } else {
                     int response = JOptionPane.showConfirmDialog(ShopWindow.this,
@@ -112,9 +104,9 @@ public class ShopWindow extends JFrame {
                     JOptionPane.YES_NO_OPTION);
                     if (response == JOptionPane.YES_OPTION) {
                         // Deduct the cost of the ship from the player's money
-                        if (money.get() >= priceList[index]) {
-                            money.set(money.get() - priceList[index]);
-                            enableSkins[index] = true;
+                        if (Item.money.get() >= priceList[index]) {
+                            Item.money.set(Item.money.get() - priceList[index]);
+                            Item.purchasedSkins[index] = true;
                             return;
                         } else {
                             JOptionPane.showMessageDialog(ShopWindow.this,
@@ -126,21 +118,5 @@ public class ShopWindow extends JFrame {
                 }
             }
         });
-    }
-
-    public AtomicInteger recieveMoney() {
-        return this.money;
-    }
-
-    public Boolean[] getEnableSkin() {
-        return this.enableSkins;
-    }
-
-    public AtomicInteger getSelectedSkin() {
-        return this.activeSkin;
-    }
-
-    public Boolean[] getItemState(){
-        return this.enableItem;
     }
 }

@@ -20,6 +20,8 @@ public class RuleWindow extends JFrame{
         createPanel();
 
         getContentPane().add(panel);
+        pack();
+        setResizable(false);
         setVisible(true);
     }
 
