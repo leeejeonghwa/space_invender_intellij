@@ -26,7 +26,7 @@ public class MainWindow extends JFrame {
         setTitle("SPACE INVADERS");
 
         //현재 프레임 창 가운데 정렬 setSize를 먼저 해주어야 정상적으로 프레임이 가운데 정렬이 됨!
-        setSize(800, 600);
+        setSize(800, 650);
         this.setLocationRelativeTo(null);
 
         this.setVisible(true);
