@@ -8,12 +8,18 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 public class ShopWindow extends JFrame {
+
+    private AtomicInteger money;
+    private AtomicInteger activeSkin;
+    private Boolean[] enableSkins;
+    private Boolean[] enableItem;
+
     private JPanel panel;
 
     //shopShip1, shopShip2, shopShip3, shopShip4, shopShip5
     private ArrayList<JButton> btnList = new ArrayList<>();
 
-    public ShopWindow(){
+    public ShopWindow(AtomicInteger money, Boolean[] enableItem, Boolean[] enableSkins, AtomicInteger activeSkin){
 
         setTitle("SHOP");
 
@@ -26,6 +32,11 @@ public class ShopWindow extends JFrame {
 
         getContentPane().add(panel);
         setVisible(true);
+        
+        this.money = money;
+        this.enableSkins = enableSkins;
+        this.activeSkin = activeSkin;
+        this.enableItem = enableItem;
     }
 
     private void createPanel() {
@@ -87,12 +98,12 @@ public class ShopWindow extends JFrame {
         button.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e){
                 Integer[] priceList = new Integer[]{200, 300, 500, 700, 1100};
-                if (Item.purchasedSkins[index]){
+                if (enableSkins[index]){
                     int response = JOptionPane.showConfirmDialog(ShopWindow.this,
                     "해당 스킨을 보유중이에요. 이 스킨으로 바꿀까요?", "스킨 변경 확인",
                     JOptionPane.YES_NO_OPTION);
                     if(response == JOptionPane.YES_OPTION){
-                        Item.activeSkinIndex.set(0);
+                        activeSkin.set(0);
                     } else{ return; }
                 } else {
                     int response = JOptionPane.showConfirmDialog(ShopWindow.this,
@@ -100,9 +111,9 @@ public class ShopWindow extends JFrame {
                     JOptionPane.YES_NO_OPTION);
                     if (response == JOptionPane.YES_OPTION) {
                         // Deduct the cost of the ship from the player's money
-                        if (Item.money.get() >= priceList[index]) {
-                            Item.money.set(Item.money.get() - priceList[index]);
-                            Item.purchasedSkins[index] = true;
+                        if (money.get() >= priceList[index]) {
+                            money.set(money.get() - priceList[index]);
+                            enableSkins[index] = true;
                             return;
                         } else {
                             JOptionPane.showMessageDialog(ShopWindow.this,
@@ -114,5 +125,21 @@ public class ShopWindow extends JFrame {
                 }
             }
         });
+    }
+
+	public AtomicInteger recieveMoney() {
+        return this.money;
+	}
+
+	public Boolean[] getEnableSkin() {
+		return this.enableSkins;
+	}
+
+	public AtomicInteger getSelectedSkin() {
+		return this.activeSkin;
+	}
+
+    public Boolean[] getItemState(){
+        return this.enableItem;
     }
 }
