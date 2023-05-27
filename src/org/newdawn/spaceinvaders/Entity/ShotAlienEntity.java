@@ -47,7 +47,7 @@ import org.newdawn.spaceinvaders.Game;
             // proceed with normal move
             super.move(delta);
 
-            // if we shot off the screen, remove ourselfs // 화면 밖으러 나가면 총알 제거
+            // if we shot off the screen, remove ourselves // 화면 밖으러 나가면 총알 제거
             if (y > 780) {
                 game.removeEntity(this);
             }
@@ -57,7 +57,7 @@ import org.newdawn.spaceinvaders.Game;
          * Notification that this shot has collided with another
          * entity
          *
-         * @parma other The other entity with which we've collided
+         * @param other The other entity with which we've collided
          */
         public void collidedWith(Entity other) {
             // prevents double kills, if we've already hit something,
@@ -66,7 +66,7 @@ import org.newdawn.spaceinvaders.Game;
                 return;
             }
 
-            // if we've hit an ship, kill it!
+            // if we've hit a ship, kill it!
             if (other instanceof ShipEntity) {
                 // remove the affected entities
                 game.removeEntity(this);

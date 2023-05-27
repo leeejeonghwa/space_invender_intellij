@@ -1,4 +1,4 @@
-package org.newdawn.spaceinvaders;
+package org.newdawn.spaceinvaders.Windows;
 
 import java.awt.*;
 
@@ -20,6 +20,8 @@ public class RuleWindow extends JFrame{
         createPanel();
 
         getContentPane().add(panel);
+        pack();
+        setResizable(false);
         setVisible(true);
     }
 
