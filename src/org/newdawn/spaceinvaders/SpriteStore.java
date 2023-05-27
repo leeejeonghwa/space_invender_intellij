@@ -67,24 +67,24 @@ public class SpriteStore {
             URL url = this.getClass().getClassLoader().getResource(ref);
 
             if (url == null) {
-                fail("Can't find ref: " + ref);
+                handleResourceLoadingFailure("Can't find ref: " + ref);
             }
 
             // use ImageIO to read the image in
             sourceImage = ImageIO.read(url);
         } catch (IOException e) {
-            fail("Failed to load: " + ref);
+            handleResourceLoadingFailure("Failed to load: " + ref);
         }
 
         // create an accelerated image of the right size to store our sprite in
         GraphicsConfiguration gc = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
-        Image image = gc.createCompatibleImage(sourceImage.getWidth(), sourceImage.getHeight(), Transparency.BITMASK);
+        Image acceleratedImage = gc.createCompatibleImage(sourceImage.getWidth(), sourceImage.getHeight(), Transparency.BITMASK);
 
         // draw our source image into the accelerated image // 원본 이미지를 가속화된 이미지에 그리시오
-        image.getGraphics().drawImage(sourceImage, 0, 0, null);
+        acceleratedImage.getGraphics().drawImage(sourceImage, 0, 0, null);
 
         // create a sprite, add it the cache then return it
-        Sprite sprite = new Sprite(image);
+        Sprite sprite = new Sprite(acceleratedImage);
         sprites.put(ref, sprite);
 
         return sprite;
@@ -95,7 +95,7 @@ public class SpriteStore {
      *
      * @param message The message to display on failure
      */
-    private void fail(String message) {
+    private void handleResourceLoadingFailure(String message) {
         // we're pretty dramatic here, if a resource isn't available
         // we dump the message and exit the game
         System.err.println(message);

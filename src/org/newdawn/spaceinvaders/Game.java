@@ -88,17 +88,17 @@ public class Game extends Canvas {
     /* Available to activate increasing fire number */
     private Boolean fireNum = false;
     /* Available to activate shield */
-    private Boolean enableShield = false;
+    private Boolean enabledShield = false;
     /* easterEgg */
-    private boolean easterEgg = false;
+    private boolean hasEasterEgg = false;
     /* Level is parameter of class instance */
     private String level;
     /* Backup Item information */
-    private Boolean[] enableItems;
+    private Boolean[] enabledItems;
     /* Money for clearing stage */
-    private AtomicInteger money;
+    private AtomicInteger moneyAmount;
     /* Number of active skin */
-    private int activeSkin;
+    private int selectedSkin;
     /* Number of killed Aliean */
     private int alienKilled = 0;
     /**
@@ -165,7 +165,7 @@ public class Game extends Canvas {
      * Construct our game and set it running.
      * @param
      */
-    public Game(String level, Boolean[] enableItems, AtomicInteger money, AtomicInteger activeSkin) {
+    public Game(String level, Boolean[] enabledItems, AtomicInteger moneyAmount, AtomicInteger selectedSkin) {
         // create a frame to contain our game
         container = new JFrame("Space Invaders 102");
 
@@ -189,7 +189,7 @@ public class Game extends Canvas {
         // going to do that our self in accelerated mode
         setIgnoreRepaint(true);
 
-        container.addWindowListener(windowListener);
+        container.addWindowListener(windowCloseListener);
 
         // finally make the window visible
         container.pack();
@@ -221,17 +221,17 @@ public class Game extends Canvas {
 
         // recognize what level is, how money have, what state of item is, what skin is
         this.level = level;
-        this.enableItems = enableItems;
-        this.money = money;
-        this.activeSkin = activeSkin.get();
+        this.enabledItems = enabledItems;
+        this.moneyAmount = moneyAmount;
+        this.selectedSkin = selectedSkin.get();
 
         // initialise the entities in our game so there's something
         // to see at startup
-        initEntities();
+        initializeEntities();
 
         player = new Player();
         new Thread(() -> {
-            player.bgmPlay("src/sound/backgroundmusic.wav");
+            player.playBgm("src/sound/backgroundmusic.wav");
         }).start();
 
 
@@ -242,18 +242,18 @@ public class Game extends Canvas {
      * create a new set. // 이전 기록 보관하기
      */
 
-    WindowListener windowListener = new WindowAdapter() {
+    WindowListener windowCloseListener = new WindowAdapter() {
         @Override
         public void windowClosing(WindowEvent e) {
             // 윈도우 창이 닫힐 때 처리할 내용
-            player.bgmPause();
+            player.pauseBgm();
         }
     };
     private void startGame() {
         // clear out any existing entities and intialise a new set
-        player.bgmResume();
+        player.resumeBgm();
         entities.clear();
-        initEntities();
+        initializeEntities();
         startTimeForRecord = System.currentTimeMillis();
 
         // blank out any keyboard settings we might currently have
@@ -269,9 +269,9 @@ public class Game extends Canvas {
      * Initialise the starting state of the entities (ship and aliens). Each
      * entitiy will be added to the overall list of entities in the game.
      */
-    private void initEntities() {
+    private void initializeEntities() {
         // create the player ship and place it roughly in the center of the screen
-        switch(this.activeSkin){
+        switch(this.selectedSkin){
             case (0):{
                 ship = new ShipEntity(this, "sprites/ship1.png", 370, 550);
                 break;
@@ -299,28 +299,28 @@ public class Game extends Canvas {
         }
         entities.add(ship);
 
-        if(this.enableItems[0]){
+        if(this.enabledItems[0]){
             ((ShipEntity) this.ship).increaseMaxHealth();
             //System.out.print("initEntities" + Arrays.toString(this.enableItems)+"\n");
         }
-        if(this.enableItems[1]){
+        if(this.enabledItems[1]){
             this.increaseMoveSpeed();
             //System.out.print("initEntities" + Arrays.toString(this.enableItems)+"\n");
         }
-        if(this.enableItems[2]){
-            this.enableShield();
+        if(this.enabledItems[2]){
+            this.enabledShield();
             //System.out.print("initEntities" + Arrays.toString(this.enableItems)+"\n");
         }
-        if(this.enableItems[3]){
+        if(this.enabledItems[3]){
             this.increaseFireNum();
             //System.out.print("initEntities" + Arrays.toString(this.enableItems)+"\n");
         }
-        if(this.enableItems[4]){
+        if(this.enabledItems[4]){
             this.easterEgg();
             //System.out.print("initEntities" + Arrays.toString(this.enableItems)+"\n");
         }
 
-        if (this.enableShield == true) {
+        if (this.enabledShield == true) {
             shield = new ShieldEntity(this, "sprites/shield.gif", (ShipEntity)ship, 362, 538);
             entities.add(shield);
         }
@@ -421,15 +421,15 @@ public class Game extends Canvas {
     /**
      * Notification that the player has died.
      */
-    public void notifyDeath() {
+    public void notifyPlayerDeath() {
         message = "Oh no! They got you, try again?";
 
-        player.bgmPause();
+        player.pauseBgm();
         new Thread(() -> {
-            player.failPlay("src/sound/fail.wav");
+            player.playFailSound("src/sound/fail.wav");
         }).start();
 
-        firebaseTool.SetUserBestScore(globalStorage.getUserID(), bestScore);
+        firebaseTool.SetUserBestScore(globalStorage.getUserId(), bestScore);
         waitingForKeyPress = true;
     }
 
@@ -437,45 +437,45 @@ public class Game extends Canvas {
      * Notification that the player has won since all the aliens
      * are dead.
      */
-    public void notifyWin() {
+    public void notifyPlayerWin() {
         message = "Well done! You Win!";
         finishedTime = System.currentTimeMillis();
-        firebaseTool.SetUserBestScore(globalStorage.getUserID(), bestScore);
+        firebaseTool.SetUserBestScore(globalStorage.getUserId(), bestScore);
         switch(this.level){
             case("src/image/level1.png"):{
-                this.enableItems[0] = true;
-                this.money.set(this.money.get() + this.alienKilled * 10 * 1);
+                this.enabledItems[0] = true;
+                this.moneyAmount.set(this.moneyAmount.get() + this.alienKilled * 10 * 1);
                 //System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
                 break;
             }
             case("src/image/level2.png"):{
-                this.enableItems[1] = true;
-                this.money.set(this.money.get() + this.alienKilled * 10 * 2);
+                this.enabledItems[1] = true;
+                this.moneyAmount.set(this.moneyAmount.get() + this.alienKilled * 10 * 2);
                 //System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
                 break;
             }
             case("src/image/level3.png"):{
-                this.enableItems[2] = true;
-                this.money.set(this.money.get() + this.alienKilled * 10 * 3);
+                this.enabledItems[2] = true;
+                this.moneyAmount.set(this.moneyAmount.get() + this.alienKilled * 10 * 3);
                 //System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
                 break;
             }
             case("src/image/level4.png"):{
-                this.enableItems[3] = true;
-                this.money.set(this.money.get() + this.alienKilled * 10 * 4);
+                this.enabledItems[3] = true;
+                this.moneyAmount.set(this.moneyAmount.get() + this.alienKilled * 10 * 4);
                 //System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
                 break;
             }
             case("src/image/level5.png"):{
-                this.money.set(this.money.get() + this.alienKilled * 10 * 5);
+                this.moneyAmount.set(this.moneyAmount.get() + this.alienKilled * 10 * 5);
                 //System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
                 break;
             }
         }
 
-        player.bgmPause();
+        player.pauseBgm();
         new Thread(() -> {
-            player.successPlay("src/sound/success.wav");
+            player.playSuccessSound("src/sound/success.wav");
         }).start();
 
 
@@ -489,7 +489,7 @@ public class Game extends Canvas {
         // reduce the alient count, if there are none left, the player has won!
         alienCount--;
         if (alienCount == 0) {
-            notifyWin();
+            notifyPlayerWin();
         }
 
         // if there are still some aliens left then they all need to get faster, so
@@ -517,8 +517,8 @@ public class Game extends Canvas {
 
         // if we waited long enough, create the shot entity, and record the time.
         lastFire = System.currentTimeMillis();
-        if (easterEgg == true){
-            easterEggEntity penetration = new easterEggEntity(this, "sprites/longShipshot.png", ship.getX() + 10, ship.getY() - 30);
+        if (hasEasterEgg == true){
+            EasterEggEntity penetration = new EasterEggEntity(this, "sprites/longShipshot.png", ship.getX() + 10, ship.getY() - 30);
             entities.add(penetration);
         } else {
             if (fireNum == false) {
@@ -535,7 +535,7 @@ public class Game extends Canvas {
         }
 
         new Thread(() -> {
-            player.shotPlay("src/sound/shot.wav");
+            player.playShotSound("src/sound/shot.wav");
         }).start();
     }
 
@@ -574,23 +574,23 @@ public class Game extends Canvas {
     }
 
     //implement activate shield.
-    public void enableShield() {
-        this.enableShield = true;
+    public void enabledShield() {
+        this.enabledShield = true;
     }
 
     //implement easteregg item
     public void easterEgg(){
-        this.easterEgg = true;
+        this.hasEasterEgg = true;
     }
 
     //return now item state
     public Boolean[] getItemState() {
-        return this.enableItems;
+        return this.enabledItems;
     }
 
     //return now money
-    public AtomicInteger recieveMoney(){
-        return this.money;
+    public AtomicInteger receiveMoney(){
+        return this.moneyAmount;
     }
 
     /**
@@ -607,7 +607,7 @@ public class Game extends Canvas {
     public void gameLoop() {
 
         long lastLoopTime = System.currentTimeMillis();
-        long startTimeForDisplay = System.currentTimeMillis();
+        long gameStartTime = System.currentTimeMillis();
         this.alienKilled = alienCount;
 
         // keep looping round til the game ends
@@ -637,7 +637,7 @@ public class Game extends Canvas {
             g.fillRect(0, 0, 800, 600);
 
             g.setColor(Color.WHITE);
-            g.drawString("Time: " + Long.toString((System.currentTimeMillis() - startTimeForDisplay)/1000), 10, 20);
+            g.drawString("Time: " + Long.toString((System.currentTimeMillis() - alienKilled)/1000), 10, 20);
 
             g.setColor(Color.WHITE);
             g.drawString("Killed: " + Integer.toString(this.alienKilled - alienCount), 10, 40);
@@ -647,7 +647,7 @@ public class Game extends Canvas {
                 coin = ImageIO.read(new File("src/sprites/coin.png"));
                 g.drawImage(coin, 10, 47, this);
                 g.setColor(Color.WHITE);
-                g.drawString(Integer.toString(this.money.get()), 20 + coin.getWidth(), 60);
+                g.drawString(Integer.toString(this.moneyAmount.get()), 20 + coin.getWidth(), 60);
             } catch (IOException e){
                 e.printStackTrace();
             }
@@ -659,7 +659,7 @@ public class Game extends Canvas {
             BufferedImage moreBullet;
             try {
                 //draw health
-				int heartNum = ((ShipEntity) ship).returnNowHealth();
+				int heartNum = ((ShipEntity) ship).getCurrentHealth();
                 if(heartNum > 0){
                     for(int i=0;i<heartNum;i++){
 				    	heart = ImageIO.read(new File("src/sprites/heart.png"));
@@ -675,18 +675,18 @@ public class Game extends Canvas {
                 enableShield = ImageIO.read(new File("src/sprites/Item shield.png"));
                 moreBullet = ImageIO.read(new File("src/sprites/Item shot.png"));
 
-                if (enableItems[0] == true){
+                if (enabledItems[0] == true){
                     g.drawImage(maxHealth,730 - moreBullet.getWidth() - enableShield.getWidth() - getFaster.getWidth() - maxHealth.getWidth()
                     ,558,this);
                 }
-                if (enableItems[1] == true){
+                if (enabledItems[1] == true){
                     g.drawImage(getFaster, 745 - moreBullet.getWidth() - enableShield.getWidth() - getFaster.getWidth()
                     ,558,this);
                 }
-                if (enableItems[2] == true){
+                if (enabledItems[2] == true){
                     g.drawImage(enableShield,760 - moreBullet.getWidth() - enableShield.getWidth(),558,this);
                 }
-                if (enableItems[3] == true){
+                if (enabledItems[3] == true){
                     g.drawImage(moreBullet,775 - moreBullet.getWidth(),558,this);
                 }
 			} catch (IOException e) {
@@ -736,7 +736,7 @@ public class Game extends Canvas {
             if (logicRequiredThisLoop) {
                 for (int i = 0; i < entities.size(); i++) {
                     Entity entity = (Entity) entities.get(i);
-                    entity.doLogic();
+                    entity.performLogic();
                 }
 
                 logicRequiredThisLoop = false;
@@ -752,7 +752,7 @@ public class Game extends Canvas {
                     (800 - g.getFontMetrics().stringWidth("Play Time: " + (finishedTime - startTimeForRecord)/1000 + " sec")) / 2, 275);
                 }
                 g.drawString("Press any key", (800 - g.getFontMetrics().stringWidth("Press any key")) / 2, 300);
-                startTimeForDisplay = System.currentTimeMillis(); // press any key를 기다리는 상태면 startTime을 계속 갱신시켜 흘러가지 않도록 함
+                alienKilled = (int) System.currentTimeMillis(); // press any key를 기다리는 상태면 startTime을 계속 갱신시켜 흘러가지 않도록 함
             }
 
             // finally, we've completed drawing so clear up the graphics
@@ -779,7 +779,7 @@ public class Game extends Canvas {
             }
 
             //shield will move with ship
-            if (this.enableShield == true) {
+            if (this.enabledShield == true) {
                 shield.setHorizontalMovement(0);
                 shield.setVerticalMovement(0);
 
@@ -834,7 +834,7 @@ public class Game extends Canvas {
         /**
          * The number of key presses we've had while waiting for an "any key" press
          */
-        private int pressCount = 1;
+        private int keyPressCount = 1;
 
         /**
          * Notification from AWT that a key has been pressed. Note that
@@ -910,15 +910,15 @@ public class Game extends Canvas {
             // the shoot or move keys, hence the use of the "pressCount"
             // counter.
             if (waitingForKeyPress) {
-                if (pressCount == 1) {
+                if (keyPressCount == 1) {
                     // since we've now recieved our key typed
                     // event we can mark it as such and start
                     // our new game
                     waitingForKeyPress = false;
                     startGame();
-                    pressCount = 0;
+                    keyPressCount = 0;
                 } else {
-                    pressCount++;
+                    keyPressCount++;
                 }
             }
 

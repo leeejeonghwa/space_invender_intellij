@@ -2,11 +2,11 @@ package org.newdawn.spaceinvaders.Entity;
 
 import org.newdawn.spaceinvaders.Game;
 
-public class easterEggEntity extends Entity{
+public class EasterEggEntity extends Entity{
         /**
      * The vertical speed at which the players shot moves
      */ //총알이 움직이는 수직 속도
-    private double moveSpeed = -750;
+    private double verticalSpeed = -750;
      /**
       * The game in which this entity exists
       */
@@ -14,7 +14,7 @@ public class easterEggEntity extends Entity{
      /**
       * True if this shot has been "used", i.e. its hit something
       */ //총알이 충돌해서 사용되었는지 여부를 나타내는 값
-    private boolean used = false;
+    private boolean isUsed = false;
  
      /**
       * Create a new shot from the player
@@ -24,12 +24,12 @@ public class easterEggEntity extends Entity{
       * @param x      The initial x location of the shot
       * @param y      The initial y location of the shot
       */
-    public easterEggEntity(Game game, String sprite, int x, int y) {
+    public EasterEggEntity(Game game, String sprite, int x, int y) {
         super(sprite, x, y);
 
         this.game = game;
 
-        dy = moveSpeed;
+        dy = verticalSpeed;
     }
 
     /**

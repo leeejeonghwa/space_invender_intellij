@@ -86,7 +86,7 @@ public abstract class Entity {
     /**
      * Set the vertical speed of this entity
      *
-     * @param dx The vertical speed of this entity (pixels/sec) //수직 속도
+     * @param dy The vertical speed of this entity (pixels/sec) //수직 속도
      */
     public void setVerticalMovement(double dy) {
         this.dy = dy;
@@ -123,7 +123,7 @@ public abstract class Entity {
      * Do the logic associated with this entity. This method
      * will be called periodically based on game events
      */
-    public void doLogic() {
+    public void performLogic() {
     }
 
     /**

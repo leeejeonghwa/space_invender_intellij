@@ -12,7 +12,7 @@ import org.newdawn.spaceinvaders.Game;
         /**
          * The vertical speed at which the players shot moves
          */ //총알이 움직이는 수직 속도
-        private double moveSpeed = 300;
+        private double verticalSpeed = 300;
         /**
          * The game in which this entity exists
          */
@@ -20,11 +20,10 @@ import org.newdawn.spaceinvaders.Game;
         /**
          * True if this shot has been "used", i.e. its hit something
          */ //총알이 충돌해서 사용되었는지 여부를 나타내는 값
-        private boolean used = false;
+        private boolean isUsed = false;
 
         /**
          * Create a new shot from the player
-         *
          * @param game   The game in which the shot has been created
          * @param sprite The sprite representing this shot
          * @param x      The initial x location of the shot
@@ -35,7 +34,7 @@ import org.newdawn.spaceinvaders.Game;
 
             this.game = game;
 
-            dy = moveSpeed;
+            dy = verticalSpeed;
         }
 
         /**
@@ -62,7 +61,7 @@ import org.newdawn.spaceinvaders.Game;
         public void collidedWith(Entity other) {
             // prevents double kills, if we've already hit something,
             // don't collide
-            if (used) {
+            if (isUsed) {
                 return;
             }
 
@@ -72,7 +71,7 @@ import org.newdawn.spaceinvaders.Game;
                 game.removeEntity(this);
 
                 // notify the game that the ship has been killed
-                used = true;
+                isUsed = true;
             }
 
         }

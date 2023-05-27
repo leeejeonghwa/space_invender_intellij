@@ -19,7 +19,7 @@ public class Signup extends JDialog {
     private JLabel idlabel = new JLabel("아이디");
     private JLabel pwlabel = new JLabel("비밀번호");
     private JLabel pwChecklabel = new JLabel("비밀번호 확인");
-    private boolean membershipProgress = false;
+    private boolean isMembershipInProgress = false;
 
     public Signup() {
 
@@ -38,15 +38,15 @@ public class Signup extends JDialog {
         this.setSize(300, 500);
         this.setLocationRelativeTo(null);
 
-        FocusEvent();
-        checkValue();
+        handleFocusEvent();
+        validateInputValues();
 
         firebaseTool = FirebaseTool.getInstance();
         globalStorage = GlobalStorage.getInstance();
     }
 
     //텍스트 필드에 있는 값을 체크하고 지우기 위한 메소드
-    private void FocusEvent() {
+    private void handleFocusEvent() {
         idText.addFocusListener(new FocusListener() {
             public void focusLost(FocusEvent e) {
                 if (idText.getText().trim().length() == 0) {
@@ -78,7 +78,7 @@ public class Signup extends JDialog {
     }
 
     //회원 가입할때 모든 값이 입력되었는지 체크하기 위한 메소드
-    private void checkValue() {
+    private void validateInputValues() {
         signUpbtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (idText.getText().trim().length() == 0 || idText.getText().trim().equals("아이디")) {
@@ -111,7 +111,7 @@ public class Signup extends JDialog {
                 }
 
                 //여기까지 왔다면 모든 값을 입력하고 선택하는 것이 완료되었으니 회원가입 과정이 완료.
-                membershipProgress = true;
+                isMembershipInProgress = true;
 
                 firebaseTool.Signup(idText.getText(), pwText.getText());
 

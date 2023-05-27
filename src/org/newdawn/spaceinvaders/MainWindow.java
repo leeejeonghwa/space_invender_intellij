@@ -97,11 +97,11 @@ public class MainWindow extends JFrame {
                     setLayout(null);
                     Thread shopThread = new Thread(new Runnable() {
                         public void run() {
-                            ShopWindow s = new ShopWindow(item.getMoney(), item.enableItems(), item.enableSkinList(), item.getActiveNum());
+                            ShopWindow s = new ShopWindow(item.getMoney(), item.getItemState(), item.getSkinState(), item.getActiveSkinNumber());
                             synchronized(item){
                                 item.setMoney(s.recieveMoney());
-                                item.setEnableSkin(s.getEnableSkin());
-                                item.activateSkinNumber(s.getSelectedSkin());
+                                item.setSkinState(s.getEnableSkin());
+                                item.setActiveSkinNumber(s.getSelectedSkin());
                             }
                         }
                     }); shopThread.start();
@@ -119,16 +119,16 @@ public class MainWindow extends JFrame {
                     // level 버튼 누른 경우
                     button.setVisible(true);
                     setLayout(null);
-                    firebaseTool.GetUserBestScore(globalStorage.getUserID());
-                    JOptionPane.showMessageDialog(null, globalStorage.getUserID() + " 님 최고점수 : " + globalStorage.getUserBestScore());
+                    firebaseTool.GetUserBestScore(globalStorage.getUserId());
+                    JOptionPane.showMessageDialog(null, globalStorage.getUserId() + " 님 최고점수 : " + globalStorage.getUserBestScore());
                     // 게임 루프를 실행하는 스레드 생성
                     Thread gameThread = new Thread(new Runnable() {
                         public void run() {
-                            Game g = new Game(button.getName(), item.enableItems(), item.getMoney(), item.getActiveNum());
+                            Game g = new Game(button.getName(), item.getItemState(), item.getMoney(), item.getActiveSkinNumber());
                             g.gameLoop();
                             synchronized(item){
-                                item.clearStage(g.getItemState());
-                                item.setMoney(g.recieveMoney());
+                                item.setItemState(g.getItemState());
+                                item.setMoney(g.receiveMoney());
                             }
                         }
                     }); gameThread.start();

@@ -13,7 +13,7 @@ public class BossEntity extends Entity {
     /**
      * The speed at which the alient moves horizontally
      */ // 에일리언이 수평으로 이동하는 속도
-    private double moveSpeed = 75;
+    private double horizontalMoveSpeed = 75;
     /**
      * The game in which the entity exists
      */
@@ -35,7 +35,7 @@ public class BossEntity extends Entity {
     /**
      * The current frame of animation being displayed
      */
-    private int frameNumber;
+    private int frameIndex;
 
     private int health = 50;
 
@@ -55,7 +55,7 @@ public class BossEntity extends Entity {
         frames[3] = SpriteStore.get().getSprite("sprites/boss2.png");
 
         this.game = game;
-        dx = -moveSpeed;
+        dx = -horizontalMoveSpeed;
 
     }
 
@@ -77,12 +77,12 @@ public class BossEntity extends Entity {
             lastFrameChange = 0;
 
             // update the frame
-            frameNumber++;
-            if (frameNumber >= frames.length) {
-                frameNumber = 0;
+            frameIndex++;
+            if (frameIndex >= frames.length) {
+                frameIndex = 0;
             }
 
-            sprite = frames[frameNumber];
+            sprite = frames[frameIndex];
         }
 
         // if we have reached the left hand side of the screen and
@@ -103,7 +103,7 @@ public class BossEntity extends Entity {
     /**
      * Update the game logic related to aliens
      */
-    public void doLogic() {
+    public void performLogic() {
         // swap over horizontal movement and move down the
         // screen a bit
         dx = -dx;
@@ -112,7 +112,7 @@ public class BossEntity extends Entity {
         // if we've reached the bottom of the screen then the player
         // dies
         if (y > 570) {
-            game.notifyDeath();
+            game.notifyPlayerDeath();
         }
     }
 
@@ -129,7 +129,7 @@ public class BossEntity extends Entity {
         if (other instanceof ShotEntity){
             game.removeEntity(other);
             health--;
-        } else if (other instanceof easterEggEntity){
+        } else if (other instanceof EasterEggEntity){
             health--;
         }
         if (health <= 0){

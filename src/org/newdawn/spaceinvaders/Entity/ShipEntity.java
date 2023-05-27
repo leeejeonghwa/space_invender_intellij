@@ -15,7 +15,7 @@ public class ShipEntity extends Entity {
      * The game in which the ship exists
      */
     private Game game;
-    private boolean invincible = false;
+    private boolean isInvincible = false;
     private int health = 3;
 
     /**
@@ -68,22 +68,22 @@ public class ShipEntity extends Entity {
      */
     public void collidedWith(Entity other) {
         if(other instanceof AlienEntity || other instanceof ShotAlienEntity){
-            this.activateInvinciblity();
+            this.activateInvincibility();
         }
     }
 
-    public void activateInvinciblity(){
-        if (this.health <= 1 && invincible == false){
+    public void activateInvincibility(){
+        if (this.health <= 1 && isInvincible == false){
             health -= 1;
-            game.notifyDeath();
+            game.notifyPlayerDeath();
         }
-        else if(this.health > 0 && invincible == false){
+        else if(this.health > 0 && isInvincible == false){
             health -= 1;
-            invincible = true;
+            isInvincible = true;
             Timer invincibleTimer = new Timer();
             TimerTask task = new TimerTask() {
                 public void run(){
-                    invincible = false;
+                    isInvincible = false;
                 }
             };
             invincibleTimer.schedule(task, 3000);
@@ -94,7 +94,7 @@ public class ShipEntity extends Entity {
         health = 4;
     }
 
-    public int returnNowHealth() {
+    public int getCurrentHealth() {
         return this.health;
     }
 }

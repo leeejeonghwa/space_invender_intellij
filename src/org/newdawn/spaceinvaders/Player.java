@@ -10,7 +10,7 @@ public class Player {
     private Clip bgmClip;
     private long pausedPosition;
 
-    public void bgmPlay(String audioFilePath) {
+    public void playBgm(String audioFilePath) {
         try {
             File audioFile = new File(audioFilePath);
             if (!audioFile.exists()) {
@@ -35,20 +35,20 @@ public class Player {
             System.err.println(ex.getMessage());
         }
     }
-    public void bgmPause() {
+    public void pauseBgm() {
         if (bgmClip != null && bgmClip.isRunning()) {
             bgmClip.stop();
             pausedPosition = bgmClip.getMicrosecondPosition();
         }
     }
 
-    public void bgmResume() {
+    public void resumeBgm() {
         if (bgmClip != null && !bgmClip.isRunning()) {
             bgmClip.setMicrosecondPosition(pausedPosition);
             bgmClip.start();
         }
     }
-    public void successPlay(String audioFilePath) {
+    public void playSuccessSound(String audioFilePath) {
         try {
             File audioFile = new File(audioFilePath);
             if (!audioFile.exists()) {
@@ -72,7 +72,7 @@ public class Player {
             System.err.println(ex.getMessage());
         }
     }
-    public void failPlay(String audioFilePath) {
+    public void playFailSound(String audioFilePath) {
         try {
             File audioFile = new File(audioFilePath);
             if (!audioFile.exists()) {
@@ -95,7 +95,7 @@ public class Player {
             System.err.println(ex.getMessage());
         }
     }
-    public void shotPlay(String audioFilePath) {
+    public void playShotSound(String audioFilePath) {
         try {
             File audioFile = new File(audioFilePath);
             if (!audioFile.exists()) {

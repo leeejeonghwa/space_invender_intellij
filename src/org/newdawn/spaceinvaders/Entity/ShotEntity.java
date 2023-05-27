@@ -11,7 +11,7 @@ public class ShotEntity extends Entity {
     /**
      * The vertical speed at which the players shot moves
      */ //총알이 움직이는 수직 속도
-    private double moveSpeed = -300;
+    private double verticalSpeed = -300;
     /**
      * The game in which this entity exists
      */
@@ -19,7 +19,7 @@ public class ShotEntity extends Entity {
     /**
      * True if this shot has been "used", i.e. its hit something
      */ //총알이 충돌해서 사용되었는지 여부를 나타내는 값
-    private boolean used = false;
+    private boolean isUsed = false;
 
     /**
      * Create a new shot from the player
@@ -34,7 +34,7 @@ public class ShotEntity extends Entity {
 
         this.game = game;
 
-        dy = moveSpeed;
+        dy = verticalSpeed;
     }
 
     /**

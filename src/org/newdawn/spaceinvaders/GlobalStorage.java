@@ -3,7 +3,7 @@ package org.newdawn.spaceinvaders;
 public class GlobalStorage {
     private static GlobalStorage globalStorage = null;
 
-    private String userID = "";
+    private String userId = "";
 
     private String userBestScore = "";
 
@@ -19,12 +19,12 @@ public class GlobalStorage {
         return globalStorage;
     }
 
-    public String getUserID() {
-        return userID;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUserID(String userID) {
-        this.userID = userID;
+    public void setUserId(String userID) {
+        this.userId = userID;
     }
 
     public String getUserBestScore() {

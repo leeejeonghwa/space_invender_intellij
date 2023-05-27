@@ -13,13 +13,14 @@ public class AlienEntity extends Entity {
     /**
      * The speed at which the alient moves horizontally
      */ // 에일리언이 수평으로 이동하는 속도
-    private double moveSpeed = 75;
+    private double horizontalMoveSpeed = 75;
     /**
      * The game in which the entity exists
      */
     private Game game;
 
     private int shotCooldown = 0;
+
     /**
      * The animation frames
      */
@@ -35,7 +36,7 @@ public class AlienEntity extends Entity {
     /**
      * The current frame of animation being displayed
      */
-    private int frameNumber;
+    private int frameIndex;
 
     /**
      * Create a new alien entity
@@ -54,7 +55,7 @@ public class AlienEntity extends Entity {
         frames[3] = SpriteStore.get().getSprite("sprites/alien3.png");
 
         this.game = game;
-        dx = -moveSpeed;
+        dx = -horizontalMoveSpeed;
 
     }
 
@@ -76,12 +77,12 @@ public class AlienEntity extends Entity {
             lastFrameChange = 0;
 
             // update the frame
-            frameNumber++;
-            if (frameNumber >= frames.length) {
-                frameNumber = 0;
+            frameIndex++;
+            if (frameIndex >= frames.length) {
+                frameIndex = 0;
             }
 
-            sprite = frames[frameNumber];
+            sprite = frames[frameIndex];
         }
 
         // if we have reached the left hand side of the screen and
@@ -102,7 +103,7 @@ public class AlienEntity extends Entity {
     /**
      * Update the game logic related to aliens
      */
-    public void doLogic() {
+    public void performLogic() {
         // swap over horizontal movement and move down the
         // screen a bit
         dx = -dx;
@@ -111,7 +112,7 @@ public class AlienEntity extends Entity {
         // if we've reached the bottom of the screen then the player
         // dies
         if (y > 570) {
-            game.notifyDeath();
+            game.notifyPlayerDeath();
         }
     }
 
@@ -128,7 +129,7 @@ public class AlienEntity extends Entity {
             game.removeEntity(other);
             // notify the game that the alien has been killed
             game.notifyAlienKilled();
-        } else if (other instanceof easterEggEntity){
+        } else if (other instanceof EasterEggEntity){
             game.removeEntity(this);
             game.notifyAlienKilled();
         }
