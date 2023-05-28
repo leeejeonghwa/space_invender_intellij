@@ -13,7 +13,7 @@ public class BossEntity extends Entity {
     /**
      * The speed at which the alien moves horizontally
      */ // 에일리언이 수평으로 이동하는 속도
-    private double moveSpeed = 75;
+    private double horizontalMoveSpeed = 75;
     /**
      * The game in which the entity exists
      */
@@ -53,7 +53,7 @@ public class BossEntity extends Entity {
         frames[3] = SpriteStore.get().getSprite("sprites/boss2.png");
 
         this.game = game;
-        dx = -moveSpeed;
+        horizontalMoveSpeed = -horizontalMoveSpeed;
 
     }
 
@@ -85,12 +85,12 @@ public class BossEntity extends Entity {
 
         // if we have reached the left hand side of the screen and
         // are moving left then request a logic update  //왼쪽 끝
-        if ((dx < 0) && (x < 10)) {
+        if ((horizontalMoveSpeed < 0) && (x < 10)) {
             game.updateLogic();
         }
         // and vice vesa, if we have reached the right hand side of
         // the screen and are moving right, request a logic update //오른쪽 끝
-        if ((dx > 0) && (x > 750 - sprite.getWidth() + 30)) {
+        if ((horizontalMoveSpeed > 0) && (x > 750 - sprite.getWidth() + 30)) {
             game.updateLogic();
         }
 
@@ -104,7 +104,7 @@ public class BossEntity extends Entity {
     public void doLogic() {
         // swap over horizontal movement and move down the
         // screen a bit
-        dx = -dx;
+        horizontalMoveSpeed = -horizontalMoveSpeed;
         y += 10;
 
         // if we've reached the bottom of the screen then the player
@@ -123,7 +123,7 @@ public class BossEntity extends Entity {
         if (other instanceof ShotEntity){
             game.removeEntity(other);
             health--;
-        } else if (other instanceof easterEggEntity){
+        } else if (other instanceof EasterEggEntity){
             health--;
         }
         if (health <= 0){

@@ -35,11 +35,11 @@ public abstract class Entity {
     /**
      * The current speed of this entity horizontally (pixels/sec)
      */ //가로 속도
-    protected double dx;
+    protected double horizontalMoveSpeed;
     /**
      * The current speed of this entity vertically (pixels/sec)
      */ //세로 속도
-    protected double dy;
+    protected double verticlaMoveSpeed;
     /**
      * The rectangle used for this entity during collisions  resolution
      */ //이 엔티티의 충돌 해결시 사용되는 직사각형
@@ -70,8 +70,8 @@ public abstract class Entity {
      */
     public void move(long delta) {
         // update the location of the entity based on move speeds
-        x += (delta * dx) / 1000;
-        y += (delta * dy) / 1000;
+        x += (delta * horizontalMoveSpeed) / 1000;
+        y += (delta * verticlaMoveSpeed) / 1000;
     }
 
     /**
@@ -80,7 +80,7 @@ public abstract class Entity {
      * @param dx The horizontal speed of this entity (pixels/sec) //수평 속도
      */
     public void setHorizontalMovement(double dx) {
-        this.dx = dx;
+        this.horizontalMoveSpeed = dx;
     }
 
     /**
@@ -89,7 +89,7 @@ public abstract class Entity {
      * @param dy The vertical speed of this entity (pixels/sec) //수직 속도
      */
     public void setVerticalMovement(double dy) {
-        this.dy = dy;
+        this.verticlaMoveSpeed = dy;
     }
 
     /**
@@ -98,7 +98,7 @@ public abstract class Entity {
      * @return The horizontal speed of this entity (pixels/sec)
      */
     public double getHorizontalMovement() {
-        return dx;
+        return horizontalMoveSpeed;
     }
 
     /**

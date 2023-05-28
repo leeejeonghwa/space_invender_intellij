@@ -31,7 +31,7 @@ public class ShotEntity extends Entity {
         Player shotAudioPlayer = new AudioPlayer("src/sound/shot.wav");
         shotAudioPlayer.playAudio();
 
-        dy = -300;
+        verticlaMoveSpeed = -300;
     }
 
     /**

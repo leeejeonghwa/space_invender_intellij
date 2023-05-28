@@ -42,20 +42,20 @@ public class ShipEntity extends Entity {
     public void move(long delta) {
         // if we're moving left and have reached the left hand side
         // of the screen, don't move
-        if ((dx < 0) && (x < 18)) {
+        if ((horizontalMoveSpeed < 0) && (x < 18)) {
             return;
         }
         // if we're moving right and have reached the right hand side
         // of the screen, don't move
-        if ((dx > 0) && (x > 747)) {
+        if ((horizontalMoveSpeed > 0) && (x > 747)) {
             return;
         }
         // if we're moving up and have reached the top of the screen, don't move
-        if ((dy < 0) && (y < 23)) {
+        if ((verticlaMoveSpeed < 0) && (y < 23)) {
             return;
         }
         // if we're moving down and have reached the bottom of the screen, don't move
-        if ((dy > 0) && (y > 542)) {
+        if ((verticlaMoveSpeed > 0) && (y > 542)) {
             return;
         }
 
@@ -91,7 +91,7 @@ public class ShipEntity extends Entity {
         }
     }
 
-    public int returnNowHealth() {
+    public int getCurrentHealth() {
         return this.health;
     }
 }

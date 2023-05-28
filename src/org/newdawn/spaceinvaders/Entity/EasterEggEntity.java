@@ -2,7 +2,7 @@ package org.newdawn.spaceinvaders.Entity;
 
 import org.newdawn.spaceinvaders.Game;
 
-public class easterEggEntity extends Entity{
+public class EasterEggEntity extends Entity{
      /**
       * The game in which this entity exists
       */
@@ -16,10 +16,10 @@ public class easterEggEntity extends Entity{
       * @param x      The initial x location of the shot
       * @param y      The initial y location of the shot
       */
-    public easterEggEntity(Game game, String sprite, int x, int y) {
+    public EasterEggEntity(Game game, String sprite, int x, int y) {
         super(sprite, x, y);
         this.game = game;
-        dy = -750;
+        verticlaMoveSpeed = -750;
     }
 
     /**

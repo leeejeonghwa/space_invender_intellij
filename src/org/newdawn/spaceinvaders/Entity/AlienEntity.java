@@ -48,7 +48,7 @@ public class AlienEntity extends Entity {
         frames[3] = SpriteStore.get().getSprite("sprites/alien3.png");
 
         this.game = game;
-        dx = -75;
+        horizontalMoveSpeed = -75;
 
     }
 
@@ -80,12 +80,12 @@ public class AlienEntity extends Entity {
 
         // if we have reached the left hand side of the screen and
         // are moving left then request a logic update  //왼쪽 끝
-        if ((dx < 0) && (x < 10)) {
+        if ((horizontalMoveSpeed < 0) && (x < 10)) {
             game.updateLogic();
         }
         // and vice vesa, if we have reached the right hand side of
         // the screen and are moving right, request a logic update //오른쪽 끝
-        if ((dx > 0) && (x > 750)) {
+        if ((horizontalMoveSpeed > 0) && (x > 750)) {
             game.updateLogic();
         }
 
@@ -99,7 +99,7 @@ public class AlienEntity extends Entity {
     public void doLogic() {
         // swap over horizontal movement and move down the
         // screen a bit
-        dx = -dx;
+        horizontalMoveSpeed = -horizontalMoveSpeed;
         y += 10;
 
         // if we've reached the bottom of the screen then the player
@@ -122,7 +122,7 @@ public class AlienEntity extends Entity {
             game.removeEntity(other);
             // notify the game that the alien has been killed
             game.notifyAlienKilled();
-        } else if (other instanceof easterEggEntity){
+        } else if (other instanceof EasterEggEntity){
             game.removeEntity(this);
             game.notifyAlienKilled();
         }

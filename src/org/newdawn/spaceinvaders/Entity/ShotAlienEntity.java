@@ -31,7 +31,7 @@ import org.newdawn.spaceinvaders.Game;
 
             this.game = game;
 
-            dy = 300;
+            verticlaMoveSpeed = 300;
         }
 
         /**

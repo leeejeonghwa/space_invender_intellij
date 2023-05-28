@@ -333,7 +333,7 @@ public class Game extends Canvas {
         // if we waited long enough, create the shot entity, and record the time.
         lastFire = System.currentTimeMillis();
         if (Item.gainedItems[4]){
-            easterEggEntity penetration = new easterEggEntity(this, "sprites/longShipshot.png", ship.getX() + 10, ship.getY() - 30);
+            EasterEggEntity penetration = new EasterEggEntity(this, "sprites/longShipshot.png", ship.getX() + 10, ship.getY() - 30);
             entities.add(penetration);
         } else {
             if (Item.gainedItems[3]) {
@@ -464,7 +464,7 @@ public class Game extends Canvas {
             BufferedImage heart;
             try {
                 //draw health
-				int heartNum = ((ShipEntity) ship).returnNowHealth();
+				int heartNum = ((ShipEntity) ship).getCurrentHealth();
                 if(heartNum > 0){
                     for(int i=0;i<heartNum;i++){
 				    	heart = ImageIO.read(new File("src/sprites/heart.png"));

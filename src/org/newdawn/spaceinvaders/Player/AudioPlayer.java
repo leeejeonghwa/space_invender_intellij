@@ -23,7 +23,7 @@ public class AudioPlayer extends Player {
             clip.open(getAudioInputStream(audioFile));
 
             FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            gainControl.setValue(-7.0f);
+            gainControl.setValue(-30.0f);
 
             clip.start();
         } catch (Exception ex) {
