@@ -25,7 +25,7 @@ public class MainWindow extends JFrame {
         setTitle("SPACE INVADERS");
 
         //현재 프레임 창 가운데 정렬 setSize를 먼저 해주어야 정상적으로 프레임이 가운데 정렬이 됨!
-        setSize(800, 650);
+        setSize(800, 600);
         this.setLocationRelativeTo(null);
 
         this.setVisible(true);
@@ -92,31 +92,34 @@ public class MainWindow extends JFrame {
     public void btnMouseListener(JButton button){
         button.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
-                if (button.getName().equals("src/image/shop.png")){
-                    button.setVisible(true);
-                    setLayout(null);
-                    Thread shopThread = new Thread(() -> {
-                        ShopWindow s = new ShopWindow();
-                    }); shopThread.start();
-                }
-                else if (button.getName().equals("src/image/rule.png")){
-                    button.setVisible(true);
-                    setLayout(null);
-                    Thread ruleThread = new Thread(() -> {
-                        RuleWindow r = new RuleWindow();
-                    }); ruleThread.start();
-                }
-                else{
-                    // level 버튼 누른 경우
-                    button.setVisible(true);
-                    setLayout(null);
-                    firebaseTool.GetUserBestScore(globalStorage.getUserID());
-                    JOptionPane.showMessageDialog(null, globalStorage.getUserID() + " 님 최고점수 : " + globalStorage.getUserBestScore());
-                    // 게임 루프를 실행하는 스레드 생성
-                    Thread gameThread = new Thread(() -> {
-                        Game g = new Game(button.getName());
-                        g.gameLoop();
-                    }); gameThread.start();
+                switch(button.getName()){
+                    case("src/image/shop.png"):
+                        button.setVisible(true);
+                        setLayout(null);
+                        Thread shopThread = new Thread(() -> {
+                            ShopWindow s = new ShopWindow();
+                        }); shopThread.start();
+                    break;
+
+                    case("src/image/rule.png"):
+                        button.setVisible(true);
+                        setLayout(null);
+                        Thread ruleThread = new Thread(() -> {
+                            RuleWindow r = new RuleWindow();
+                        }); ruleThread.start();
+                    break;
+
+                    default:
+                        button.setVisible(true);
+                        setLayout(null);
+                        firebaseTool.GetUserBestScore(globalStorage.getUserID());
+                        JOptionPane.showMessageDialog(null, globalStorage.getUserID() + " 님 최고점수 : " + globalStorage.getUserBestScore());
+                        // 게임 루프를 실행하는 스레드 생성
+                        Thread gameThread = new Thread(() -> {
+                            Game g = new Game(button.getName().charAt(15));
+                            g.gameLoop();
+                        }); gameThread.start();
+                    break;
                 }
             }
         });

@@ -13,7 +13,7 @@ public class RuleWindow extends JFrame{
     public RuleWindow(){
         setTitle("RULE");
 
-        setSize(830, 650);
+        setSize(800, 600);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
 

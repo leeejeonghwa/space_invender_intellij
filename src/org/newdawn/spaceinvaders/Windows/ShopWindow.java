@@ -20,7 +20,7 @@ public class ShopWindow extends JFrame {
 
         setTitle("SHOP");
 
-        setSize(830,650);
+        setSize(800,600);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
 
@@ -62,12 +62,11 @@ public class ShopWindow extends JFrame {
     }
 
     private void createButtons() {
-        String[] srcList = new String[]{"Shopship1", "Shopship2", "Shopship3", "Shopship4", "Shopship5"};
         Integer[] xList = new Integer[]{100, 360, 620, 230, 490};
         Integer[] yList = new Integer[]{200, 200, 200, 400, 400};
 
         for (int i=0;i<5;i+=1){
-            btnList.add(drawButton("src/sprites/"+srcList[i]+".png", xList[i], yList[i]));
+            btnList.add(drawButton("src/sprites/ShopShip"+i+".png", xList[i], yList[i]));
             panel.add(btnList.get(i));
             this.btnMouseListener(btnList.get(i), i);
         }
@@ -75,10 +74,7 @@ public class ShopWindow extends JFrame {
 
     private JButton drawButton(String ref, int x, int y) {
         ImageIcon buttonIcon = new ImageIcon(ref);
-        Image buttonimg = buttonIcon.getImage();
-        Image buttonimgchange = buttonimg.getScaledInstance(90, 90, Image.SCALE_SMOOTH);
-        ImageIcon buttonchange = new ImageIcon(buttonimgchange);
-        JButton button = new JButton(buttonchange);
+        JButton button = new JButton(buttonIcon);
         button.setName(ref);
         button.setFocusPainted(false);
         button.setBorderPainted(false);

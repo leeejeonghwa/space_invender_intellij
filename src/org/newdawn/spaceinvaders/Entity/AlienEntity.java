@@ -11,10 +11,6 @@ import org.newdawn.spaceinvaders.SpriteStore;
  */
 public class AlienEntity extends Entity {
     /**
-     * The speed at which the alien moves horizontally
-     */ // 에일리언이 수평으로 이동하는 속도
-    private double moveSpeed = 75;
-    /**
      * The game in which the entity exists
      */
     private Game game;
@@ -52,7 +48,7 @@ public class AlienEntity extends Entity {
         frames[3] = SpriteStore.get().getSprite("sprites/alien3.png");
 
         this.game = game;
-        dx = -moveSpeed;
+        dx = -75;
 
     }
 
