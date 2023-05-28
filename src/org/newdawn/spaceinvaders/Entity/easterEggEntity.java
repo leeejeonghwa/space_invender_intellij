@@ -3,10 +3,6 @@ package org.newdawn.spaceinvaders.Entity;
 import org.newdawn.spaceinvaders.Game;
 
 public class easterEggEntity extends Entity{
-        /**
-     * The vertical speed at which the players shot moves
-     */ //총알이 움직이는 수직 속도
-    private double moveSpeed = -750;
      /**
       * The game in which this entity exists
       */
@@ -22,10 +18,8 @@ public class easterEggEntity extends Entity{
       */
     public easterEggEntity(Game game, String sprite, int x, int y) {
         super(sprite, x, y);
-
         this.game = game;
-
-        dy = moveSpeed;
+        dy = -750;
     }
 
     /**

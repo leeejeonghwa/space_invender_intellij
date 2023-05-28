@@ -4,6 +4,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import org.newdawn.spaceinvaders.Game;
+import org.newdawn.spaceinvaders.Item;
 
 /**
  * The entity that represents the players ship
@@ -28,7 +29,7 @@ public class ShipEntity extends Entity {
      */
     public ShipEntity(Game game, String ref, int x, int y) {
         super(ref, x, y);
-
+        if (Item.gainedItems[0]) health = 4;
         this.game = game;
     }
 
@@ -67,7 +68,7 @@ public class ShipEntity extends Entity {
      * @param other The entity with which the ship has collided
      */
     public void collidedWith(Entity other) {
-        if(other instanceof AlienEntity || other instanceof ShotAlienEntity){
+        if(other instanceof AlienEntity || other instanceof ShotAlienEntity || other instanceof BossEntity){
             this.activateInvincibility();
         }
     }
@@ -88,10 +89,6 @@ public class ShipEntity extends Entity {
             };
             invincibleTimer.schedule(task, 3000);
         }
-    }
-
-    public void increaseMaxHealth() {
-        health = 4;
     }
 
     public int returnNowHealth() {

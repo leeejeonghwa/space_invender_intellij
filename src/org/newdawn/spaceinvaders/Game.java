@@ -1,8 +1,8 @@
 package org.newdawn.spaceinvaders;
-
-
-
 import org.newdawn.spaceinvaders.Entity.*;
+import org.newdawn.spaceinvaders.Player.AudioPlayer;
+import org.newdawn.spaceinvaders.Player.BackgroundPlayer;
+import org.newdawn.spaceinvaders.Player.Player;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -15,11 +15,6 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 import javax.swing.*;
-
-
-
-/*test*/
-
 /**
  * The main hook of our game. This class with both act as a manager
  * for the display and central mediator for the game logic.
@@ -37,8 +32,6 @@ import javax.swing.*;
  */
 
 public class Game extends Canvas {
-
-    private static String bestScore = "";
     /**
      * The strategy that allows us to use accelerate page flipping
      */
@@ -58,10 +51,6 @@ public class Game extends Canvas {
     /* The entity representing the shield */
     private Entity shield;
     /**
-     * The speed at which the player's ship should move (pixels/sec)
-     */
-    private double moveSpeed = 300; //우주선 속도
-    /**
      * The time at which last fired a shot
      */
     private long lastFire = 0;
@@ -73,9 +62,7 @@ public class Game extends Canvas {
     private long finishedTime;
     private long startTimeForRecord;
 
-    /**
-     * The number of aliens left on the screen
-     */
+    /*The number of aliens left on the screen*/
     private int alienCount;
     /* Level is parameter of class instance */
     private int level;
@@ -134,9 +121,12 @@ public class Game extends Canvas {
 
     private Entity alien;
 
-    private BossEntity bossAlien;
+    private Entity bossAlien;
 
-    private Player player;
+    private Player backgroundPlayer;
+    private Player sucessAudioPlayer;
+    private Player failAudioPlayer;
+
     public Game(int level) {
         // create a frame to contain our game
         container = new JFrame("Space Invaders 102");
@@ -160,14 +150,6 @@ public class Game extends Canvas {
         // Tell AWT not to bother repainting our canvas since we're
         // going to do that our self in accelerated mode
         setIgnoreRepaint(true);
-
-        container.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                // 윈도우 창이 닫힐 때 처리할 내용
-                player.bgmPause();
-            }
-        });
 
         // finally make the window visible
         container.pack();
@@ -196,16 +178,27 @@ public class Game extends Canvas {
         // to see at startup
         initEntities();
 
-        player = new Player();
-        new Thread(() -> player.bgmPlay("src/sound/backgroundmusic.wav")).start();
+        container.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                backgroundPlayer.pauseAudio();
+                if(sucessAudioPlayer.isPlaying()) sucessAudioPlayer.pauseAudio();
+                if(failAudioPlayer.isPlaying()) failAudioPlayer.pauseAudio();
+            }
+        });
+        backgroundPlayer = new BackgroundPlayer("src/sound/backgroundmusic.wav");
+        sucessAudioPlayer = new AudioPlayer("src/sound/success.wav");
+        failAudioPlayer = new AudioPlayer("src/sound/fail.wav");
     }
     /**
      * Start a fresh game, this should clear out any old data and
      * create a new set. // 이전 기록 보관하기
      */
     private void startGame() {
+        if(sucessAudioPlayer.isPlaying()) sucessAudioPlayer.pauseAudio();
+        if(failAudioPlayer.isPlaying()) failAudioPlayer.pauseAudio();
+        if(!backgroundPlayer.isPlaying()) backgroundPlayer.playAudio();
         // clear out any existing entities and initialize a new set
-        player.bgmResume();
         entities.clear();
         initEntities();
         startTimeForRecord = System.currentTimeMillis();
@@ -232,76 +225,27 @@ public class Game extends Canvas {
             entities.add(shield);
         }
 
-        switch(this.level){
-            case(1):{
-                // create a block of aliens (4 rows, by 5 aliens, spaced evenly)
-                alienCount = 0;
-                for (int row = 0; row < 4; row++) {
-                    for (int x = 0; x < 5; x++) {
-                        alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 40);
-                        entities.add(alien);
-                        alienCount++;
-                    }
-                }
-                break;
-            }
-            case(2):{
-                // create a block of aliens (6 rows, by 7 aliens, spaced evenly)
-                alienCount = 0;
-                for (int row = 0; row < 6; row++) {
-                    for (int x = 0; x < 7; x++) {
-                        alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 40);
-                        entities.add(alien);
-                        alienCount++;
-                    }
-                }
-                break;
-            }
-            case(3):{
-                // create a block of aliens (7 rows, by 12 aliens, spaced evenly)
-                // even row move inversely
-                alienCount = 0;
-                for (int row = 0; row < 5; row++) {
-                    for (int x = 0; x < 12; x++) {
-                        alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 40);
-                        if (row%2 == 0){
-                            alien.setHorizontalMovement(alien.getHorizontalMovement()*(-1));
-                        }
-                        entities.add(alien);
-                        alienCount++;
-                    }
-                }
-                break;
-            }
-            case(4):{
-                // create a block of aliens (5 rows, by 5 aliens, spaced evenly)
-                alienCount = 0;
-                for (int row = 0; row < 5; row++) {
-                    for (int x = 0; x < 5; x++) {
-                        alien = new AlienEntity(this, 200 + (x * 50), (130) + row * 40);
-                        entities.add(alien);
-                        alienCount++;
+        if(this.level == 5){
+            this.alienCount = 0;
 
-                    }
-                }
-                break;
-            }
-            case(5):{
-                // create a block of aliens (9 rows, by 12 aliens, spaced evenly)
-                alienCount = 0;
+            bossAlien = new BossEntity(this, 370,50);
+            entities.add(bossAlien);
+            this.alienCount++;
+        }
+        initAlienEntities();
+    }
 
-                bossAlien = new BossEntity(this, 370,50);
-                entities.add(bossAlien);
-                alienCount++;
+    private void initAlienEntities(){
+        Integer[] rowList = new Integer[]{4,6,5,5,5};
+        Integer[] colList = new Integer[]{5,7,12,5,5};
+        this.alienCount = 0;
 
-                for (int row = 0; row < 5; row++) {
-                    for (int x = 0; x < 5; x++) {
-                        alien = new AlienEntity(this, 280 + (x * 50), (130) + row * 40);
-                        entities.add(alien);
-                        alienCount++;
-                    }
-                }
-                break;
+        for (int row = 0; row < rowList[this.level-1]; row++) {
+            for (int col = 0; col < colList[this.level-1]; col++) {
+                alien = new AlienEntity(this, 100 + (col * 50), (50) + row * 40);
+                if (this.level == 3 && row % 2 == 0){ alien.setHorizontalMovement(alien.getHorizontalMovement()*(-1)); }
+                entities.add(alien);
+                this.alienCount++;
             }
         }
     }
@@ -330,11 +274,10 @@ public class Game extends Canvas {
      */
     public void notifyDeath() {
         message = "Oh no! They got you, try again?";
+        firebaseTool.SetUserBestScore(globalStorage.getUserID(), Integer.toString(alienKilled - alienCount));
 
-        player.bgmPause();
-        new Thread(() -> player.failPlay("src/sound/fail.wav")).start();
-
-        firebaseTool.SetUserBestScore(globalStorage.getUserID(), bestScore);
+        backgroundPlayer.pauseAudio();
+        new Thread(() -> failAudioPlayer.playAudio()).start();
         waitingForKeyPress = true;
     }
 
@@ -344,43 +287,14 @@ public class Game extends Canvas {
      */
     public void notifyWin() {
         message = "Well done! You Win!";
+        firebaseTool.SetUserBestScore(globalStorage.getUserID(), Integer.toString(alienKilled - alienCount));
+
         finishedTime = System.currentTimeMillis();
-        firebaseTool.SetUserBestScore(globalStorage.getUserID(), bestScore);
-        switch(this.level){
-            case(1):{
-                Item.gainedItems[0] = true;
-                Item.money.set(Item.money.get() + this.alienKilled * 10);
-                //System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
-                break;
-            }
-            case(2):{
-                Item.gainedItems[1] = true;
-                Item.money.set(Item.money.get() + this.alienKilled * 10 * 2);
-                //System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
-                break;
-            }
-            case(3):{
-                Item.gainedItems[2] = true;
-                Item.money.set(Item.money.get() + this.alienKilled * 10 * 3);
-                //System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
-                break;
-            }
-            case(4):{
-                Item.gainedItems[3] = true;
-                Item.money.set(Item.money.get() + this.alienKilled * 10 * 4);
-                //System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
-                break;
-            }
-            case(5):{
-                Item.money.set(Item.money.get() + this.alienKilled * 10 * 5);
-                //System.out.print("notifyWin: " + Arrays.toString(this.enableItems)+ this.money + "\n");
-                break;
-            }
-        }
+        if (this.level != 5) { Item.gainedItems[this.level-1] = true; }
+        Item.money.set(Item.money.get() + alienKilled * 10 * this.level);
 
-        player.bgmPause();
-        new Thread(() -> player.successPlay("src/sound/success.wav")).start();
-
+        backgroundPlayer.pauseAudio();
+        new Thread(() -> sucessAudioPlayer.playAudio()).start();
 
         waitingForKeyPress = true;
     }
@@ -434,8 +348,6 @@ public class Game extends Canvas {
                 entities.add(shot);
             }
         }
-
-        new Thread(() -> player.shotPlay("src/sound/shot.wav")).start();
     }
 
     public void alienTryToFire(){
@@ -460,6 +372,35 @@ public class Game extends Canvas {
         }
     }
 
+    private void entityMovement(Entity entity){
+        entity.setHorizontalMovement(0);
+        entity.setVerticalMovement(0);
+
+        if ((leftPressed) && (!rightPressed)) {
+            entity.setHorizontalMovement(-300);
+        } else if ((rightPressed) && (!leftPressed)) {
+            entity.setHorizontalMovement(300);
+        }
+
+        if ((upPressed) && (!downPressed)) {
+            entity.setVerticalMovement(-300);
+        } else if ((downPressed) && (!upPressed)) {
+            entity.setVerticalMovement(300);
+        }
+    }
+
+    private void drawActivateItems(Graphics2D g){
+        try{
+            //draw enable items
+            String[] itemImages = new String[]{"maxheartpng", "speed", "shield", "shot"};
+            ArrayList<BufferedImage> itemImageList = new ArrayList<>();
+            for(int i=0;i<4;i+=1){
+                itemImageList.add(ImageIO.read(new File("src/sprites/Item "+ itemImages[i] + ".png")));
+                if(Item.gainedItems[i]){g.drawImage(itemImageList.get(i),(730+(15*i)) - (38*(4-i)),558,this);}
+            }
+        } catch (IOException e) { e.printStackTrace(); }
+    }
+
     /**
      * The main game loop. This loop is running during all game
      * play as is responsible for the following activities:
@@ -475,7 +416,7 @@ public class Game extends Canvas {
 
         long lastLoopTime = System.currentTimeMillis();
         long startTimeForDisplay = System.currentTimeMillis();
-        this.alienKilled = alienCount;
+        alienKilled = alienCount;
 
         // keep looping round til the game ends
         while (true) {
@@ -521,10 +462,6 @@ public class Game extends Canvas {
             }
 
             BufferedImage heart;
-            BufferedImage maxHealth;
-            BufferedImage getFaster;
-            BufferedImage enableShield;
-            BufferedImage moreBullet;
             try {
                 //draw health
 				int heartNum = ((ShipEntity) ship).returnNowHealth();
@@ -537,42 +474,11 @@ public class Game extends Canvas {
                     g.setBackground(Color.BLACK);
                     g.clearRect(10, 558, 40, 40);
                 }
-                //draw enable items
-                maxHealth = ImageIO.read(new File("src/sprites/Item maxheartpng.png"));
-                getFaster = ImageIO.read(new File("src/sprites/Item speed.png"));
-                enableShield = ImageIO.read(new File("src/sprites/Item shield.png"));
-                moreBullet = ImageIO.read(new File("src/sprites/Item shot.png"));
-
-                if (Item.gainedItems[0]){
-                    g.drawImage(maxHealth,730 - moreBullet.getWidth() - enableShield.getWidth() - getFaster.getWidth() - maxHealth.getWidth(),558,this);
-                }
-                if (Item.gainedItems[1]){
-                    g.drawImage(getFaster, 745 - moreBullet.getWidth() - enableShield.getWidth() - getFaster.getWidth()
-                    ,558,this);
-                }
-                if (Item.gainedItems[2]){
-                    g.drawImage(enableShield,760 - moreBullet.getWidth() - enableShield.getWidth(),558,this);
-                }
-                if (Item.gainedItems[3]){
-                    g.drawImage(moreBullet,775 - moreBullet.getWidth(),558,this);
-                }
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-            bestScore = Integer.toString(this.alienKilled - alienCount);
-
-            // cycle round asking each entity to move itself
-            if (!waitingForKeyPress) {
-                for (Entity entity : entities) {
-                    entity.move(delta);
-                }
-            }
+			} catch (IOException e) { e.printStackTrace(); }
+            drawActivateItems(g);
 
             // cycle round drawing all the entities we have in the game
-            for (Entity entity : entities) {
-                entity.draw(g);
-            }
+            for (Entity entity : entities) entity.draw(g);
 
             // brute force collisions, compare every entity against
             // every other entity. If any of them collide notify
@@ -615,6 +521,8 @@ public class Game extends Canvas {
                 }
                 g.drawString("Press any key", (800 - g.getFontMetrics().stringWidth("Press any key")) / 2, 300);
                 startTimeForDisplay = System.currentTimeMillis(); // press any key를 기다리는 상태면 startTime을 계속 갱신시켜 흘러가지 않도록 함
+            } else { // cycle round asking each entity to move itself
+                for (Entity entity : entities) { entity.move(delta); }
             }
 
             // finally, we've completed drawing so clear up the graphics
@@ -625,47 +533,14 @@ public class Game extends Canvas {
             // resolve the movement of the ship. First assume the ship
             // isn't moving. If either cursor key is pressed then
             // update the movement appropriately
-            ship.setHorizontalMovement(0);
-            ship.setVerticalMovement(0);
-
-            if ((leftPressed) && (!rightPressed)) {
-                ship.setHorizontalMovement(-moveSpeed);
-            } else if ((rightPressed) && (!leftPressed)) {
-                ship.setHorizontalMovement(moveSpeed);
-            }
-
-            if ((upPressed) && (!downPressed)) {
-                ship.setVerticalMovement(-moveSpeed);
-            } else if ((downPressed) && (!upPressed)) {
-                ship.setVerticalMovement(moveSpeed);
-            }
+            this.entityMovement(ship);
 
             //shield will move with ship
-            if (Item.gainedItems[2]) {
-                shield.setHorizontalMovement(0);
-                shield.setVerticalMovement(0);
-
-                if ((leftPressed) && (!rightPressed)) {
-                    shield.setHorizontalMovement(-moveSpeed);
-                } else if ((rightPressed) && (!leftPressed)) {
-                    shield.setHorizontalMovement(moveSpeed);
-                }
-
-                if ((upPressed) && (!downPressed)) {
-                    shield.setVerticalMovement(-moveSpeed);
-                } else if ((downPressed) && (!upPressed)) {
-                    shield.setVerticalMovement(moveSpeed);
-                }
-            }
+            if (Item.gainedItems[2]) this.entityMovement(shield);
 
             // if we're pressing fire, attempt to fire
-            if (firePressed) {
-                shipTryToFire();
-            }
-            if (level >= 4) {
-                alienTryToFire();
-            }
-
+            if (firePressed) {shipTryToFire();}
+            if (level >= 4) {alienTryToFire();}
 
             // we want each frame to take 10 milliseconds, to do this
             // we've recorded when we started the frame. We add 10 milliseconds

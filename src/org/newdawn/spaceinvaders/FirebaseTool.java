@@ -136,11 +136,11 @@ public class FirebaseTool {
         return userBestScore;
     }
 
-    public void SetUserBestScore(String id, String bestscore) {
+    public void SetUserBestScore(String id, String bestScore) {
         try {
             DatabaseReference userScoreDatabase = FirebaseDatabase.getInstance(firebaseApp).getReference();
 
-            userScoreDatabase.child("user").child(id.split("@")[0]).setValue(bestscore, new DatabaseReference.CompletionListener() {
+            userScoreDatabase.child("user").child(id.split("@")[0]).setValue(bestScore, new DatabaseReference.CompletionListener() {
                 @Override
                 public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
 

@@ -74,10 +74,7 @@ public class ShopWindow extends JFrame {
 
     private JButton drawButton(String ref, int x, int y) {
         ImageIcon buttonIcon = new ImageIcon(ref);
-        Image buttonimg = buttonIcon.getImage();
-        Image buttonimgchange = buttonimg.getScaledInstance(90, 90, Image.SCALE_SMOOTH);
-        ImageIcon buttonchange = new ImageIcon(buttonimgchange);
-        JButton button = new JButton(buttonchange);
+        JButton button = new JButton(buttonIcon);
         button.setName(ref);
         button.setFocusPainted(false);
         button.setBorderPainted(false);

@@ -1,6 +1,8 @@
 package org.newdawn.spaceinvaders.Entity;
 
 import org.newdawn.spaceinvaders.Game;
+import org.newdawn.spaceinvaders.Player.AudioPlayer;
+import org.newdawn.spaceinvaders.Player.Player;
 
 /**
  * An entity representing a shot fired by the player's ship //총알
@@ -8,10 +10,6 @@ import org.newdawn.spaceinvaders.Game;
  * @author Kevin Glass
  */
 public class ShotEntity extends Entity {
-    /**
-     * The vertical speed at which the players shot moves
-     */ //총알이 움직이는 수직 속도
-    private double moveSpeed = -300;
     /**
      * The game in which this entity exists
      */
@@ -30,7 +28,10 @@ public class ShotEntity extends Entity {
 
         this.game = game;
 
-        dy = moveSpeed;
+        Player shotAudioPlayer = new AudioPlayer("src/sound/shot.wav");
+        shotAudioPlayer.playAudio();
+
+        dy = -300;
     }
 
     /**
