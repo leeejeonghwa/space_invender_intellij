@@ -225,9 +225,8 @@ public class Game extends Canvas {
             entities.add(shield);
         }
 
+        this.alienCount = 0;
         if(this.level == 5){
-            this.alienCount = 0;
-
             bossAlien = new BossEntity(this, 370,50);
             entities.add(bossAlien);
             this.alienCount++;
@@ -238,11 +237,12 @@ public class Game extends Canvas {
     private void initAlienEntities(){
         Integer[] rowList = new Integer[]{4,6,5,5,5};
         Integer[] colList = new Integer[]{5,7,12,5,5};
-        this.alienCount = 0;
+        Integer[] xList = new Integer[]{100,100,100,200,280};
+        Integer[] yList = new Integer[]{50,50,50,130,130};
 
         for (int row = 0; row < rowList[this.level-1]; row++) {
             for (int col = 0; col < colList[this.level-1]; col++) {
-                alien = new AlienEntity(this, 100 + (col * 50), (50) + row * 40);
+                alien = new AlienEntity(this, xList[this.level-1] + (col * 50), yList[this.level-1] + row * 40);
                 if (this.level == 3 && row % 2 == 0){ alien.setHorizontalMovement(alien.getHorizontalMovement()*(-1)); }
                 entities.add(alien);
                 this.alienCount++;
@@ -373,19 +373,23 @@ public class Game extends Canvas {
     }
 
     private void entityMovement(Entity entity){
+        int moveSpeed;
+        if(Item.gainedItems[1]){ moveSpeed = 450;}
+        else{ moveSpeed = 300; }
+
         entity.setHorizontalMovement(0);
         entity.setVerticalMovement(0);
 
         if ((leftPressed) && (!rightPressed)) {
-            entity.setHorizontalMovement(-300);
+            entity.setHorizontalMovement(-moveSpeed);
         } else if ((rightPressed) && (!leftPressed)) {
-            entity.setHorizontalMovement(300);
+            entity.setHorizontalMovement(moveSpeed);
         }
 
         if ((upPressed) && (!downPressed)) {
-            entity.setVerticalMovement(-300);
+            entity.setVerticalMovement(-moveSpeed);
         } else if ((downPressed) && (!upPressed)) {
-            entity.setVerticalMovement(300);
+            entity.setVerticalMovement(moveSpeed);
         }
     }
 
