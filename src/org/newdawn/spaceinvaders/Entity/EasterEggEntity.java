@@ -1,6 +1,8 @@
 package org.newdawn.spaceinvaders.Entity;
 
 import org.newdawn.spaceinvaders.Game;
+import org.newdawn.spaceinvaders.Player.AudioPlayer;
+import org.newdawn.spaceinvaders.Player.Player;
 
 public class EasterEggEntity extends Entity{
      /**
@@ -19,7 +21,10 @@ public class EasterEggEntity extends Entity{
     public EasterEggEntity(Game game, String sprite, int x, int y) {
         super(sprite, x, y);
         this.game = game;
-        verticlaMoveSpeed = -750;
+
+        Player shotAudioPlayer = new AudioPlayer("src/sound/shot.wav");
+        shotAudioPlayer.playAudio();
+        dy = -750;
     }
 
     /**
