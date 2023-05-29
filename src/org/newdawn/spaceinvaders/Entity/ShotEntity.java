@@ -25,7 +25,6 @@ public class ShotEntity extends Entity {
      */
     public ShotEntity(Game game, String sprite, int x, int y) {
         super(sprite, x, y);
-
         this.game = game;
 
         Player shotAudioPlayer = new AudioPlayer("src/sound/shot.wav");

@@ -1,6 +1,8 @@
 package org.newdawn.spaceinvaders.Entity;
 
 import org.newdawn.spaceinvaders.Game;
+import org.newdawn.spaceinvaders.Player.AudioPlayer;
+import org.newdawn.spaceinvaders.Player.Player;
 
 public class easterEggEntity extends Entity{
      /**
@@ -19,6 +21,9 @@ public class easterEggEntity extends Entity{
     public easterEggEntity(Game game, String sprite, int x, int y) {
         super(sprite, x, y);
         this.game = game;
+
+        Player shotAudioPlayer = new AudioPlayer("src/sound/shot.wav");
+        shotAudioPlayer.playAudio();
         dy = -750;
     }
 
