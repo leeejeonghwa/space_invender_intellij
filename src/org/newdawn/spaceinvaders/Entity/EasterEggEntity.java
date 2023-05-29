@@ -24,7 +24,7 @@ public class EasterEggEntity extends Entity{
 
         Player shotAudioPlayer = new AudioPlayer("src/sound/shot.wav");
         shotAudioPlayer.playAudio();
-        dy = -750;
+        verticlaMoveSpeed = -750;
     }
 
     /**
